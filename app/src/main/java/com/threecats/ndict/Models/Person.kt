@@ -127,7 +127,6 @@ class Person() {
                 EWorkType.mild -> mild
                 EWorkType.medium -> medium
                 EWorkType.sevete -> sevete
-                else -> base
             }
     }
 
