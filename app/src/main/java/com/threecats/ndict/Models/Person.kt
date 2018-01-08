@@ -40,15 +40,6 @@ class Person() {
 
     var RHR: Int = 60
 
-    @Transient
-    val EHR: HeartRate = HeartRate()
-    @Transient
-    val age: Age = Age()
-    @Transient
-    val BMR: Bmr = Bmr()
-    @Transient
-    val dailyDemand: DailyDemand = DailyDemand()
-
     constructor(
         name: String,
         gender: EGender,
@@ -100,62 +91,6 @@ class Person() {
         override fun convertToDatabaseValue(entityProperty: EPhysique): Int{
             return entityProperty.type
         }
-    }
-
-    inner class Age {
-        val year: Int
-            get() = ((DateTime().months - birthday.months) / 12)
-        val month: Int
-            get() = (DateTime().months - birthday.months) - (year * 12)
-        val text: String
-            get() = if (year <= 0) "${this.month}个月" else "${this.year}岁"
-    }
-
-    inner class Bmr {
-        val base: Int
-            get() = if (gender == EGender.male) (66.473 + 13.751 * weight + 5.0033 * height - 6.7550 * age.year).toInt()
-                    else (655.0955 + 9.463 * weight + 1.8496 * height-4.6756 * age.year).toInt()
-        val normal: Int
-            get() = (base * 1.4).toInt()
-        val mild: Int
-            get() = if (gender == EGender.male) (base*1.58).toInt() else (base*1.56).toInt()
-        val medium: Int
-            get() = if (gender == EGender.male) (base*1.79).toInt() else (base*1.64).toInt()
-        val sevete: Int
-            get() = if (gender == EGender.male) (base*2.1).toInt() else (base*1.82).toInt()
-        val auto: Int
-            get() = when (workType){
-                EWorkType.normal -> normal
-                EWorkType.mild -> mild
-                EWorkType.medium -> medium
-                EWorkType.sevete -> sevete
-            }
-    }
-
-    inner class HeartRate {
-        val max: Int
-            get() = 220 - age.year
-
-        fun poor(percentage: Float): Int{
-            return ((200 - age.year) * percentage).toInt()
-        }
-
-        fun normal(percentage: Float): Int{
-            return ((220 - age.year) * percentage).toInt()
-        }
-
-        fun strong(percentage: Float): Int{
-            return ((220 - age.year - RHR) * percentage + RHR).toInt()
-        }
-    }
-
-    inner class DailyDemand {
-        val protein: Int
-            get() = (BMR.auto * 0.12).toInt()
-        val fat: Int
-            get() = (BMR.auto * 0.25).toInt()
-        val carbohydrate: Int
-            get() = (BMR.auto * 0.63).toInt()
     }
 
 }

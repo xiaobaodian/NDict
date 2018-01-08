@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.threecats.ndict.Models.DataModel
 import com.threecats.ndict.Models.Person
+import com.threecats.ndict.Models.PersonTarget
 import com.threecats.ndict.ndict.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,22 +16,23 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var persons = dm.personQuery.find()
-        var man: Person = Person()
+        lateinit var man: PersonTarget
         when (item.itemId) {
             R.id.navigation_home -> {
-                man = persons[0]
+                man = PersonTarget(persons[0])
                 //message.setText(R.string.title_home)
                 //return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                man = persons[1]
+                man = PersonTarget(persons[1])
             }
             R.id.navigation_notifications -> {
-                man = persons[2]
+                man = PersonTarget(persons[2])
             }
         }
         message.text = "姓名：${man.name}，年龄：${man.age.text}，身高：${man.height}，体重：${man.weight}"
-        BMR.text = "基础卡路里：${man.BMR.mild}，蛋白质：${man.dailyDemand.protein}，${man.dailyDemand.fat}，${man.dailyDemand.carbohydrate}"
+        BMR.text = "卡路里：${man.BMR.mild}，蛋白质：${man.dailyDemand.protein}，脂肪：${man.dailyDemand.fat}，碳水：${man.dailyDemand.carbohydrate}"
+        HR.text = "最大心率：${man.EHR.max}，最佳心率范围：${man.EHR.auto(0.6f)} ~ ${man.EHR.auto(0.85f)}"
         true
     }
 
