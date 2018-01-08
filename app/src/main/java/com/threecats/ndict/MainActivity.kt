@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         message.text = "姓名：${man.name}，年龄：${man.age.text}，身高：${man.height}，体重：${man.weight}"
-        BMR.text = "基础卡路里：${man.BMR.mild}"
+        BMR.text = "基础卡路里：${man.BMR.mild}，蛋白质：${man.dailyDemand.protein}，${man.dailyDemand.fat}，${man.dailyDemand.carbohydrate}"
         true
     }
 

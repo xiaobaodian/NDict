@@ -46,6 +46,8 @@ class Person() {
     val age: Age = Age()
     @Transient
     val BMR: Bmr = Bmr()
+    @Transient
+    val dailyDemand: DailyDemand = DailyDemand()
 
     constructor(
         name: String,
@@ -145,6 +147,15 @@ class Person() {
         fun strong(percentage: Float): Int{
             return ((220 - age.year - RHR) * percentage + RHR).toInt()
         }
+    }
+
+    inner class DailyDemand {
+        val protein: Int
+            get() = (BMR.auto * 0.12).toInt()
+        val fat: Int
+            get() = (BMR.auto * 0.25).toInt()
+        val carbohydrate: Int
+            get() = (BMR.auto * 0.63).toInt()
     }
 
 }
