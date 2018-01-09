@@ -1,12 +1,10 @@
 package com.threecats.ndict
 
-import android.app.Application
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.threecats.ndict.Models.DataModel
-import com.threecats.ndict.Models.Person
-import com.threecats.ndict.Models.PersonTarget
+import com.threecats.ndict.Models.PersonPlus
 import com.threecats.ndict.ndict.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,18 +14,18 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var persons = dm.personQuery.find()
-        lateinit var man: PersonTarget
+        lateinit var man: PersonPlus
         when (item.itemId) {
             R.id.navigation_home -> {
-                man = PersonTarget(persons[0])
+                man = PersonPlus(persons[0])
                 //message.setText(R.string.title_home)
                 //return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                man = PersonTarget(persons[1])
+                man = PersonPlus(persons[1])
             }
             R.id.navigation_notifications -> {
-                man = PersonTarget(persons[2])
+                man = PersonPlus(persons[2])
             }
         }
         message.text = "姓名：${man.name}，年龄：${man.age.text}，身高：${man.height}，体重：${man.weight}"

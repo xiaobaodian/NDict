@@ -18,6 +18,8 @@ class TraceElement {
     @Id
     var id: Long = 0
 
+    var elementID: Long = 0
+
     var timestamp: Date = Date()
     var name: String = "TraceElement"
 

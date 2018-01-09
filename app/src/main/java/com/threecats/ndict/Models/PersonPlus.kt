@@ -8,7 +8,7 @@ import com.threecats.ndict.Helper.DateTime
 /**
  * 由 zhang 于 2018/1/8 创建
  */
-class PersonTarget(val person: Person) {
+class PersonPlus(val person: Person) {
 
     val picture:Int
         get() = person.picture

@@ -19,6 +19,12 @@ class DataModel(app: App) {
     lateinit var personBox: Box<Person>
     lateinit var personQuery: Query<Person>
 
+    lateinit var foodCategoryBox: Box<FoodCategory>
+    lateinit var foodCategoryQuery: Query<FoodCategory>
+
+    lateinit var foodBox: Box<Food>
+    lateinit var foodQuery: Query<Food>
+
     init{
         this.app = app
         personBox = app.boxStore.boxFor<Person>()
