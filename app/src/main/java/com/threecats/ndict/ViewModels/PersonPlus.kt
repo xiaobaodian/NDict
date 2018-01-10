@@ -31,6 +31,7 @@ class PersonPlus(val person: Person) {
         get() = person.RHR
 
     val age: Age = Age()
+    val ageGroup: AgeGroup = AgeGroup(this)
     val BMI: PersonBMI = PersonBMI(person)
     val BMR: PersonBMR = PersonBMR(this)
     val EHR: PersonHeartRate = PersonHeartRate(this)

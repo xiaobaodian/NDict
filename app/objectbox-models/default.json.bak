@@ -137,7 +137,7 @@
     },
     {
       "id": "4:8337763116309742015",
-      "lastPropertyId": "9:5244417129735439908",
+      "lastPropertyId": "10:151119376501263914",
       "name": "TraceElement",
       "properties": [
         {
@@ -175,6 +175,10 @@
         {
           "id": "9:5244417129735439908",
           "name": "notice"
+        },
+        {
+          "id": "10:151119376501263914",
+          "name": "elementID"
         }
       ],
       "relations": []
