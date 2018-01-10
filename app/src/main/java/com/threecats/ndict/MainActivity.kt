@@ -3,7 +3,7 @@ package com.threecats.ndict
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import com.threecats.ndict.Helper.CBMI
+import com.threecats.ndict.Helper.PersonBMI
 import com.threecats.ndict.Models.DataModel
 import com.threecats.ndict.Models.PersonPlus
 import com.threecats.ndict.ndict.R
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
         message.text = "姓名：${man.name}，年龄：${man.age.text}，身高：${man.height}，体重：${man.weight}"
         BMR.text = "基础：${man.BMR.base}，日常${man.BMR.mild}，中体力：${man.BMR.medium}，重体力：${man.BMR.sevete}"
-        Power.text = "蛋白质：${man.dailyDemand.protein}，脂肪：${man.dailyDemand.fat}，碳水：${man.dailyDemand.carbohydrate}。BMI：${man.BMI.type(CBMI.EArea.China)}"
+        Power.text = "蛋白质：${man.dailyDemand.protein}，脂肪：${man.dailyDemand.fat}，碳水：${man.dailyDemand.carbohydrate}。BMI：${man.BMI.type(PersonBMI.EArea.WHO)}"
         HR.text = "最大心率：${man.EHR.max}，最佳心率范围：${man.EHR.auto(0.6f)} ~ ${man.EHR.auto(0.85f)}"
         true
     }

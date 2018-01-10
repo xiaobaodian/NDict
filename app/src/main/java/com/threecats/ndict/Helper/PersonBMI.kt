@@ -5,7 +5,7 @@ import com.threecats.ndict.Models.Person
 /**
  * 由 zhang 于 2018/1/10 创建
  */
-class CBMI(val person: Person) {
+class PersonBMI(val person: Person) {
 
     enum class EArea{
         China, WHO, Singapore,Japan
