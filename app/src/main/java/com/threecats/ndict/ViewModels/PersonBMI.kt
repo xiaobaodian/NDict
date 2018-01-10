@@ -1,4 +1,4 @@
-package com.threecats.ndict.Helper
+package com.threecats.ndict.ViewModels
 
 import com.threecats.ndict.Models.Person
 

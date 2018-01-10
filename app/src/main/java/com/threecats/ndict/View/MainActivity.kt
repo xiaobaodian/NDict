@@ -1,11 +1,12 @@
-package com.threecats.ndict
+package com.threecats.ndict.View
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import com.threecats.ndict.Helper.PersonBMI
+import com.threecats.ndict.App
+import com.threecats.ndict.ViewModels.PersonBMI
 import com.threecats.ndict.Models.DataModel
-import com.threecats.ndict.Models.PersonPlus
+import com.threecats.ndict.ViewModels.PersonPlus
 import com.threecats.ndict.ndict.R
 import kotlinx.android.synthetic.main.activity_main.*
 

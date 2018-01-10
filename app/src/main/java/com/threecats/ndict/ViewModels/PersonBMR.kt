@@ -1,9 +1,8 @@
-package com.threecats.ndict.Helper
+package com.threecats.ndict.ViewModels
 
 import com.threecats.ndict.Enum.EGender
 import com.threecats.ndict.Enum.EWorkType
-import com.threecats.ndict.Models.Person
-import com.threecats.ndict.Models.PersonPlus
+import com.threecats.ndict.ViewModels.PersonPlus
 
 /**
  * 由 zhang 于 2018/1/10 创建
