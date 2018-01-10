@@ -39,8 +39,8 @@ class DataModel(app: App) {
 
     fun createPersonData(){
         var persons: List<Person> = listOf(
-            Person("老爷",EGender.male, DateTime(1969,3,12),164f,60f),
-            Person("跟班",EGender.women, DateTime(1973,9,20),164f,59f),
+            Person("老爷",EGender.male, DateTime(1969,3,12),164f,70f),
+            Person("跟班",EGender.women, DateTime(1973,9,20),164f,65f),
             Person("小宝点",EGender.male,DateTime(2017,6,1),20f,15f)
         )
         personBox.put(persons)

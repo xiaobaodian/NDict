@@ -3,6 +3,7 @@ package com.threecats.ndict.Models
 import com.threecats.ndict.Enum.EGender
 import com.threecats.ndict.Enum.EPhysique
 import com.threecats.ndict.Enum.EWorkType
+import com.threecats.ndict.Helper.CBMI
 import com.threecats.ndict.Helper.DateTime
 
 /**
@@ -30,6 +31,7 @@ class PersonPlus(val person: Person) {
         get() = person.RHR
 
     val age: Age = Age()
+    val BMI: CBMI = CBMI(person)
     val BMR: Bmr = Bmr()
     val EHR: HeartRate = HeartRate()
     val dailyDemand: DailyDemand = DailyDemand()

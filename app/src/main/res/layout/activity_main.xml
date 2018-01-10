@@ -27,13 +27,22 @@
         app:layout_constraintTop_toBottomOf="@+id/message" />
 
     <TextView
+        android:id="@+id/Power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Power"
+        app:layout_constraintStart_toStartOf="@+id/BMR"
+        app:layout_constraintTop_toBottomOf="@+id/BMR" />
+
+    <TextView
         android:id="@+id/HR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="HR"
-        app:layout_constraintStart_toStartOf="@+id/BMR"
-        app:layout_constraintTop_toBottomOf="@+id/BMR" />
+        app:layout_constraintStart_toStartOf="@+id/Power"
+        app:layout_constraintTop_toBottomOf="@+id/Power" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
