@@ -1,4 +1,4 @@
-package com.threecats.ndict.ndict
+package com.threecats.ndict
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

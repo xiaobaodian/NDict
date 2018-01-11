@@ -13,12 +13,10 @@ import io.objectbox.query.Query
  * 由 zhang 于 2018/1/6 创建
  */
 
-class DataModel(app: App) {
+class DataModel(private val app: App) {
 
-    val app: App
-
-    lateinit var personBox: Box<Person>
-    lateinit var personQuery: Query<Person>
+    val personBox: Box<Person>
+    val personQuery: Query<Person>
 
     lateinit var foodCategoryBox: Box<FoodCategory>
     lateinit var foodCategoryQuery: Query<FoodCategory>
@@ -27,7 +25,6 @@ class DataModel(app: App) {
     lateinit var foodQuery: Query<Food>
 
     init{
-        this.app = app
         personBox = app.boxStore.boxFor<Person>()
         personQuery = personBox.query().build()
     }

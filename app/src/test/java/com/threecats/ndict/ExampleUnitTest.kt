@@ -1,4 +1,4 @@
-package com.threecats.ndict.ndict
+package com.threecats.ndict
 
 import org.junit.Test
 

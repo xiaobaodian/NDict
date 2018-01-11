@@ -13,7 +13,7 @@ import java.util.*
  */
 
 @Entity
-class TraceElement {
+class TraceElement() {
 
     @Id
     var id: Long = 0
@@ -22,21 +22,46 @@ class TraceElement {
 
     var timestamp: Date = Date()
     var name: String = "TraceElement"
+    var elementSymbol: String = ""
 
     @Convert(converter = MeasureConverter::class, dbType = Int::class)
     var measure: EMeasure = EMeasure.Gram
 
+    var demand: Float = 0.0f
+
     var content: String = ""
     var Function: String = ""
     var source: String = ""
-    var demand: String = ""
     var notice: String = ""
 
-    class MeasureConverter: PropertyConverter<EMeasure, Int> {
+    constructor(
+            elementID: Long,
+            name: String,
+            elementSymbol: String,
+            measure: EMeasure,
+            demand: Float,
+            content: String,
+            function: String,
+            source: String,
+            notice: String
+    ) : this() {
+        this.elementID = elementID
+        this.name = name
+        this.elementSymbol = elementSymbol
+        this.measure = measure
+        this.demand = demand
+        this.content = content
+        this.Function = function
+        this.source = source
+        this.notice = notice
+    }
+
+    class MeasureConverter : PropertyConverter<EMeasure, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EMeasure {
             return enumValues<EMeasure>()[databaseValue]
         }
-        override fun convertToDatabaseValue(entityProperty: EMeasure): Int{
+
+        override fun convertToDatabaseValue(entityProperty: EMeasure): Int {
             return entityProperty.code
         }
     }

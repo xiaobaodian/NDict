@@ -18,9 +18,9 @@ import java.util.*
 class Person() {
 
     @Id
-    var id:Long=0
+    var id: Long = 0
 
-    var picture:Int = 0
+    var picture: Int = 0
     var name: String = ""
 
     @Convert(converter = DateConverter::class, dbType = Date::class)
@@ -40,20 +40,26 @@ class Person() {
 
     var RHR: Int = 60
     var pregnant: Boolean
-        set(value) = if (gender == EGender.women) pregnant = value else pregnant = false
+        set(value) = when (gender) {
+            EGender.women -> pregnant = value
+            else -> pregnant = false
+        }
         get() = if (gender == EGender.women) pregnant else false
     var nursing: Boolean
-        set(value) = if (gender == EGender.women) nursing = value else nursing = false
+        set(value) = when (gender) {
+            EGender.women -> nursing = value
+            else -> nursing = false
+        }
         get() = if (gender == EGender.women) nursing else false
 
 
     constructor(
-        name: String,
-        gender: EGender,
-        birthday: DateTime,
-        height: Float,
-        weight: Float
-    ): this() {
+            name: String,
+            gender: EGender,
+            birthday: DateTime,
+            height: Float,
+            weight: Float
+    ) : this() {
         this.name = name
         this.gender = gender
         this.birthday = birthday
@@ -61,41 +67,45 @@ class Person() {
         this.weight = weight
     }
 
-    class GenderConverter: PropertyConverter<EGender, Int> {
+    class GenderConverter : PropertyConverter<EGender, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EGender {
             val gender = enumValues<EGender>()
             return gender[databaseValue]
         }
-        override fun convertToDatabaseValue(entityProperty: EGender): Int{
+
+        override fun convertToDatabaseValue(entityProperty: EGender): Int {
             return entityProperty.sex
         }
     }
 
-    class WorkTypeConverter: PropertyConverter<EWorkType, Int> {
+    class WorkTypeConverter : PropertyConverter<EWorkType, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EWorkType {
             val workType = enumValues<EWorkType>()
             return workType[databaseValue]
         }
-        override fun convertToDatabaseValue(entityProperty: EWorkType): Int{
+
+        override fun convertToDatabaseValue(entityProperty: EWorkType): Int {
             return entityProperty.type
         }
     }
 
-    class DateConverter: PropertyConverter<DateTime, Date> {
+    class DateConverter : PropertyConverter<DateTime, Date> {
         override fun convertToEntityProperty(databaseValue: Date): DateTime {
             return DateTime(databaseValue)
         }
-        override fun convertToDatabaseValue(entityProperty:DateTime): Date{
+
+        override fun convertToDatabaseValue(entityProperty: DateTime): Date {
             return entityProperty.time
         }
     }
 
-    class PhysiqueConverter: PropertyConverter<EPhysique, Int> {
+    class PhysiqueConverter : PropertyConverter<EPhysique, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EPhysique {
             val physique = enumValues<EPhysique>()
             return physique[databaseValue]
         }
-        override fun convertToDatabaseValue(entityProperty: EPhysique): Int{
+
+        override fun convertToDatabaseValue(entityProperty: EPhysique): Int {
             return entityProperty.type
         }
     }
