@@ -14,8 +14,10 @@ class PersonBMR(val person: PersonPlus) {
                     (66.473 + 13.751 * person.weight + 5.0033 * person.height - 6.7550 * person.age.year).toInt()
                 else
                     (655.0955 + 9.463 * person.weight + 1.8496 * person.height-4.6756 * person.age.year).toInt()
+    val live: Int
+        get() = (base * 1.25).toInt()
     val normal: Int
-        get() = (base * 1.4).toInt()
+        get() = if (person.gender == EGender.male) (base*1.48).toInt() else (base*1.375).toInt()
     val mild: Int
         get() = if (person.gender == EGender.male) (base*1.58).toInt() else (base*1.56).toInt()
     val medium: Int
@@ -24,10 +26,10 @@ class PersonBMR(val person: PersonPlus) {
         get() = if (person.gender == EGender.male) (base*2.1).toInt() else (base*1.82).toInt()
     val auto: Int
         get() = when (person.workType){
+            EWorkType.live -> live
             EWorkType.normal -> normal
             EWorkType.mild -> mild
             EWorkType.medium -> medium
             EWorkType.sevete -> sevete
-            else -> 0
         }
 }

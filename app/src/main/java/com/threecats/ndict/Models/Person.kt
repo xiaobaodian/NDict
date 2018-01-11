@@ -39,6 +39,13 @@ class Person() {
     var physique: EPhysique = EPhysique.normal
 
     var RHR: Int = 60
+    var pregnant: Boolean
+        set(value) = if (gender == EGender.women) pregnant = value else pregnant = false
+        get() = if (gender == EGender.women) pregnant else false
+    var nursing: Boolean
+        set(value) = if (gender == EGender.women) nursing = value else nursing = false
+        get() = if (gender == EGender.women) nursing else false
+
 
     constructor(
         name: String,
