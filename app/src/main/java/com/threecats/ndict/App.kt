@@ -1,6 +1,7 @@
 package com.threecats.ndict
 
 import android.app.Application
+import com.threecats.ndict.Models.DataModel
 import com.threecats.ndict.Models.MyObjectBox
 import io.objectbox.BoxStore
 
@@ -8,6 +9,8 @@ import io.objectbox.BoxStore
  * 由 zhang 于 2018/1/6 创建
  */
 class App: Application() {
+
+    var DM: DataModel? = null
 
     companion object Constants {
         const val TAG = "ObjectBoxExample"
@@ -30,6 +33,12 @@ class App: Application() {
 
         boxStore = MyObjectBox.builder().androidContext(this).build()
 
-        //        }
+        //        }    }
+    }
+
+    fun initDataModel(){
+        if (DM == null){
+            DM = DataModel(this)
+        }
     }
 }

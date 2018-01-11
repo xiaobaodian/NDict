@@ -4,6 +4,7 @@ import android.app.Application
 import com.threecats.ndict.App
 import com.threecats.ndict.Enum.EGender
 import com.threecats.ndict.Helper.DateTime
+import com.threecats.ndict.OriginalData.InitPerson
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
 import io.objectbox.query.Query
@@ -33,16 +34,9 @@ class DataModel(app: App) {
 
     fun initPerson(){
         if (personBox.count().toInt() == 0) {
-            createPersonData()
+            val persons = InitPerson.createPersonData()
+            personBox.put(persons)
         }
     }
 
-    fun createPersonData(){
-        var persons: List<Person> = listOf(
-            Person("老爷",EGender.male, DateTime(1969,3,12),164f,70f),
-            Person("跟班",EGender.women, DateTime(1973,9,20),164f,65f),
-            Person("小宝点",EGender.male,DateTime(2015,6,1),87f,15.5f)
-        )
-        personBox.put(persons)
-    }
 }
