@@ -30,7 +30,7 @@ class TraceElement() {
     var demand: Float = 0.0f
 
     var content: String = ""
-    var Function: String = ""
+    var function: String = ""
     var source: String = ""
     var notice: String = ""
 
@@ -51,7 +51,7 @@ class TraceElement() {
         this.measure = measure
         this.demand = demand
         this.content = content
-        this.Function = function
+        this.function = function
         this.source = source
         this.notice = notice
     }

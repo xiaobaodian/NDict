@@ -13,10 +13,9 @@ import io.objectbox.query.Query
  * 由 zhang 于 2018/1/6 创建
  */
 
-class DataModel(private val app: App) {
+class DataModel(app: App) {
 
     val personBox: Box<Person>
-
     val personQuery: Query<Person>
 
     lateinit var foodCategoryBox: Box<FoodCategory>
