@@ -15,6 +15,9 @@ import io.objectbox.query.Query
 
 class DataModel(app: App) {
 
+    lateinit var foodCategorys: List<FoodCategory>
+    lateinit var traceElements: List<TraceElement>
+
     val personBox: Box<Person>
     val personQuery: Query<Person>
 

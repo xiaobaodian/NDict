@@ -41,16 +41,16 @@ class Person() {
     var RHR: Int = 60
     var pregnant: Boolean
         set(value) = when (gender) {
-            EGender.women -> pregnant = value
+            EGender.female -> pregnant = value
             else -> pregnant = false
         }
-        get() = if (gender == EGender.women) pregnant else false
+        get() = if (gender == EGender.female) pregnant else false
     var nursing: Boolean
         set(value) = when (gender) {
-            EGender.women -> nursing = value
+            EGender.female -> nursing = value
             else -> nursing = false
         }
-        get() = if (gender == EGender.women) nursing else false
+        get() = if (gender == EGender.female) nursing else false
 
 
     constructor(

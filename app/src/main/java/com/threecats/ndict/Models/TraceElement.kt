@@ -27,7 +27,7 @@ class TraceElement() {
     @Convert(converter = MeasureConverter::class, dbType = Int::class)
     var measure: EMeasure = EMeasure.Gram
 
-    var demand: Float = 0.0f
+    var demand: String = ""
 
     var content: String = ""
     var function: String = ""
@@ -39,7 +39,7 @@ class TraceElement() {
             name: String,
             elementSymbol: String,
             measure: EMeasure,
-            demand: Float,
+            demand: String,
             content: String,
             function: String,
             source: String,
