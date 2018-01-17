@@ -9,7 +9,7 @@ import com.threecats.ndict.Models.Person
  */
 object InitPerson {
 
-    fun createPersonData(): List<Person>{
+    fun createPerson(): List<Person>{
         var persons: List<Person> = listOf(
                 Person("老爷", EGender.male, DateTime(1969,3,12),164f,70f),
                 Person("跟班", EGender.female, DateTime(1973,9,20),164f,65f),

@@ -1,9 +1,6 @@
 package com.threecats.ndict.Models
 
-import android.app.Application
 import com.threecats.ndict.App
-import com.threecats.ndict.Enum.EGender
-import com.threecats.ndict.Helper.DateTime
 import com.threecats.ndict.OriginalData.InitPerson
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
@@ -34,7 +31,7 @@ class DataModel(app: App) {
 
     fun initPerson(){
         if (personBox.count().toInt() == 0) {
-            val persons = InitPerson.createPersonData()
+            val persons = InitPerson.createPerson()
             personBox.put(persons)
         }
     }
