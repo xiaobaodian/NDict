@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.threecats.ndict.App
 import com.threecats.ndict.ViewModels.PersonBMI
 import com.threecats.ndict.Models.DataModel
+import com.threecats.ndict.Models.DietaryEnergy
 import com.threecats.ndict.ViewModels.PersonPlus
 import com.threecats.ndict.ndict.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         BMR.text = "基础：${man.BMR.base}，日常：${man.BMR.normal}，轻：${man.BMR.mild}，中：${man.BMR.medium}，重：${man.BMR.sevete}"
         Power.text = "蛋白质：${man.dailyDemand.protein}，脂肪：${man.dailyDemand.fat}，碳水：${man.dailyDemand.carbohydrate}。BMI：${man.BMI.type(PersonBMI.EArea.China)}"
         HR.text = "最大心率：${man.EHR.max}，最佳心率范围：${man.EHR.auto(0.6f)} ~ ${man.EHR.auto(0.85f)}"
+        textView.text = DietaryEnergy.Content.trimMargin()
         true
     }
 
