@@ -62,7 +62,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:lineSpacingExtra="8sp"
         android:text="TextView"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/HR"
         app:layout_constraintTop_toBottomOf="@+id/HR" />
