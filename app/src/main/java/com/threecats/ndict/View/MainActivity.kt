@@ -2,11 +2,12 @@ package com.threecats.ndict.View
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import com.threecats.ndict.App
-import com.threecats.ndict.ViewModels.PersonBMI
 import com.threecats.ndict.Models.DataModel
-import com.threecats.ndict.Models.DietaryEnergy
 import com.threecats.ndict.R
 import com.threecats.ndict.ViewModels.PersonPlus
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,27 +16,27 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var dm: DataModel
 
+    private val fragmentManager = supportFragmentManager
+    private var dietRecordsFragment: DietRecordsFragment? = null
+    private var foodsFragment: FoodsFragment? = null
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var persons = dm.personQuery.find()
         lateinit var man: PersonPlus
         when (item.itemId) {
             R.id.navigation_home -> {
-                man = PersonPlus(persons[0])
-                //message.setText(R.string.title_home)
-                //return@OnNavigationItemSelectedListener true
+                if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()
+                loadFragment(dietRecordsFragment)
             }
             R.id.navigation_dashboard -> {
-                man = PersonPlus(persons[1])
+                if (foodsFragment == null) foodsFragment = FoodsFragment()
+                loadFragment(foodsFragment)
             }
             R.id.navigation_notifications -> {
                 man = PersonPlus(persons[2])
             }
         }
-        message.text = "姓名：${man.name}，年龄：${man.age.text}，身高：${man.height}，体重：${man.weight}"
-        BMR.text = "基础：${man.BMR.base}，日常：${man.BMR.normal}，轻：${man.BMR.mild}，中：${man.BMR.medium}，重：${man.BMR.sevete}"
-        Power.text = "蛋白质：${man.dailyDemand.protein}，脂肪：${man.dailyDemand.fat}，碳水：${man.dailyDemand.carbohydrate}。BMI：${man.BMI.type(PersonBMI.EArea.China)}"
-        HR.text = "最大心率：${man.EHR.max}，最佳心率范围：${man.EHR.auto(0.6f)} ~ ${man.EHR.auto(0.85f)}"
-        textView.text = DietaryEnergy.Content.trimMargin()
+
         true
     }
 
@@ -48,4 +49,11 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
+
+    private fun loadFragment(fragment: Fragment?){
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.mainFrament, fragment)
+        fragmentTransaction.commit()
+    }
+
 }
