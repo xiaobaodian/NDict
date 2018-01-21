@@ -6,9 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-//import com.threecats.ndict.R
-import com.threecats.ndict.ndict.R
+import com.threecats.ndict.R
 
 
 /**
