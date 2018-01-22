@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var persons = dm.personQuery.find()
-        lateinit var man: PersonPlus
         when (item.itemId) {
             R.id.navigation_home -> {
                 if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()
@@ -50,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         dm.initPerson()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()
+        loadFragment(dietRecordsFragment)
     }
 
     private fun loadFragment(fragment: Fragment?){

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">营养词典</string>
+    <string name="hello_blank_fragment">这是一个空的fragment</string>
+    <string name="navi_diet">每日营养</string>
+    <string name="navi_foods">食材词典</string>
+    <string name="navi_person">个人</string>
+</resources>
