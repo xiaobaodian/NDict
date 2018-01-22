@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private var dietRecordsFragment: DietRecordsFragment? = null
     private var foodsFragment: FoodsFragment? = null
+    private var personFragment: PersonFragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var persons = dm.personQuery.find()
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(foodsFragment)
             }
             R.id.navigation_notifications -> {
-                man = PersonPlus(persons[2])
+                if (personFragment == null) personFragment = PersonFragment()
+                loadFragment(personFragment)
             }
         }
 
