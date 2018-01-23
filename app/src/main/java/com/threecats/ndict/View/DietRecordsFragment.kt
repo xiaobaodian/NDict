@@ -8,9 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.threecats.ndict.R
+import kotlinx.android.synthetic.main.fragment_diet_records.*
 
 
 class DietRecordsFragment : Fragment() {
+
+    private val mOnClickListener = View.OnClickListener { _ ->
+        date.text = "后天"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +24,10 @@ class DietRecordsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_diet_records, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_diet_records, container, false)
+        //date.text = "后天"
+        button.setOnClickListener(mOnClickListener)
+        return view
     }
 
 }
