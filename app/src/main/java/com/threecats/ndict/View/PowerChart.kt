@@ -79,10 +79,13 @@ class PowerChart(chart: PieChart) {
         data.setValueTextColor(Color.BLUE)
         //data.setValueTypeface(mTfLight)
 
+        val legend = powerChart.legend
+        legend.isEnabled = false
         powerChart.centerText = "BMR：${power.toInt()}"
         powerChart.setData(data)
 
         powerChart.highlightValues(null)
-        powerChart.invalidate()
+        //powerChart.invalidate()
+        powerChart.animateXY(1400, 1400);
     }
 }
