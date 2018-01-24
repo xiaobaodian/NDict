@@ -3,18 +3,13 @@ package com.threecats.ndict.View
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import com.threecats.ndict.App
-import com.threecats.ndict.Models.DataModel
+import com.threecats.ndict.Models.DataSet
 import com.threecats.ndict.R
-import com.threecats.ndict.ViewModels.PersonPlus
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var dm: DataModel
 
     private val fragmentManager = supportFragmentManager
     private var dietRecordsFragment: DietRecordsFragment? = null
@@ -22,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var personFragment: PersonFragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        var persons = dm.personQuery.find()
+
         when (item.itemId) {
             R.id.navigation_home -> {
                 if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()
@@ -45,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        dm = DataModel(application as App)
-        dm.initPerson()
+        DataSet.init(application as App)
+        DataSet.initPerson()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()
