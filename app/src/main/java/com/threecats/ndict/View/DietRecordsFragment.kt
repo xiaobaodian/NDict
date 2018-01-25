@@ -31,9 +31,11 @@ class DietRecordsFragment : Fragment() {
         //date.text="后天"
         val man = PersonPlus(DataSet.currentPerson)
         val pPchart = PowerChart(piechart)
+        val list: List<String> = arrayListOf("轻微活动","日常家务","轻体力劳动","中体力劳动","重体力劳动")
         pPchart.setPower(man.BMR.auto.toFloat())
         val sa = SpinnerHelper(context, spinner)
-        //sa.bind()
+        sa.items = arrayListOf("轻微活动","日常家务","轻体力劳动","中体力劳动","重体力劳动")
+        sa.bind()
     }
 
 }

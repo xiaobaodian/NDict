@@ -10,25 +10,25 @@ import android.widget.SpinnerAdapter
  */
 class SpinnerHelper(val context: Context, val spinner: Spinner) {
 
-    var items: List<String>? = null
-        set(value) {items = value}
+    var items: List<String> = arrayListOf("你","忘记了","加入数据")
+        //set(value) {items = value}
 
-    var spinneLayout: Int = 0
-        set(value) {spinneLayout = value}
+    var spinneLayout: Int = android.R.layout.simple_spinner_item
+        //set(value) {spinneLayout = value}
 
-    private var dropdownLayout: Int = 0
-    set(value) {dropdownLayout = value}
+    var dropdownLayout: Int = android.R.layout.simple_spinner_dropdown_item
+    //set(value) {dropdownLayout = value}
 
     private var adapter: ArrayAdapter<String>? = null
     //val
 
     fun bind() {
-        if (spinneLayout == 0) spinneLayout = android.R.layout.simple_spinner_item
-        if (dropdownLayout == 0) dropdownLayout = android.R.layout.simple_spinner_dropdown_item
-        items?.let { items = arrayListOf("你","忘记了","加入数据") }
         adapter = ArrayAdapter<String>(context, spinneLayout, items)
-        adapter!!?.setDropDownViewResource(dropdownLayout)
-        spinner.adapter = adapter
+        if (adapter != null) {
+            adapter!!?.setDropDownViewResource(dropdownLayout)
+            spinner.adapter = adapter
+        }
+
     }
 
 //    ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mItems);
