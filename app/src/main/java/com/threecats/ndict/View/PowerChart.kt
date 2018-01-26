@@ -111,7 +111,7 @@ class PowerChart(chart: PieChart) : OnChartValueSelectedListener {
 
         powerChart.highlightValues(null)
         //powerChart.invalidate()
-        powerChart.animateXY(1000, 1000);
+        powerChart.animateXY(800, 800);
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
