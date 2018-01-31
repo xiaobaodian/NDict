@@ -72,6 +72,7 @@ object DataSet {
             foodCategoryBox.put(categorys)
             val c = foodCategoryQuery.find()
             InitFoods.createFoods(c)
+            foodCategoryBox.put(c)
         }
 
     }

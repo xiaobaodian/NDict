@@ -53,7 +53,7 @@
     },
     {
       "id": "2:8552283707161289308",
-      "lastPropertyId": "13:1813585145899763963",
+      "lastPropertyId": "14:1206857934712479003",
       "name": "Food",
       "properties": [
         {
@@ -107,6 +107,11 @@
         {
           "id": "13:1813585145899763963",
           "name": "foodFiber"
+        },
+        {
+          "id": "14:1206857934712479003",
+          "indexId": "1:7376452190924918878",
+          "name": "categoryId"
         }
       ],
       "relations": []
@@ -133,7 +138,12 @@
           "name": "shortTitle"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "1:6522562276437610261",
+          "name": "foods"
+        }
+      ]
     },
     {
       "id": "4:8337763116309742015",
@@ -189,8 +199,8 @@
     }
   ],
   "lastEntityId": "4:8337763116309742015",
-  "lastIndexId": "0:0",
-  "lastRelationId": "0:0",
+  "lastIndexId": "1:7376452190924918878",
+  "lastRelationId": "1:6522562276437610261",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
