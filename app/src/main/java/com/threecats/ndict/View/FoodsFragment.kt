@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndict.Models.DataSet
+import com.threecats.ndict.Models.FoodCategory
 import com.threecats.ndict.R
 
 
@@ -14,6 +16,13 @@ import com.threecats.ndict.R
  */
 class FoodsFragment : Fragment() {
 
+    lateinit var categorys: List<FoodCategory>
+    lateinit var categoryFoodFragments: List<CategoryFoods>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        categorys = DataSet.foodCategoryQuery.find()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -21,4 +30,8 @@ class FoodsFragment : Fragment() {
         return inflater!!.inflate(R.layout.fragment_foods, container, false)
     }
 
-}// Required empty public constructor
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+}

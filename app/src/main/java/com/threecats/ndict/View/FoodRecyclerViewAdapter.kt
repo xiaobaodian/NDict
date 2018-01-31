@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.threecats.ndict.Models.Food
 import com.threecats.ndict.R
 
-import com.threecats.ndict.View.CategoryFoodFragment.OnListFragmentInteractionListener
+import com.threecats.ndict.View.CategoryFoods.OnListFragmentInteractionListener
 import com.threecats.ndict.dummy.DummyContent.DummyItem
 
 /**
@@ -15,7 +16,7 @@ import com.threecats.ndict.dummy.DummyContent.DummyItem
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class CategoryFoodRecyclerViewAdapter(private val mValues: List<DummyItem>) : RecyclerView.Adapter<CategoryFoodRecyclerViewAdapter.ViewHolder>() {
+class FoodRecyclerViewAdapter(private val foods: List<Food>) : RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -24,9 +25,9 @@ class CategoryFoodRecyclerViewAdapter(private val mValues: List<DummyItem>) : Re
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = mValues[position]
-        holder.mIdView.text = mValues[position].id
-        holder.mContentView.text = mValues[position].content
+        holder.mItem = foods[position]
+        holder.mIdView.text = foods[position].id
+        holder.mContentView.text = foods[position].content
 
         holder.mView.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.mItem)
@@ -34,7 +35,7 @@ class CategoryFoodRecyclerViewAdapter(private val mValues: List<DummyItem>) : Re
     }
 
     override fun getItemCount(): Int {
-        return mValues.size
+        return foods.size
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
