@@ -1,6 +1,8 @@
 package com.threecats.ndict.Models
 
 import com.threecats.ndict.App
+import com.threecats.ndict.OriginalData.InitFoodCategory
+import com.threecats.ndict.OriginalData.InitFoods
 import com.threecats.ndict.OriginalData.InitPerson
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
@@ -30,8 +32,15 @@ object DataSet {
 
     fun init(app: App){
         this.app = app
+
         this.personBox = this.app!!.boxStore.boxFor<Person>()
         this.personQuery = personBox.query().build()
+
+        this.foodCategoryBox = this.app!!.boxStore.boxFor<FoodCategory>()
+        this.foodCategoryQuery = foodCategoryBox.query().build()
+
+        this.foodBox = this.app!!.boxStore.boxFor<Food>()
+        this.foodQuery = foodBox.query().build()
     }
 
     fun initPerson(): Boolean {
@@ -56,5 +65,15 @@ object DataSet {
                 return null
             }
         }
+
+    fun initFoodCategory(){
+        if (foodCategoryBox.count() == 0L) {
+            val categorys = InitFoodCategory.createFoodCategory()
+            foodCategoryBox.put(categorys)
+            val c = foodCategoryQuery.find()
+            InitFoods.createFoods(c)
+        }
+
+    }
 
 }

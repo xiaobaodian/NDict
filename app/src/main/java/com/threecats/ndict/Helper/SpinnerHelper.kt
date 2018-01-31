@@ -3,7 +3,6 @@ package com.threecats.ndict.Helper
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.SpinnerAdapter
 
 /**
  * 由 zhang 于 2018/1/25 创建
@@ -16,8 +15,8 @@ class SpinnerHelper(val context: Context, val spinner: Spinner) {
     var spinneLayout: Int = android.R.layout.simple_spinner_item
         //set(value) {spinneLayout = value}
 
-    var dropdownLayout: Int = android.R.layout.simple_spinner_dropdown_item
-    //set(value) {dropdownLayout = value}
+    var dropDownLayout: Int = android.R.layout.simple_spinner_dropdown_item
+    //set(value) {dropDownLayout = value}
 
     private var adapter: ArrayAdapter<String>? = null
     //val
@@ -25,7 +24,7 @@ class SpinnerHelper(val context: Context, val spinner: Spinner) {
     fun bind() {
         adapter = ArrayAdapter<String>(context, spinneLayout, items)
         if (adapter != null) {
-            adapter!!?.setDropDownViewResource(dropdownLayout)
+            adapter!!?.setDropDownViewResource(dropDownLayout)
             spinner.adapter = adapter
         }
 
