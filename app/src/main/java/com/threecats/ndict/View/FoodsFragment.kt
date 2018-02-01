@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.threecats.ndict.Models.DataSet
 import com.threecats.ndict.Models.FoodCategory
 import com.threecats.ndict.R
+import kotlinx.android.synthetic.main.fragment_foods.*
 
 
 /**
@@ -34,6 +35,7 @@ class FoodsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         categoryFoodFragments.clear()
         categorys.forEach { categoryFoodFragments.add(CategoryFoodsFragment(it)) }
-
+        viewPager.adapter = CategoryFoodFragmentAdapter(childFragmentManager, categoryFoodFragments)
+        tabs.setupWithViewPager(viewPager)
     }
 }

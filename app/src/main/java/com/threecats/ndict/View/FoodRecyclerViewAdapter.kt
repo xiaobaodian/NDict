@@ -12,7 +12,6 @@ import com.threecats.ndict.R
 import com.threecats.ndict.dummy.DummyContent.DummyItem
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
@@ -44,7 +43,7 @@ class FoodRecyclerViewAdapter(private val foods: List<Food>) : RecyclerView.Adap
         var food: Food? = null
 
         init {
-            nameView = view.findViewById<View>(R.id.id) as TextView
+            nameView = view.findViewById<View>(R.id.name) as TextView
             contentView = view.findViewById<View>(R.id.content) as TextView
         }
 

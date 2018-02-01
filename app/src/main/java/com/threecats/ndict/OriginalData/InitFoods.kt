@@ -12,8 +12,30 @@ object InitFoods {
 
         //谷类及其制品
         var category: FoodCategory? = foodCategorys.find { it.categoryID == 1 }
-        category?.foods?.add(Food("大麦"))
+        category?.foods?.add(Food("稻米"))
+        category?.foods?.add(Food("粳米"))
+        category?.foods?.add(Food("籼米"))
         category?.foods?.add(Food("小麦"))
+        category?.foods?.add(Food("糯米"))
+        category?.foods?.add(Food("黑米"))
+        category?.foods?.add(Food("米饭（蒸）"))
+        category?.foods?.add(Food("小麦粉（糖白粉）"))
+        category?.foods?.add(Food("小麦粉（标准粉）"))
+        category?.foods?.add(Food("面条（切面）"))
+        category?.foods?.add(Food("面条（挂面）"))
+        category?.foods?.add(Food("馒头（富强粉）"))
+        category?.foods?.add(Food("馒头（标准粉）"))
+        category?.foods?.add(Food("油饼"))
+        category?.foods?.add(Food("油条"))
+        category?.foods?.add(Food("荞麦"))
+        category?.foods?.add(Food("荞麦面"))
+        category?.foods?.add(Food("小米"))
+        category?.foods?.add(Food("玉米（鲜）"))
+        category?.foods?.add(Food("玉米（白、鲜）"))
+        category?.foods?.add(Food("玉米（黄、干）"))
+        category?.foods?.add(Food("玉米面（黄）"))
+        category?.foods?.add(Food("燕麦"))
+        category?.foods?.add(Food("薏米"))
 
         //干豆类及其制品
         category = foodCategorys.find { it.categoryID == 2 }

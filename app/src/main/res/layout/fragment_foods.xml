@@ -3,49 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.threecats.ndict.View.FoodsFragment">
+    android:fitsSystemWindows="true">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginStart="0dp"
-        android:background="@drawable/ic_launcher_background"
         android:fitsSystemWindows="true">
 
+
         <android.support.design.widget.TabLayout
-            android:layout_width="368dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
+            app:layout_anchor="@id/appbar"
+            app:layout_anchorGravity="bottom"
+            app:layout_collapseMode="none"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@android:color/holo_orange_light"
+            app:tabTextColor="@android:color/white">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Left" />
+                android:text="Tab1" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Center" />
+                android:text="Tab2" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Right" />
+                android:text="Tab3" />
         </android.support.design.widget.TabLayout>
-    </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp" />
-
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"></android.support.v4.view.ViewPager>
 </android.support.design.widget.CoordinatorLayout>
