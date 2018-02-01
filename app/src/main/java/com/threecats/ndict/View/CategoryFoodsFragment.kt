@@ -23,7 +23,7 @@ import com.threecats.ndict.R
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class CategoryFoods(val foodCategory: FoodCategory) : Fragment() {
+class CategoryFoodsFragment(val foodCategory: FoodCategory) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

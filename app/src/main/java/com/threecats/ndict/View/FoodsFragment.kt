@@ -17,7 +17,7 @@ import com.threecats.ndict.R
 class FoodsFragment : Fragment() {
 
     lateinit var categorys: List<FoodCategory>
-    var categoryFoodFragments = mutableListOf<CategoryFoods>()
+    var categoryFoodFragments = mutableListOf<CategoryFoodsFragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class FoodsFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryFoodFragments.clear()
-        categorys.forEach { categoryFoodFragments.add(CategoryFoods(it)) }
+        categorys.forEach { categoryFoodFragments.add(CategoryFoodsFragment(it)) }
 
     }
 }

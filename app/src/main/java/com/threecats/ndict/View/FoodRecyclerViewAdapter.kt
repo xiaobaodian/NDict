@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.threecats.ndict.Models.Food
 import com.threecats.ndict.R
 
-//import com.threecats.ndict.View.CategoryFoods.OnListFragmentInteractionListener
+//import com.threecats.ndict.View.CategoryFoodsFragment.OnListFragmentInteractionListener
 import com.threecats.ndict.dummy.DummyContent.DummyItem
 
 /**
