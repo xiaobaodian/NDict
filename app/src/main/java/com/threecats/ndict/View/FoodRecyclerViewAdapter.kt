@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.threecats.ndict.Models.Food
 import com.threecats.ndict.R
 
-import com.threecats.ndict.View.CategoryFoods.OnListFragmentInteractionListener
+//import com.threecats.ndict.View.CategoryFoods.OnListFragmentInteractionListener
 import com.threecats.ndict.dummy.DummyContent.DummyItem
 
 /**
@@ -20,17 +20,17 @@ class FoodRecyclerViewAdapter(private val foods: List<Food>) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_item, parent, false)
+                .inflate(R.layout.fragment_food_listitem, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = foods[position]
-        holder.mIdView.text = foods[position].id
-        holder.mContentView.text = foods[position].content
+        holder.food = foods[position]
+        holder.nameView.text = foods[position].name
+        holder.contentView.text = foods[position].alias
 
-        holder.mView.setOnClickListener {
-            //mListener?.onListFragmentInteraction(holder.mItem)
+        holder.view.setOnClickListener {
+            //mListener?.onListFragmentInteraction(holder.food)
         }
     }
 
@@ -38,18 +38,18 @@ class FoodRecyclerViewAdapter(private val foods: List<Food>) : RecyclerView.Adap
         return foods.size
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView
-        val mContentView: TextView
-        var mItem: DummyItem? = null
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val nameView: TextView
+        val contentView: TextView
+        var food: Food? = null
 
         init {
-            mIdView = mView.findViewById<View>(R.id.id) as TextView
-            mContentView = mView.findViewById<View>(R.id.content) as TextView
+            nameView = view.findViewById<View>(R.id.id) as TextView
+            contentView = view.findViewById<View>(R.id.content) as TextView
         }
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + contentView.text + "'"
         }
     }
 }

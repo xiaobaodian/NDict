@@ -16,7 +16,7 @@ class Food() {
     var id: Long = 0
 
     var timestamp: Date = Date()
-    var name: String = "food name"
+    var name: String = "food nameView"
     var alias: String = ""
     var anotherName: String = ""
     var note: String = ""
