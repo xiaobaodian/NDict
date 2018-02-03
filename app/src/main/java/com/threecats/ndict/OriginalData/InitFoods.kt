@@ -40,7 +40,34 @@ object InitFoods {
         //干豆类及其制品
         category = foodCategorys.find { it.categoryID == 2 }
         category?.foods?.add(Food("黄豆"))
+        category?.foods?.add(Food("黄豆粉"))
         category?.foods?.add(Food("绿豆"))
+        category?.foods?.add(Food("小豆"))
+        category?.foods?.add(Food("豌豆"))
+        category?.foods?.add(Food("芸豆"))
+        category?.foods?.add(Food("豆浆（粉）"))
+        category?.foods?.add(Food("腐竹"))
+        category?.foods?.add(Food("粉丝（干）"))
+        category?.foods?.add(Food("百叶（薄）千张"))
+        category?.foods?.add(Food("豆腐（干）"))
+        category?.foods?.add(Food("豆腐皮"))
+        category?.foods?.add(Food("豆腐"))
+        category?.foods?.add(Food("豆浆"))
+        category?.foods?.add(Food("豆腐脑"))
+        category?.foods?.add(Food("毛豆（鲜）"))
+        category?.foods?.add(Food("饭豇豆"))
+        category?.foods?.add(Food("长豇豆"))
+        category?.foods?.add(Food("豌豆"))
+        category?.foods?.add(Food("蚕豆（鲜）"))
+        category?.foods?.add(Food("扁豆"))
+        category?.foods?.add(Food("百合"))
+        category?.foods?.add(Food("黄豆芽"))
+        category?.foods?.add(Food("绿豆芽"))
+        category?.foods?.add(Food("菜豆角（芸扁豆角）"))
+        category?.foods?.add(Food("豇豆（鲜豆荚）"))
+        category?.foods?.add(Food("豌豆苗"))
+        category?.foods?.add(Food("芸豆"))
+
 
         //鲜豆类及其制品
         category = foodCategorys.find { it.categoryID == 3 }
