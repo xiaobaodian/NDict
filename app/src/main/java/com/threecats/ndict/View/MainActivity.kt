@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         DataSet.init(application as App)
         DataSet.initPerson()
+        DataSet.initFoodCategory()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (dietRecordsFragment == null) dietRecordsFragment = DietRecordsFragment()

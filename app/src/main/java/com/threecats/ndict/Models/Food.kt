@@ -2,6 +2,7 @@ package com.threecats.ndict.Models
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.relation.ToOne
 import java.util.*
 
 /**
@@ -15,7 +16,7 @@ class Food() {
     var id: Long = 0
 
     var timestamp: Date = Date()
-    var name: String = "food name"
+    var name: String = "food nameView"
     var alias: String = ""
     var anotherName: String = ""
     var note: String = ""
@@ -27,4 +28,10 @@ class Food() {
     var fat: Float = 0f
     var carbohydrate:Float = 0f
     var foodFiber: Float = 0f
+
+    lateinit var category: ToOne<FoodCategory>
+
+    constructor(name: String): this(){
+        this.name = name
+    }
 }

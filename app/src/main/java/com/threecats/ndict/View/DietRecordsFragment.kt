@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndict.Helper.SpinnerHelper
 import com.threecats.ndict.Models.DataSet
 
 import com.threecats.ndict.R
@@ -29,8 +30,12 @@ class DietRecordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //date.text="后天"
         val man = PersonPlus(DataSet.currentPerson)
-        val pPchart = PowerChart(piechart)
-        pPchart.setPower(man.BMR.auto.toFloat())
+        val powerChart = PowerChart(piechart)
+        val list: List<String> = arrayListOf("轻微活动","日常家务","轻体力劳动","中体力劳动","重体力劳动")
+        powerChart.setPower(man.BMR.auto.toFloat())
+        val sa = SpinnerHelper(context, spinner)
+        sa.items = arrayListOf("轻微活动","日常家务","轻体力","中体力","重体力")
+        sa.bind()
     }
 
 }
