@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_dashboard -> {
 
-                var category = FoodCategory(20,"这是长标题","短标题")
+                var category = FoodCategory(20,"这是-长标题","短标题")
                 category.save(object : SaveListener<String>() {
                     override fun done(objectId: String, e: BmobException?) {
                         if (e == null) {
