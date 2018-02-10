@@ -1,1 +1,1 @@
-include ':app', ':datamanager'
+include ':app', ':ndictdataset'

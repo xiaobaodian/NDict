@@ -10,6 +10,8 @@ import cn.bmob.v3.listener.QueryListener
 import com.threecats.javatest.ndictdataset.Bmob.FoodCategory
 import kotlinx.android.synthetic.main.activity_main.*
 import cn.bmob.v3.listener.SaveListener
+import com.threecats.javatest.ndictdataset.Bmob.BmobSet
+import com.threecats.javatest.ndictdataset.Bmob.ResultObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,19 +19,18 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                var categoryQuery: BmobQuery<FoodCategory> = BmobQuery<FoodCategory>()
-                var title = "aaa"
-                categoryQuery.getObject("kuS0D55D", object : QueryListener<FoodCategory>() {
+
+                val categoryQuery: BmobQuery<FoodCategory> = BmobQuery<FoodCategory>()
+
+                categoryQuery.getObject("UI60CCCchh", object : QueryListener<FoodCategory>() {
                     override fun done(category: FoodCategory, e: BmobException?) {
                         if (e == null) {
                             message.text = category.LongTitle
                         } else {
-                            message.text = "nonononon !"
+                            message.text = e?.message
                         }
                     }
                 })
-
-                //message.setText(title)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
