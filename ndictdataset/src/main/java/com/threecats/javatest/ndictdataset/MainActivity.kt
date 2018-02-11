@@ -10,8 +10,6 @@ import cn.bmob.v3.listener.QueryListener
 import com.threecats.javatest.ndictdataset.Bmob.FoodCategory
 import kotlinx.android.synthetic.main.activity_main.*
 import cn.bmob.v3.listener.SaveListener
-import com.threecats.javatest.ndictdataset.Bmob.BmobSet
-import com.threecats.javatest.ndictdataset.Bmob.ResultObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
                 val categoryQuery: BmobQuery<FoodCategory> = BmobQuery<FoodCategory>()
 
-                categoryQuery.getObject("UI60CCCchh", object : QueryListener<FoodCategory>() {
+                categoryQuery.getObject("UI60CCCc", object : QueryListener<FoodCategory>() {
                     override fun done(category: FoodCategory, e: BmobException?) {
                         if (e == null) {
                             message.text = category.LongTitle
@@ -51,7 +49,17 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                message.setText(R.string.title_notifications)
+                val categoryQuery: BmobQuery<FoodCategory> = BmobQuery<FoodCategory>()
+
+                categoryQuery.getObject("wewewe3", object : QueryListener<FoodCategory>() {
+                    override fun done(category: FoodCategory, e: BmobException?) {
+                        if (e == null) {
+                            message.text = category.LongTitle
+                        } else {
+                            message.text = e?.message
+                        }
+                    }
+                })
                 return@OnNavigationItemSelectedListener true
             }
         }
