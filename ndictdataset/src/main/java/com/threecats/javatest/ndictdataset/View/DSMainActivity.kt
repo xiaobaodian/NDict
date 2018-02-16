@@ -1,7 +1,8 @@
-package com.threecats.javatest.ndictdataset
+package com.threecats.javatest.ndictdataset.View
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobQuery
@@ -11,74 +12,37 @@ import cn.bmob.v3.listener.QueryListener
 import com.threecats.javatest.ndictdataset.Bmob.FoodCategory
 import kotlinx.android.synthetic.main.activity_main.*
 import cn.bmob.v3.listener.SaveListener
+import com.threecats.javatest.ndictdataset.R
 
 
-class MainActivity : AppCompatActivity() {
+class DSMainActivity : AppCompatActivity() {
+
+    private val fragmentManager = supportFragmentManager
+    private var traceElementFragment: TraceElementFragment? = null
+    private var categoryFoodsFragment: CategoryFoodsFragment? = null
+    private var foodEnergyFragment: FoodEnergyFragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                queryOne("UI60CCCc")
+                if (categoryFoodsFragment == null) categoryFoodsFragment = CategoryFoodsFragment()
+                loadFragment(categoryFoodsFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-
-                saveCategoryOne(21,"这是分类的长标题", "这是短标题")
-                //queryOne("UI60CCdc")
-
-                //message.setText(R.string.title_dashboard)
+                if (traceElementFragment == null) traceElementFragment = TraceElementFragment()
+                loadFragment(traceElementFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                queryAllFoodCategory()
-                //queryOne("TKDtGGGZ")
+                if (foodEnergyFragment == null) foodEnergyFragment = FoodEnergyFragment()
+                loadFragment(foodEnergyFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
-    private fun queryOne(objectID: String){
-        val categoryQuery: BmobQuery<FoodCategory> = BmobQuery<FoodCategory>()
-        categoryQuery.getObject(objectID, object : QueryListener<FoodCategory>() {
-            override fun done(category: FoodCategory?, e: BmobException?) {
-                if (e == null) {
-                    message.text = category!!.LongTitle
-                } else {
-                    message.text = e.message
-                }
-            }
-        })
-    }
-
-    private fun queryAllFoodCategory() {
-        val query = BmobQuery<FoodCategory>()
-        query.findObjects(object : FindListener<FoodCategory>() {
-            override fun done(categorys: MutableList<FoodCategory>?, e: BmobException?) {
-                if (e == null) {
-                    message.text = categorys!![3].LongTitle
-                } else {
-                    message.text = e.message
-                }
-            }
-        })
-    }
-
-    private fun saveCategoryOne(categoryID: Int, longTitle: String, shortTitle: String){
-        var category = FoodCategory()  //categoryID, longTitle, shortTitle
-        category.categoryID = categoryID
-        category.LongTitle = longTitle
-        category.ShortTitle = shortTitle
-        category.save(object : SaveListener<String>() {
-            override fun done(objectId: String?, e: BmobException?) {
-                if (e == null) {
-                    message.text = "添加数据成功，返回objectId为：" + objectId
-                } else {
-                    message.text = "创建数据失败：" + e.message
-                }
-            }
-        })
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,5 +68,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        if (categoryFoodsFragment == null) categoryFoodsFragment = CategoryFoodsFragment()
+        loadFragment(categoryFoodsFragment)
+    }
+
+    private fun loadFragment(fragment: Fragment?){
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.mainFrament, fragment)
+        fragmentTransaction.commit()
     }
 }
