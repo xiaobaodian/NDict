@@ -67,7 +67,7 @@ class CategoryFoodsFragment : Fragment() {
                 if (e == null) {
                     categoryList = categorys
                     categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!)
-                    Toast.makeText(view!!.context,"bind Category List "+categorys!!.size,Toast.LENGTH_LONG).show()
+                    Toast.makeText(view!!.context,"bind Category List / Items : "+categorys!!.size,Toast.LENGTH_LONG).show()
                     //bindCategoryList()
                 } else {
                     //message.text = e.message
