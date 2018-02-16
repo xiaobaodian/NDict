@@ -66,6 +66,9 @@ class CategoryFoodsFragment : Fragment() {
             override fun done(categorys: MutableList<FoodCategory>?, e: BmobException?) {
                 if (e == null) {
                     categoryList = categorys
+                    if (categoryRView == null) {
+                        Toast.makeText(view!!.context,"Recycler is null ",Toast.LENGTH_LONG).show()
+                    }
                     categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!)
                     Toast.makeText(view!!.context,"bind Category List / Items : "+categorys!!.size,Toast.LENGTH_LONG).show()
                     //bindCategoryList()
