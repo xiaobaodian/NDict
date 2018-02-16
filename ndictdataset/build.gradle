@@ -24,6 +24,12 @@ android {
         }
     }
 
+    buildToolsVersion '27.0.1'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     //删除META-INF信息
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
@@ -46,6 +52,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'cn.bmob.android:bmob-sdk:3.5.9'
+    implementation 'cn.bmob.android:bmob-sdk:3.5.10'
     //compile 'cn.bmob.android:http-legacy:1.0'
 }
