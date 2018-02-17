@@ -8,7 +8,7 @@ import io.objectbox.annotation.Id
  */
 
 @Entity
-class FoodTraceElement {
+class FoodMineral {
 
     @Id
     var id: Long = 0

@@ -1,7 +1,6 @@
 package com.threecats.ndict.Models
 
 import com.threecats.ndict.Enum.EMeasure
-import com.threecats.ndict.Enum.EPhysique
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -22,7 +21,7 @@ class TraceElement() {
 
     var timestamp: Date = Date()
     var name: String = "TraceElement"
-    var elementSymbol: String = ""
+    var Symbol: String = ""
 
     @Convert(converter = MeasureConverter::class, dbType = Int::class)
     var measure: EMeasure = EMeasure.Gram
@@ -47,7 +46,7 @@ class TraceElement() {
     ) : this() {
         this.elementID = elementID
         this.name = name
-        this.elementSymbol = elementSymbol
+        this.Symbol = elementSymbol
         this.measure = measure
         this.demand = demand
         this.content = content
