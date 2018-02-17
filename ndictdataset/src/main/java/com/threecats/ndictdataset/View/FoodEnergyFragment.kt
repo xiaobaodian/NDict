@@ -1,4 +1,4 @@
-package com.threecats.javatest.ndictdataset.View
+package com.threecats.ndictdataset.View
 
 
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.threecats.javatest.ndictdataset.R
+import com.threecats.ndictdataset.R
 
 
 /**

@@ -1,4 +1,4 @@
-package com.threecats.javatest.ndictdataset
+package com.threecats.ndictdataset
 
 import org.junit.Test
 

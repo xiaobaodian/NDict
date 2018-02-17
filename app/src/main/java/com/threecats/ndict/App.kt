@@ -11,7 +11,7 @@ import io.objectbox.BoxStore
 class App: Application() {
 
     companion object Constants {
-        const val TAG = "ObjectBoxExample"
+        const val TAG = "NDict"
         const val EXTERNAL_DIR = false
     }
 

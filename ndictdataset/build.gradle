@@ -7,7 +7,7 @@ android {
     //useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.threecats.javatest.ndictdataset"
+        applicationId "com.threecats.ndictdataset"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1

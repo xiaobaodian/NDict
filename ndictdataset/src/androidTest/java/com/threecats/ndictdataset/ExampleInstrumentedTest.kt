@@ -1,4 +1,4 @@
-package com.threecats.javatest.ndictdataset
+package com.threecats.ndictdataset
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.threecats.javatest.ndictdataset", appContext.packageName)
+        assertEquals("com.threecats.ndictdataset", appContext.packageName)
     }
 }
