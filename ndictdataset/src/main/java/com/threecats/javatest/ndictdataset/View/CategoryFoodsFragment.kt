@@ -3,6 +3,7 @@ package com.threecats.javatest.ndictdataset.View
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,7 @@ class CategoryFoodsFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryRView = CategoryRView
+        categoryRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         if (categoryList == null) {
             queryAllFoodCategory()
         } else {
