@@ -46,7 +46,7 @@ class CategoryFoodsFragment : Fragment() {
     }
 
     private fun bindCategoryList(){
-        categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!)
+        categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
     }
 
     private fun queryOne(objectID: String){
@@ -54,7 +54,7 @@ class CategoryFoodsFragment : Fragment() {
         categoryQuery.getObject(objectID, object : QueryListener<BFoodCategory>() {
             override fun done(category: BFoodCategory?, e: BmobException?) {
                 if (e == null) {
-                    //message.text = category!!.LongTitle
+                    //message.text = food!!.LongTitle
                 } else {
                     //message.text = e.message
                 }
@@ -71,7 +71,7 @@ class CategoryFoodsFragment : Fragment() {
                     if (categoryRView == null) {
                         Toast.makeText(view!!.context,"Recycler is null ",Toast.LENGTH_LONG).show()
                     }
-                    categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!)
+                    categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
                     //bindCategoryList()
                 } else {
                     //message.text = e.message
