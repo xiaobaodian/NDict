@@ -71,11 +71,15 @@ class CategoryFoodsFragment : Fragment() {
                     if (categoryRView == null) {
                         Toast.makeText(view!!.context,"Recycler is null ",Toast.LENGTH_LONG).show()
                     }
-                    categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
+                    if (categoryList != null) {
+                        categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
+                    }
                     //bindCategoryList()
                 } else {
                     //message.text = e.message
-                    Toast.makeText(view!!.context,e.message,Toast.LENGTH_LONG).show()
+                    if (view != null) {
+                        Toast.makeText(view!!.context,e.message,Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         })

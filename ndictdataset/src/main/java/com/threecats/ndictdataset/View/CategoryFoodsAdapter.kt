@@ -15,7 +15,7 @@ class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, va
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.category_recycleitem, parent, false)
+                .inflate(R.layout.category_recycleritem, parent, false)
         return ViewHolder(view)
     }
 
