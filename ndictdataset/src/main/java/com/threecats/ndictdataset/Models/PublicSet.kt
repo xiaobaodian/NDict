@@ -1,5 +1,6 @@
 package com.threecats.ndictdataset.Models
 
+import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 
 /**
@@ -7,4 +8,5 @@ import com.threecats.ndictdataset.Bmob.BFoodCategory
  */
 class PublicSet {
     var CurrentCategory: BFoodCategory? = null
+    var CurrentFood: BFood? = null
 }
