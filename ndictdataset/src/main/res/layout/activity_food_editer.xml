@@ -6,23 +6,37 @@
     android:layout_height="match_parent"
     tools:context="com.threecats.ndictdataset.View.FoodEditerActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/FoodEditerToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="食材资料" />
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/NameILayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/FoodEditerToolbar">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/NameIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="名称"
-            android:tag="false" />
+            android:tag="false"
+            android:textColor="@color/primary_text" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -40,6 +54,7 @@
             android:id="@+id/AliasIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="别名" />
+            android:hint="别名"
+            android:textColor="@color/primary_text" />
     </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>
