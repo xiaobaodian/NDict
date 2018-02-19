@@ -87,7 +87,6 @@ class FoodListActivity : AppCompatActivity() {
                 FoodRView?.adapter?.notifyItemChanged(foodSize)
                 updateCategoryFoodSize(foodSize)
                 BDM.ShareSet?.ItemEditState = EditerState.Edit
-                EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategoryPosition!!))
             }
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)
@@ -99,6 +98,7 @@ class FoodListActivity : AppCompatActivity() {
         currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
+                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategoryPosition!!))
                     if (showMessage) {
                         Toast.makeText(this@FoodListActivity,
                                 "更新${currentCategory?.LongTitle}类的食材总数：$size ",

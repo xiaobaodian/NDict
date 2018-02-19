@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
 import android.widget.Toast
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
@@ -13,6 +14,7 @@ import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
+import kotlinx.android.synthetic.main.activity_food_list.*
 import org.greenrobot.eventbus.EventBus
 
 class FoodEditerActivity : AppCompatActivity() {
@@ -23,6 +25,7 @@ class FoodEditerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
+        setSupportActionBar(FoodEditerToolbar)
 
         with (NameIEditText) {
             text.append(currentFood?.name)
@@ -66,6 +69,11 @@ class FoodEditerActivity : AppCompatActivity() {
 //            }
 //        }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.foodediter_menu, menu!!)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onDestroy() {
