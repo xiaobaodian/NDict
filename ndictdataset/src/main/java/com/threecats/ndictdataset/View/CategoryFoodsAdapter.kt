@@ -29,6 +29,7 @@ class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, va
             //mListener?.onListFragmentInteraction(holder.food)
             //Toast.makeText(holder.context,"点击了：${category.LongTitle}", Toast.LENGTH_SHORT).show()
             BDM.ShareSet?.CurrentCategory = category
+            BDM.ShareSet?.CurrentCategoryPosition = position
             val intent = Intent(parentContext, FoodListActivity::class.java)
             parentContext.startActivity(intent)
         }

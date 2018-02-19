@@ -7,8 +7,10 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.EventClass.UpdateRecyclerItem
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
+import org.greenrobot.eventbus.EventBus
 
 class FoodEditerActivity : AppCompatActivity() {
 
@@ -42,10 +44,12 @@ class FoodEditerActivity : AppCompatActivity() {
         var oId = currentFood?.objectId
         Toast.makeText(this@FoodEditerActivity, oId, Toast.LENGTH_SHORT).show()
         var food = BFood()
+        currentFood?.name = NameIEditText.text.toString()
+        currentFood?.alias = AliasIEditText.text.toString()
         food.name = NameIEditText.text.toString()
         food.alias = AliasIEditText.text.toString()
-        Toast.makeText(this@FoodEditerActivity, food.name+"/"+food.alias, Toast.LENGTH_SHORT).show()
-        food.update(oId, object: UpdateListener(){
+        //Toast.makeText(this@FoodEditerActivity, food.name+"/"+food.alias, Toast.LENGTH_SHORT).show()  currentFood?.objectId,
+        currentFood?.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     Toast.makeText(this@FoodEditerActivity, "更新了数据", Toast.LENGTH_SHORT).show()
@@ -54,5 +58,6 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
+        EventBus.getDefault().postSticky(UpdateRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))
     }
 }

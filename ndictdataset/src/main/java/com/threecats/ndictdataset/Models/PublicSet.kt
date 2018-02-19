@@ -8,5 +8,7 @@ import com.threecats.ndictdataset.Bmob.BFoodCategory
  */
 class PublicSet {
     var CurrentCategory: BFoodCategory? = null
+    var CurrentCategoryPosition: Int = 0
     var CurrentFood: BFood? = null
+    var CurrentFoodPosition: Int = 0
 }

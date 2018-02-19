@@ -14,10 +14,14 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.EventClass.UpdateRecyclerItem
 import com.threecats.ndictdataset.R
 
 import kotlinx.android.synthetic.main.activity_food_list.*
 import kotlinx.android.synthetic.main.content_food_list.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class FoodListActivity : AppCompatActivity() {
 
@@ -34,6 +38,7 @@ class FoodListActivity : AppCompatActivity() {
         }
 
         FoodRView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        EventBus.getDefault().register(this@FoodListActivity)
     }
 
     override fun onStart() {
@@ -60,6 +65,11 @@ class FoodListActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this@FoodListActivity)
+    }
+
     private fun updateCategoryFoodTatol(tatol: Int){
         val currentCategory = BDM.ShareSet?.CurrentCategory
         val oId = currentCategory?.objectId
@@ -72,6 +82,13 @@ class FoodListActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun doUpdateRecyclerItem(updateItem: UpdateRecyclerItem){
+        FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
+        EventBus.getDefault().removeStickyEvent(updateItem)
+        Toast.makeText(this@FoodListActivity, "更新了Item：${updateItem.Position}", Toast.LENGTH_SHORT).show()
     }
 
 }
