@@ -34,11 +34,12 @@ class FoodListActivity : AppCompatActivity() {
 
         FoodToolbar.title = BDM.ShareSet?.CurrentCategory?.LongTitle
         FoodToolbar.subtitle = "食材列表"
+        FoodToolbar.setNavigationOnClickListener { onBackPressed() }
 
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //        .setAction("Action", null).show()
-            BDM.ShareSet?.ItemEditState = EditerState.Append
+            BDM.ShareSet?.ItemEditState = EditerState.FoodAppend
             BDM.ShareSet?.CurrentFood = BFood()
             val intent = Intent(this@FoodListActivity, FoodEditerActivity::class.java)
             startActivity(intent)
@@ -80,13 +81,13 @@ class FoodListActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.Edit -> FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
-            EditerState.Append -> {
+            EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.FoodAppend -> {
                 foodList?.add(BDM.ShareSet?.CurrentFood!!)
                 val foodSize = foodList?.size!!
                 FoodRView?.adapter?.notifyItemChanged(foodSize)
                 updateCategoryFoodSize(foodSize)
-                BDM.ShareSet?.ItemEditState = EditerState.Edit
+                BDM.ShareSet?.ItemEditState = EditerState.FoodEdit
             }
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)

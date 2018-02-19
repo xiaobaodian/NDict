@@ -7,6 +7,10 @@
     <item
         android:id="@+id/ChangedCategory"
         android:title="更换分类" />
-    <item android:title="Item" />
-    <item android:title="Item" />
+    <item
+        android:id="@+id/SaveWork"
+        android:title="保存" />
+    <item
+        android:id="@+id/CancelWork"
+        android:title="放弃编辑" />
 </menu>

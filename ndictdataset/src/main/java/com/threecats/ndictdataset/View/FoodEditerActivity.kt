@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
+import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
-import kotlinx.android.synthetic.main.activity_food_list.*
 import org.greenrobot.eventbus.EventBus
 
 class FoodEditerActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
         setSupportActionBar(FoodEditerToolbar)
+        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
         with (NameIEditText) {
             text.append(currentFood?.name)
@@ -76,6 +78,15 @@ class FoodEditerActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId){
+            R.id.DeleteFood -> {
+
+            }
+        }
+        return true
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -87,7 +98,7 @@ class FoodEditerActivity : AppCompatActivity() {
         currentFood?.alias = AliasIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.Append -> {
+            EditerState.FoodAppend -> {
                 currentFood?.category = BDM.ShareSet?.CurrentCategory
                 currentFood?.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
@@ -99,7 +110,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     }
                 })
             }
-            EditerState.Edit -> {
+            EditerState.FoodEdit -> {
                 currentFood?.update(object: UpdateListener(){
                     override fun done(e: BmobException?) {
                         if (e == null) {
@@ -112,5 +123,18 @@ class FoodEditerActivity : AppCompatActivity() {
             }
         }
         EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))  //Sticky
+    }
+
+    private fun deleteFood(food: BFood){
+        food.delete(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    Toast.makeText(this@FoodEditerActivity, "删除${food.name}成功", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
     }
 }

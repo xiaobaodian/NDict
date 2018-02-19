@@ -18,7 +18,6 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
-import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.content_food_list.*
@@ -65,8 +64,8 @@ class CategoryFoodsFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem){
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.Edit -> CategoryRView?.adapter?.notifyItemChanged(updateItem.Position)
-            EditerState.Append -> {
+            EditerState.FoodEdit -> CategoryRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.FoodAppend -> {
                 categoryList?.add(BDM.ShareSet?.CurrentCategory!!)
                 val categorySize = categoryList?.size!!
                 FoodRView?.adapter?.notifyItemChanged(categorySize)
