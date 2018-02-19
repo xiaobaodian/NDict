@@ -9,7 +9,7 @@
         android:id="@+id/ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="食材名称"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +23,7 @@
         android:layout_marginTop="4dp"
         android:text="别名、其他称呼"
         android:textSize="10sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/ItemName"
         app:layout_constraintTop_toBottomOf="@+id/ItemName" />

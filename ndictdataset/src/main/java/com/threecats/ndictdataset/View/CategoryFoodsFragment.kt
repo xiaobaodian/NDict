@@ -14,10 +14,18 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
+import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
+import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 
 import com.threecats.ndictdataset.R
+import kotlinx.android.synthetic.main.content_food_list.*
 import kotlinx.android.synthetic.main.fragment_category_foods.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -30,7 +38,7 @@ class CategoryFoodsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        //Toast.makeText(context,"hdhdhdhhdhd",Toast.LENGTH_LONG).show()
+        EventBus.getDefault().register(this)
         return inflater!!.inflate(R.layout.fragment_category_foods, container, false)
     }
 
@@ -45,8 +53,25 @@ class CategoryFoodsFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
     private fun bindCategoryList(){
         categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem){
+        when (BDM.ShareSet?.ItemEditState){
+            EditerState.Edit -> CategoryRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.Append -> {
+                categoryList?.add(BDM.ShareSet?.CurrentCategory!!)
+                val categorySize = categoryList?.size!!
+                FoodRView?.adapter?.notifyItemChanged(categorySize)
+            }
+        }
     }
 
     private fun queryOne(objectID: String){

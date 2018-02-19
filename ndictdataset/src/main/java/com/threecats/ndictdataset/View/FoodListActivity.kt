@@ -1,10 +1,9 @@
 package com.threecats.ndictdataset.View
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.webkit.WebView
 import android.widget.Toast
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.datatype.BmobPointer
@@ -13,8 +12,9 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.EventClass.UpdateRecyclerItem
+import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
+import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
 
 import kotlinx.android.synthetic.main.activity_food_list.*
@@ -30,11 +30,18 @@ class FoodListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_list)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(FoodToolbar)
+
+        FoodToolbar.title = BDM.ShareSet?.CurrentCategory?.LongTitle
+        FoodToolbar.subtitle = "食材列表"
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //        .setAction("Action", null).show()
+            BDM.ShareSet?.ItemEditState = EditerState.Append
+            BDM.ShareSet?.CurrentFood = BFood()
+            val intent = Intent(this@FoodListActivity, FoodEditerActivity::class.java)
+            startActivity(intent)
         }
 
         FoodRView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -53,7 +60,7 @@ class FoodListActivity : AppCompatActivity() {
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
                         if (currentCategory?.FoodTotal != foods!!.size) {
-                            updateCategoryFoodTatol(foods!!.size)
+                            updateCategoryFoodSize(foods!!.size, true)
                         }
                         foodList = foods
                         FoodRView.adapter = FoodListAdapter(foodList!!, this@FoodListActivity)
@@ -70,25 +77,38 @@ class FoodListActivity : AppCompatActivity() {
         EventBus.getDefault().unregister(this@FoodListActivity)
     }
 
-    private fun updateCategoryFoodTatol(tatol: Int){
-        val currentCategory = BDM.ShareSet?.CurrentCategory
-        val oId = currentCategory?.objectId
-        var tempCategory = BFoodCategory()
-        tempCategory.FoodTotal = tatol
-        tempCategory.update(oId, object: UpdateListener(){
+    @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
+    fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
+        when (BDM.ShareSet?.ItemEditState){
+            EditerState.Edit -> FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.Append -> {
+                foodList?.add(BDM.ShareSet?.CurrentFood!!)
+                val foodSize = foodList?.size!!
+                FoodRView?.adapter?.notifyItemChanged(foodSize)
+                updateCategoryFoodSize(foodSize)
+                BDM.ShareSet?.ItemEditState = EditerState.Edit
+                EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategoryPosition!!))
+            }
+        }
+        //EventBus.getDefault().removeStickyEvent(updateItem)
+    }
+
+    private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
+        val currentCategory = BDM.ShareSet?.CurrentCategory!!
+        currentCategory.FoodTotal = size
+        currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    Toast.makeText(this@FoodListActivity, "更新${currentCategory?.LongTitle}类的食材总数：$tatol ", Toast.LENGTH_SHORT).show()
+                    if (showMessage) {
+                        Toast.makeText(this@FoodListActivity,
+                                "更新${currentCategory?.LongTitle}类的食材总数：$size ",
+                                Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@FoodListActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    fun doUpdateRecyclerItem(updateItem: UpdateRecyclerItem){
-        FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
-        EventBus.getDefault().removeStickyEvent(updateItem)
-        Toast.makeText(this@FoodListActivity, "更新了Item：${updateItem.Position}", Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.R
 
 class FoodListAdapter(private val foods: MutableList<BFood>, val context: Context) : RecyclerView.Adapter<FoodListAdapter.ViewHolder>() {
@@ -32,6 +33,7 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
             //Toast.makeText(holder.context,"点击了：${food.name}", Toast.LENGTH_SHORT).show()
             BDM.ShareSet?.CurrentFood = food
             BDM.ShareSet?.CurrentFoodPosition = position
+            BDM.ShareSet?.ItemEditState = EditerState.Edit
             val intent = Intent(context, FoodEditerActivity::class.java)
             context.startActivity(intent)
         }

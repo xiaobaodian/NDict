@@ -21,7 +21,8 @@
             android:id="@+id/NameIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="名称" />
+            android:hint="名称"
+            android:tag="false" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
