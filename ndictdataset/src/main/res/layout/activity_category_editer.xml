@@ -55,7 +55,25 @@
             android:id="@+id/ShortTitleIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="别名"
+            android:hint="简称"
             android:textColor="@color/primary_text" />
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/ShortTitleILayout"
+        app:layout_constraintTop_toBottomOf="@+id/ShortTitleILayout" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
 </android.support.constraint.ConstraintLayout>

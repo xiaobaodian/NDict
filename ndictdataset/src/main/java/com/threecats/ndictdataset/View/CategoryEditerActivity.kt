@@ -12,16 +12,13 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteCategoryRecyclerItem
-import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_category_editer.*
-import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
 
 class CategoryEditerActivity : AppCompatActivity() {
@@ -38,12 +35,24 @@ class CategoryEditerActivity : AppCompatActivity() {
         with (LongTitleIEditText) {
             text.append(currentCategory?.LongTitle)
             addTextChangedListener(object: TextWatcher {
+                var beforeHash: Int = 0
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    if (beforeHash == 0) beforeHash = s!!.toString().hashCode()
+                    textView1.text = beforeHash.toString()
                 }
                 override fun afterTextChanged(s: Editable?) {
+                    var afterHash = s!!.toString().hashCode()
+                    textView2.text = afterHash.toString()
+                    if (beforeHash != afterHash) {
+                        LongTitleILayout.error = "内容改变"
+                        LongTitleILayout.isErrorEnabled = true
+                    } else {
+                        LongTitleILayout.isErrorEnabled = false
+                    }
                     editTag = true
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                 }
             })
         }
