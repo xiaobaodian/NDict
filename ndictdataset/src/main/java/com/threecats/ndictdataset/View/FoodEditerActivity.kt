@@ -16,6 +16,7 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
+import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +24,7 @@ import org.greenrobot.eventbus.EventBus
 class FoodEditerActivity : AppCompatActivity() {
 
     val currentFood = BDM.ShareSet?.CurrentFood
-    var editTag = false
+    val checkTextHelp = CheckTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,32 +32,32 @@ class FoodEditerActivity : AppCompatActivity() {
         setSupportActionBar(FoodEditerToolbar)
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
+        checkTextHelp.addEditBox(NameIEditText)
         with (NameIEditText) {
             text.append(currentFood?.name)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    editTag = true
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
         }
 
+        checkTextHelp.addEditBox(AliasIEditText)
         with (AliasIEditText) {
             text.append(currentFood?.alias)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    editTag = true
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
         }
-
+        checkTextHelp.initHash()
     }
 
     override fun onStart() {
@@ -92,7 +93,7 @@ class FoodEditerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (editTag) updateItem()
+        if (checkTextHelp.hasChanged() > 0) updateItem()
     }
 
     private fun updateItem(){
