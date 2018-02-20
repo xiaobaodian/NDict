@@ -81,8 +81,9 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
+        val position = foodList?.indexOf(BDM.ShareSet?.CurrentFood)
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position!!)
             EditerState.FoodAppend -> {
                 foodList?.add(BDM.ShareSet?.CurrentFood!!)
                 val foodSize = foodList?.size!!
@@ -96,8 +97,9 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doDeleteFoodRecyclerItem(deleteItem: DeleteFoodRecyclerItem){
-        foodList?.removeAt(deleteItem.Position)
-        FoodRView?.adapter?.notifyItemRemoved(deleteItem.Position)
+        val position = foodList?.indexOf(BDM.ShareSet?.CurrentFood)
+        foodList?.removeAt(position!!)
+        FoodRView?.adapter?.notifyItemRemoved(position!!)
         updateCategoryFoodSize(foodList!!.size)
     }
 
@@ -107,7 +109,7 @@ class FoodListActivity : AppCompatActivity() {
         currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategoryPosition!!))
+                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategory!!))
                     if (showMessage) {
                         Toast.makeText(this@FoodListActivity,
                                 "更新${currentCategory?.LongTitle}类的食材总数：$size ",

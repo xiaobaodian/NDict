@@ -7,7 +7,7 @@
     tools:context="com.threecats.ndictdataset.View.FoodEditerActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/FoodEditerToolbar"
+        android:id="@+id/CategoryEditerToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="食材" />
+        app:title="类目" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/NameILayout"
+        android:id="@+id/LongTitleILayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -29,10 +29,10 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FoodEditerToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/CategoryEditerToolbar">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/NameIEditText"
+            android:id="@+id/LongTitleIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="名称"
@@ -41,7 +41,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/AliasILayout"
+        android:id="@+id/ShortTitleILayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -49,10 +49,10 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameILayout">
+        app:layout_constraintTop_toBottomOf="@+id/LongTitleILayout">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/AliasIEditText"
+            android:id="@+id/ShortTitleIEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="别名"

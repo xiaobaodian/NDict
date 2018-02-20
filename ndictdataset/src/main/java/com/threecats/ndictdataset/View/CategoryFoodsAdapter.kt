@@ -33,6 +33,14 @@ class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, va
             val intent = Intent(parentContext, FoodListActivity::class.java)
             parentContext.startActivity(intent)
         }
+
+        holder.view.setOnLongClickListener {
+            BDM.ShareSet?.CurrentCategory = category
+            BDM.ShareSet?.CurrentCategoryPosition = position
+            val intent = Intent(parentContext, CategoryEditerActivity::class.java)
+            parentContext.startActivity(intent)
+            true
+        }
     }
 
     override fun getItemCount(): Int {

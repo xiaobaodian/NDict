@@ -63,8 +63,9 @@ class CategoryFoodsFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem){
+        val position = categoryList?.indexOf(updateItem.Category)
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.FoodEdit -> CategoryRView?.adapter?.notifyItemChanged(updateItem.Position)
+            EditerState.FoodEdit -> CategoryRView?.adapter?.notifyItemChanged(position!!)
             EditerState.FoodAppend -> {
                 categoryList?.add(BDM.ShareSet?.CurrentCategory!!)
                 val categorySize = categoryList?.size!!

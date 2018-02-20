@@ -13,26 +13,30 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.DeleteCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
+import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
+import kotlinx.android.synthetic.main.activity_category_editer.*
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
 
-class FoodEditerActivity : AppCompatActivity() {
+class CategoryEditerActivity : AppCompatActivity() {
 
-    val currentFood = BDM.ShareSet?.CurrentFood
+    val currentCategory = BDM.ShareSet?.CurrentCategory
     var editTag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_food_editer)
-        setSupportActionBar(FoodEditerToolbar)
-        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
+        setContentView(R.layout.activity_category_editer)
+        setSupportActionBar(CategoryEditerToolbar)
+        CategoryEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
-        with (NameIEditText) {
-            text.append(currentFood?.name)
+        with (LongTitleIEditText) {
+            text.append(currentCategory?.LongTitle)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
@@ -44,8 +48,8 @@ class FoodEditerActivity : AppCompatActivity() {
             })
         }
 
-        with (AliasIEditText) {
-            text.append(currentFood?.alias)
+        with (ShortTitleIEditText) {
+            text.append(currentCategory?.ShortTitle)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
@@ -61,29 +65,18 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        //NameIEditText.text = currentFood?.name
-//        if (currentFood?.category == null) {
-//            AliasIEditText.text.append("category is null")
-//        } else {
-//            var s: String? = currentFood?.category?.LongTitle
-//            if (s == null) {
-//                AliasIEditText.text.append("hhhhhhh")
-//            } else {
-//                AliasIEditText.text.append(s)
-//            }
-//        }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.foodediter_menu, menu!!)
+        menuInflater.inflate(R.menu.menu_category_editer, menu!!)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId){
             R.id.DeleteFood -> {
-                dialogDeleteFood()
+                //dialogDeleteFood()
             }
         }
         return true
@@ -96,31 +89,31 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun updateItem(){
-        currentFood?.name = NameIEditText.text.toString()
-        currentFood?.alias = AliasIEditText.text.toString()
+        currentCategory?.LongTitle = LongTitleIEditText.text.toString()
+        currentCategory?.ShortTitle = ShortTitleIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
-            EditerState.FoodAppend -> {
-                currentFood?.category = BDM.ShareSet?.CurrentCategory
-                currentFood?.save(object: SaveListener<String>() {
+
+            EditerState.CategoryAppend -> {
+                currentCategory?.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
-                            Toast.makeText(this@FoodEditerActivity, "添加了数据：$objectID", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@CategoryEditerActivity, "添加了数据：$objectID", Toast.LENGTH_SHORT).show()
                             EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFood!!))  //Sticky
                         } else {
-                            Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
             }
-            EditerState.FoodEdit -> {
-                currentFood?.update(object: UpdateListener(){
+            EditerState.CategoryEdit -> {
+                currentCategory?.update(object: UpdateListener(){
                     override fun done(e: BmobException?) {
                         if (e == null) {
-                            Toast.makeText(this@FoodEditerActivity, "更新了数据", Toast.LENGTH_SHORT).show()
-                            EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFood!!))  //Sticky
+                            Toast.makeText(this@CategoryEditerActivity, "更新了分类数据", Toast.LENGTH_SHORT).show()
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategory!!))  //Sticky
                         } else {
-                            Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
@@ -128,16 +121,16 @@ class FoodEditerActivity : AppCompatActivity() {
         }
     }
 
-    private fun dialogDeleteFood(){
+    private fun dialogDeleteCategory(){
 
         val dialog = AlertDialog.Builder(this)
-        dialog.setTitle("删除食材").setMessage("确实要删除食材 ${currentFood?.name} 吗？ 位置：${BDM.ShareSet?.CurrentFoodPosition}")
+        dialog.setTitle("删除分类").setMessage("确实要删除分类 ${currentCategory?.LongTitle} 吗？ ")
 
         //dialog.setNeutralButton("删除--",{ dialogInterface, i->
         //})
 
         dialog.setPositiveButton("删除", { dialogInterface, i->
-            doDeleteFood(currentFood!!)
+            doDeleteCategory(currentCategory!!)
         })
 
         dialog.setNegativeButton("取消", { dialogInterface, i->
@@ -147,15 +140,15 @@ class FoodEditerActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun doDeleteFood(food: BFood){
-        food.delete(object: UpdateListener(){
+    private fun doDeleteCategory(category: BFoodCategory){
+        category.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    Toast.makeText(this@FoodEditerActivity, "删除${food.name}成功", Toast.LENGTH_SHORT).show()
-                    EventBus.getDefault().post(DeleteFoodRecyclerItem(BDM.ShareSet?.CurrentFood!!))
+                    Toast.makeText(this@CategoryEditerActivity, "删除${category.LongTitle}成功", Toast.LENGTH_SHORT).show()
+                    EventBus.getDefault().post(DeleteCategoryRecyclerItem(BDM.ShareSet?.CurrentCategory!!))
                     onBackPressed()
                 } else {
-                    Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
