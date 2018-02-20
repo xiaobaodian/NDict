@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.View
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
@@ -13,6 +14,7 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
@@ -81,7 +83,7 @@ class FoodEditerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId){
             R.id.DeleteFood -> {
-
+                dialogDeleteFood()
             }
         }
         return true
@@ -104,6 +106,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
                             Toast.makeText(this@FoodEditerActivity, "添加了数据：$objectID", Toast.LENGTH_SHORT).show()
+                            EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))  //Sticky
                         } else {
                             Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                         }
@@ -115,6 +118,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     override fun done(e: BmobException?) {
                         if (e == null) {
                             Toast.makeText(this@FoodEditerActivity, "更新了数据", Toast.LENGTH_SHORT).show()
+                            EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))  //Sticky
                         } else {
                             Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                         }
@@ -122,19 +126,40 @@ class FoodEditerActivity : AppCompatActivity() {
                 })
             }
         }
-        EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))  //Sticky
     }
 
-    private fun deleteFood(food: BFood){
+    private fun dialogDeleteFood(){
+
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("删除食材").setMessage("确实要删除食材 ${currentFood?.name} 吗？ 位置：${BDM.ShareSet?.CurrentFoodPosition}")
+
+        //dialog.setNeutralButton("删除--",{ dialogInterface, i->
+        //})
+
+        dialog.setPositiveButton("删除", { dialogInterface, i->
+            doDeleteFood(currentFood!!)
+        })
+
+        dialog.setNegativeButton("取消", { dialogInterface, i->
+
+        })
+
+        dialog.show()
+    }
+
+    private fun doDeleteFood(food: BFood){
         food.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     Toast.makeText(this@FoodEditerActivity, "删除${food.name}成功", Toast.LENGTH_SHORT).show()
+                    EventBus.getDefault().post(DeleteFoodRecyclerItem(BDM.ShareSet?.CurrentFoodPosition!!))
+                    Toast.makeText(this@FoodEditerActivity, "位置：${BDM.ShareSet?.CurrentFoodPosition!!}", Toast.LENGTH_SHORT).show()
+                    onBackPressed()
                 } else {
                     Toast.makeText(this@FoodEditerActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-
     }
+
 }

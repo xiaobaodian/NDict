@@ -13,6 +13,7 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.R
@@ -85,12 +86,19 @@ class FoodListActivity : AppCompatActivity() {
             EditerState.FoodAppend -> {
                 foodList?.add(BDM.ShareSet?.CurrentFood!!)
                 val foodSize = foodList?.size!!
-                FoodRView?.adapter?.notifyItemChanged(foodSize)
+                FoodRView?.adapter?.notifyItemInserted(foodSize)
                 updateCategoryFoodSize(foodSize)
                 BDM.ShareSet?.ItemEditState = EditerState.FoodEdit
             }
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
+    fun doDeleteFoodRecyclerItem(deleteItem: DeleteFoodRecyclerItem){
+        foodList?.removeAt(deleteItem.Position)
+        FoodRView?.adapter?.notifyItemRemoved(deleteItem.Position)
+        updateCategoryFoodSize(foodList!!.size)
     }
 
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
