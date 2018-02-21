@@ -14,6 +14,7 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
+import com.threecats.ndictdataset.FoodFragment.FoodPropertyFragment
 import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
@@ -24,6 +25,7 @@ import org.jetbrains.anko.toast
 class FoodEditerActivity : AppCompatActivity() {
 
     val currentFood = BDM.ShareSet!!.CurrentFood!!
+    val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     val checkTextHelper = CheckTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,8 @@
 package com.threecats.ndictdataset.FoodFragment
 
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -20,8 +22,19 @@ import kotlinx.android.synthetic.main.activity_food_editer.*
 class FoodNameFragment: FoodPropertyFragment() {
 
     val currentFood = BDM.ShareSet!!.CurrentFood!!
-    val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     val checkTextHelper = CheckTextHelper()
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+    }
+
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
