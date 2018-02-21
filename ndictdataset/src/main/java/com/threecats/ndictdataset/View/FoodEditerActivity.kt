@@ -66,22 +66,6 @@ class FoodEditerActivity : AppCompatActivity() {
         checkTextHelper.initHash()
     }
 
-    override fun onStart() {
-        super.onStart()
-        //NameIEditText.text = currentFood?.name
-//        if (currentFood?.category == null) {
-//            AliasIEditText.text.append("category is null")
-//        } else {
-//            var s: String? = currentFood?.category?.LongTitle
-//            if (s == null) {
-//                AliasIEditText.text.append("hhhhhhh")
-//            } else {
-//                AliasIEditText.text.append(s)
-//            }
-//        }
-
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.foodediter_menu, menu!!)
         return super.onCreateOptionsMenu(menu)
