@@ -39,6 +39,12 @@ class FoodEditerActivity : AppCompatActivity() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
                 override fun afterTextChanged(s: Editable?) {
+                    if (s?.length == 0) {
+                        NameILayout.error = "食材名称不能为空"
+                        NameILayout.isErrorEnabled = true
+                    } else {
+                        NameILayout.isErrorEnabled = false
+                    }
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
@@ -105,7 +111,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 currentFood.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
-                            toast("添加了数据：$objectID")
+                            toast("添加了食材，objectID：$objectID")
                             EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood))  //Sticky
                         } else {
                             toast("${e.message}")
