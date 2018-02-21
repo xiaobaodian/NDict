@@ -2,12 +2,10 @@ package com.threecats.ndictdataset.View
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
@@ -16,15 +14,17 @@ import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
-import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
+import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_category_editer.*
 import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.toast
 
 class CategoryEditerActivity : AppCompatActivity() {
 
-    val currentCategory = BDM.ShareSet?.CurrentCategory
-    var editTag = false
+    val currentCategory = BDM.ShareSet!!.CurrentCategory!!
+    val checkTextHelper = CheckTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,44 +32,32 @@ class CategoryEditerActivity : AppCompatActivity() {
         setSupportActionBar(CategoryEditerToolbar)
         CategoryEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
+        checkTextHelper.addEditBox(LongTitleIEditText)
         with (LongTitleIEditText) {
-            text.append(currentCategory?.LongTitle)
+            text.append(currentCategory.LongTitle)
             addTextChangedListener(object: TextWatcher {
-                var beforeHash: Int = 0
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    if (beforeHash == 0) beforeHash = s!!.toString().hashCode()
-                    textView1.text = beforeHash.toString()
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    var afterHash = s!!.toString().hashCode()
-                    textView2.text = afterHash.toString()
-                    if (beforeHash != afterHash) {
-                        LongTitleILayout.error = "内容改变"
-                        LongTitleILayout.isErrorEnabled = true
-                    } else {
-                        LongTitleILayout.isErrorEnabled = false
-                    }
-                    editTag = true
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 }
             })
         }
 
+        checkTextHelper.addEditBox(ShortTitleIEditText)
         with (ShortTitleIEditText) {
-            text.append(currentCategory?.ShortTitle)
+            text.append(currentCategory.ShortTitle)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    editTag = true
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
         }
-
+        checkTextHelper.initHash()
     }
 
     override fun onStart() {
@@ -93,36 +81,35 @@ class CategoryEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        if (editTag) updateItem()
+        if (checkTextHelper.ChangeNumber() > 0) updateCategory()
     }
 
-    private fun updateItem(){
-        currentCategory?.LongTitle = LongTitleIEditText.text.toString()
-        currentCategory?.ShortTitle = ShortTitleIEditText.text.toString()
+    private fun updateCategory(){
+        currentCategory.LongTitle = LongTitleIEditText.text.toString()
+        currentCategory.ShortTitle = ShortTitleIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
 
             EditerState.CategoryAppend -> {
-                currentCategory?.save(object: SaveListener<String>() {
+                currentCategory.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
-                            Toast.makeText(this@CategoryEditerActivity, "添加了数据：$objectID", Toast.LENGTH_SHORT).show()
-                            EventBus.getDefault().post(UpdateFoodRecyclerItem(BDM.ShareSet?.CurrentFood!!))  //Sticky
+                            toast("添加了分类，objectID：$objectID")
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory))  //Sticky
                         } else {
-                            Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                            toast("${e.message}")
                         }
                     }
                 })
             }
             EditerState.CategoryEdit -> {
-                currentCategory?.update(object: UpdateListener(){
+                currentCategory.update(object: UpdateListener(){
                     override fun done(e: BmobException?) {
                         if (e == null) {
-                            Toast.makeText(this@CategoryEditerActivity, "更新了分类数据", Toast.LENGTH_SHORT).show()
-                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(BDM.ShareSet?.CurrentCategory!!))  //Sticky
+                            toast("更新了分类数据")
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory))  //Sticky
                         } else {
-                            Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                            toast("${e.message}")
                         }
                     }
                 })
@@ -130,34 +117,24 @@ class CategoryEditerActivity : AppCompatActivity() {
         }
     }
 
-    private fun dialogDeleteCategory(){
+    private fun alertDeleteCategory(){
 
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle("删除分类").setMessage("确实要删除分类 ${currentCategory?.LongTitle} 吗？ ")
+        alert("确实要删除分类 ${currentCategory.LongTitle} 吗？", "删除分类") {
+            positiveButton("确定") { deleteCategoryFromBmob(currentCategory) }
+            negativeButton("取消") {  }
+        }.show()
 
-        //dialog.setNeutralButton("删除--",{ dialogInterface, i->
-        //})
-
-        dialog.setPositiveButton("删除", { dialogInterface, i->
-            doDeleteCategory(currentCategory!!)
-        })
-
-        dialog.setNegativeButton("取消", { dialogInterface, i->
-
-        })
-
-        dialog.show()
     }
 
-    private fun doDeleteCategory(category: BFoodCategory){
+    private fun deleteCategoryFromBmob(category: BFoodCategory){
         category.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    Toast.makeText(this@CategoryEditerActivity, "删除${category.LongTitle}成功", Toast.LENGTH_SHORT).show()
-                    EventBus.getDefault().post(DeleteCategoryRecyclerItem(BDM.ShareSet?.CurrentCategory!!))
+                    toast("删除${category.LongTitle}成功")
+                    EventBus.getDefault().post(DeleteCategoryRecyclerItem(currentCategory))
                     onBackPressed()
                 } else {
-                    Toast.makeText(this@CategoryEditerActivity, e.message, Toast.LENGTH_SHORT).show()
+                    toast("${e.message}")
                 }
             }
         })

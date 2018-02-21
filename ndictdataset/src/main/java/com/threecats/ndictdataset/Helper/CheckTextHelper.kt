@@ -17,7 +17,7 @@ class CheckTextHelper {
         textBoxs.forEach { it.hash = it.editBox.text.toString().hashCode() }
     }
 
-    fun hasChanged(): Int {
+    fun ChangeNumber(): Int {
         var sum: Int = 0
         textBoxs.forEach { if (it.hash != it.editBox.text.toString().hashCode()) sum++ }
         return sum
