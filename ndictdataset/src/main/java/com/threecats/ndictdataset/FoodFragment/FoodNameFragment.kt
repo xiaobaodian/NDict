@@ -24,9 +24,9 @@ class FoodNameFragment: FoodPropertyFragment() {
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val checkTextHelper = CheckTextHelper()
 
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-    }
+//    override fun setArguments(args: Bundle?) {
+//        super.setArguments(args)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

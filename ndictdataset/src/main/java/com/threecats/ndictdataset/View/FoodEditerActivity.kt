@@ -38,7 +38,7 @@ class FoodEditerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_food_editer)
         setSupportActionBar(FoodEditerToolbar)
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
-        foodPropertyFragments.add(FoodNameFragment())
+        //foodPropertyFragments.add(FoodNameFragment())
         foodPropertyFragments.add(FoodNoteFragment())
         //FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
     }
