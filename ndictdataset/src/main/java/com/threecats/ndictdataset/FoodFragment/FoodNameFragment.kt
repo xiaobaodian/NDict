@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
-import kotlinx.android.synthetic.main.activity_food_editer.*
+import kotlinx.android.synthetic.main.fragment_food_name.*
 
 
 /**
@@ -24,16 +24,13 @@ class FoodNameFragment: FoodPropertyFragment() {
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val checkTextHelper = CheckTextHelper()
 
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.Title = "名称"
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

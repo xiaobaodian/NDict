@@ -1,11 +1,15 @@
 package com.threecats.ndictdataset.View
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
@@ -14,6 +18,8 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
+import com.threecats.ndictdataset.FoodFragment.FoodNameFragment
+import com.threecats.ndictdataset.FoodFragment.FoodNoteFragment
 import com.threecats.ndictdataset.FoodFragment.FoodPropertyFragment
 import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
@@ -26,46 +32,15 @@ class FoodEditerActivity : AppCompatActivity() {
 
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
-    val checkTextHelper = CheckTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
         setSupportActionBar(FoodEditerToolbar)
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
-
-        checkTextHelper.addEditBox(NameIEditText)
-        with (NameIEditText) {
-            text.append(currentFood.name)
-            addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                    if (s?.length == 0) {
-                        NameILayout.error = "食材名称不能为空"
-                        NameILayout.isErrorEnabled = true
-                    } else {
-                        NameILayout.isErrorEnabled = false
-                    }
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-            })
-        }
-
-        checkTextHelper.addEditBox(AliasIEditText)
-        with (AliasIEditText) {
-            text.append(currentFood.alias)
-            addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-            })
-        }
-        checkTextHelper.initHash()
+        foodPropertyFragments.add(FoodNameFragment())
+        foodPropertyFragments.add(FoodNoteFragment())
+        //FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -84,12 +59,12 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (checkTextHelper.ChangeNumber() > 0) updateFood()
+        //if (checkTextHelper.ChangeNumber() > 0) updateFood()
     }
 
     private fun updateFood(){
-        currentFood.name = NameIEditText.text.toString()
-        currentFood.alias = AliasIEditText.text.toString()
+        //currentFood.name = NameIEditText.text.toString()
+        //currentFood.alias = AliasIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
             EditerState.FoodAppend -> {

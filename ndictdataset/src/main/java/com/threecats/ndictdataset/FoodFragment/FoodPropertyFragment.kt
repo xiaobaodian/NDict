@@ -9,4 +9,5 @@ import android.support.v4.app.Fragment
  */
 open class FoodPropertyFragment : Fragment() {
     val ParentActivity: Activity = activity
+    var Title: String? = null
 }

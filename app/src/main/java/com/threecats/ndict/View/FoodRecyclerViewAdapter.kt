@@ -15,6 +15,7 @@ import com.threecats.ndict.dummy.DummyContent.DummyItem
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
+
 class FoodRecyclerViewAdapter(private val foods: List<Food>) : RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

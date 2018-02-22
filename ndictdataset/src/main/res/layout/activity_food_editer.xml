@@ -20,42 +20,35 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="食材" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/NameILayout"
-        android:layout_width="0dp"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/FoodPropertyTabs"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FoodEditerToolbar">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/NameIEditText"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="名称"
-            android:tag="false"
-            android:textColor="@color/primary_text" />
-    </android.support.design.widget.TextInputLayout>
+            android:text="Left" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/AliasILayout"
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right" />
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/FoodEditerViewPage"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameILayout">
+        app:layout_constraintTop_toBottomOf="@+id/FoodPropertyTabs" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/AliasIEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="别名"
-            android:textColor="@color/primary_text" />
-    </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>
