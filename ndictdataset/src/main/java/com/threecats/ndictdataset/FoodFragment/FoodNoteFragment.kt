@@ -15,11 +15,6 @@ import com.threecats.ndictdataset.R
  */
 class FoodNoteFragment: FoodPropertyFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.Title = "说明"
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

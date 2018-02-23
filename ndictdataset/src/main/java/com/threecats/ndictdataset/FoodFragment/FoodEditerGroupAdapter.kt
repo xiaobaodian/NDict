@@ -1,4 +1,4 @@
-package com.threecats.ndictdataset.View
+package com.threecats.ndictdataset.FoodFragment
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -22,5 +22,10 @@ class FoodEditerGroupAdapter: FragmentPagerAdapter {
 
     override fun getCount(): Int {
         return fragmentList.size
+    }
+
+    override fun getPageTitle(position: Int): CharSequence {
+        var title: String = fragmentList[position].arguments.getString("name", "没有数据")
+        return title
     }
 }

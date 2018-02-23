@@ -24,15 +24,6 @@ class FoodNameFragment: FoodPropertyFragment() {
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val checkTextHelper = CheckTextHelper()
 
-//    override fun setArguments(args: Bundle?) {
-//        super.setArguments(args)
-//    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.Title = "名称"
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_food_name, container, false)
