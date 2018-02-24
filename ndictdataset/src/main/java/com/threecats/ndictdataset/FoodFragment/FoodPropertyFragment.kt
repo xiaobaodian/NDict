@@ -14,5 +14,5 @@ import org.jetbrains.anko.toast
  */
 open class FoodPropertyFragment : Fragment() {
     //val ParentActivity: Activity = activity
-    var Title: String? = null
+    var tabTitle: String? = null
 }

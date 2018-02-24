@@ -36,6 +36,9 @@ class FoodEditerActivity : AppCompatActivity() {
         addFragments(FoodNameFragment(),"名称")
         addFragments(FoodNoteFragment(),"描述")
 
+        var f = foodPropertyFragments[0]
+        var s = f.tabTitle
+
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
     }

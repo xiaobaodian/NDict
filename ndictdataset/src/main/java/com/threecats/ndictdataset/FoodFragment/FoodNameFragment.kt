@@ -1,8 +1,6 @@
 package com.threecats.ndictdataset.FoodFragment
 
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -23,6 +21,11 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val checkTextHelper = CheckTextHelper()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.tabTitle = "名称"
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
