@@ -9,17 +9,17 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.BuildConfig
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
-import com.threecats.ndictdataset.FoodFragment.FoodEditerGroupAdapter
-import com.threecats.ndictdataset.FoodFragment.FoodNameFragment
-import com.threecats.ndictdataset.FoodFragment.FoodNoteFragment
-import com.threecats.ndictdataset.FoodFragment.FoodPropertyFragment
+import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 
 class FoodEditerActivity : AppCompatActivity() {
@@ -31,13 +31,20 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
         setSupportActionBar(FoodEditerToolbar)
-        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }
+        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodVitaminFragment
 
         addFragments(FoodNameFragment(),"名称")
         addFragments(FoodNoteFragment(),"描述")
+        addFragments(FoodVitaminFragment(),"维生素")
+        addFragments(FoodMineralFragment(),"矿物质")
+        addFragments(FoodPictureFragment(),"图片")
 
         var f = foodPropertyFragments[0]
-        var s = f.tabTitle
+        var s = f.TabsTitle
+        if (BuildConfig.DEBUG) {
+            val logshow = AnkoLogger("NDIC")
+            logshow.info { "读取名称变量" }
+        }
 
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
@@ -67,6 +74,11 @@ class FoodEditerActivity : AppCompatActivity() {
         bundle.putString("name", name)
         fragment.setArguments(bundle)
         foodPropertyFragments.add(fragment)
+
+        if (BuildConfig.DEBUG) {
+            val logshow = AnkoLogger("NDIC")
+            logshow.info { "设置Fragment参数传递" }
+        }
     }
 
     private fun updateFood(){

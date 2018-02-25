@@ -13,12 +13,12 @@ import com.threecats.ndictdataset.R
 /**
  * A simple [Fragment] subclass.
  */
-class FoodNoteFragment: FoodPropertyFragment() {
+class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_food_note, container, false)
+        return inflater!!.inflate(R.layout.fragment_food_vitamin, container, false)
     }
 
 }// Required empty public constructor
