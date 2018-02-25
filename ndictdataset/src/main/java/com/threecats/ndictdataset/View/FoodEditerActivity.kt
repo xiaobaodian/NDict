@@ -31,20 +31,14 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
         setSupportActionBar(FoodEditerToolbar)
-        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodVitaminFragment
+        FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodNutrientFragment
 
         addFragments(FoodNameFragment(),"名称")
         addFragments(FoodNoteFragment(),"描述")
+        addFragments(FoodNutrientFragment(),"营养素")
         addFragments(FoodVitaminFragment(),"维生素")
         addFragments(FoodMineralFragment(),"矿物质")
         addFragments(FoodPictureFragment(),"图片")
-
-        var f = foodPropertyFragments[0]
-        var s = f.TabsTitle
-        if (BuildConfig.DEBUG) {
-            val logshow = AnkoLogger("NDIC")
-            logshow.info { "读取名称变量" }
-        }
 
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
