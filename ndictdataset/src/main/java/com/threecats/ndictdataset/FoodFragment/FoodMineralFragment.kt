@@ -21,4 +21,12 @@ class FoodMineralFragment : FoodPropertyFragment() {
         return inflater!!.inflate(R.layout.fragment_food_mineral, container, false)
     }
 
+    override fun getFoodFields(): Int {
+        val changeNumber = checkTextHelper.ChangeNumber()
+        if (changeNumber > 0) {
+
+        }
+        return changeNumber
+    }
+
 }// Required empty public constructor

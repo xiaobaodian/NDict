@@ -15,11 +15,18 @@ import com.threecats.ndictdataset.R
  */
 class FoodPictureFragment : FoodPropertyFragment() {
 
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_food_picture, container, false)
+    }
+
+    override fun getFoodFields(): Int {
+        val changeNumber = checkTextHelper.ChangeNumber()
+        if (changeNumber > 0) {
+
+        }
+        return changeNumber
     }
 
 }// Required empty public constructor

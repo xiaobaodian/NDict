@@ -60,7 +60,9 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        //if (checkTextHelper.ChangeNumber() > 0) updateFood()
+        var save = false
+        foodPropertyFragments.forEach { if (it.getFoodFields() > 0) save = true }
+        if (save) updateFood()
     }
 
     private fun addFragments(fragment: FoodPropertyFragment, name: String){

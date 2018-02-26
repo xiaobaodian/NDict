@@ -19,6 +19,6 @@ class BFood : BmobObject() {
     var carbohydrate: Float = 0f                    // 碳水化合物含量
     var calories: Float = 0f                        // 卡路里含量
     var water: Float = 0f                           // 食材水分
-    var Cholesterol: Float = 0f                     // 胆固醇含量
+    var cholesterol: Float = 0f                     // 胆固醇含量
 
 }

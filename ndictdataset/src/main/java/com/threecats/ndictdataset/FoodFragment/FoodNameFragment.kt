@@ -14,6 +14,7 @@ import com.threecats.ndictdataset.BuildConfig.DEBUG
 import com.threecats.ndictdataset.Helper.CheckTextHelper
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.fragment_food_name.*
+import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -22,9 +23,6 @@ import org.jetbrains.anko.info
  * A simple [Fragment] subclass.
  */
 class FoodNameFragment: FoodPropertyFragment() {
-
-    val currentFood = BDM.ShareSet!!.CurrentFood!!
-    val checkTextHelper = CheckTextHelper()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,4 +64,23 @@ class FoodNameFragment: FoodPropertyFragment() {
         }
         checkTextHelper.initHash()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        getFoodFields()
+    }
+
+    override fun getFoodFields(): Int {
+        val changeNumber = checkTextHelper.ChangeNumber()
+        if (changeNumber > 0) {
+            checkTextHelper.textBoxs.forEach {
+                when (it.editBox){
+                    NameIEditText -> currentFood.name = it.editBox.text.toString()
+                    AliasIEditText -> currentFood.alias = it.editBox.text.toString()
+                }
+            }
+        }
+        return changeNumber
+    }
+
 }// Required empty public constructor

@@ -10,7 +10,6 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Helper.CheckTextHelper
 
 import com.threecats.ndictdataset.R
-import kotlinx.android.synthetic.main.fragment_food_note.*
 import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 
 
@@ -18,9 +17,6 @@ import kotlinx.android.synthetic.main.fragment_food_nutrient.*
  * A simple [Fragment] subclass.
  */
 class FoodNutrientFragment : FoodPropertyFragment() {
-
-    val currentFood = BDM.ShareSet!!.CurrentFood!!
-    val checkTextHelper = CheckTextHelper()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,12 +29,34 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         checkTextHelper.addEditBox(CaloriesIEditText, currentFood.calories.toString())
         checkTextHelper.addEditBox(WaterIEditText, currentFood.water.toString())
         checkTextHelper.addEditBox(ProteinIEditText, currentFood.protein.toString())
-        checkTextHelper.addEditBox(CholesterolIEditText, currentFood.Cholesterol.toString())
+        checkTextHelper.addEditBox(CholesterolIEditText, currentFood.cholesterol.toString())
         checkTextHelper.addEditBox(FiberIEditText, currentFood.foodFiber.toString())
         checkTextHelper.addEditBox(CarbohydrateIEditText, currentFood.carbohydrate.toString())
         checkTextHelper.addEditBox(FatIEditText, currentFood.fat.toString())
+        checkTextHelper.initHash()
+    }
 
-        currentFood.
+    override fun onDestroyView() {
+        super.onDestroyView()
+        getFoodFields()
+    }
+
+    override fun getFoodFields(): Int {
+        val changeNumber = checkTextHelper.ChangeNumber()
+        if (changeNumber > 0) {
+            checkTextHelper.textBoxs.forEach {
+                when (it.editBox){
+                    CaloriesIEditText -> currentFood.calories = it.editBox.text.toString().toFloat()
+                    WaterIEditText -> currentFood.water = it.editBox.text.toString().toFloat()
+                    ProteinIEditText -> currentFood.protein = it.editBox.text.toString().toFloat()
+                    CholesterolIEditText -> currentFood.cholesterol = it.editBox.text.toString().toFloat()
+                    FiberIEditText -> currentFood.foodFiber = it.editBox.text.toString().toFloat()
+                    CarbohydrateIEditText -> currentFood.carbohydrate = it.editBox.text.toString().toFloat()
+                    FatIEditText -> currentFood.fat = it.editBox.text.toString().toFloat()
+                }
+            }
+        }
+        return changeNumber
     }
 
 }// Required empty public constructor
