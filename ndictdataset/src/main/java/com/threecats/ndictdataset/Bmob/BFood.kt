@@ -14,10 +14,11 @@ class BFood : BmobObject() {
     //var picture: Int = 0                            // 食材的图片
     var note: String = ""                           // 食材的描述文本
     var foodFiber: Float = 0f                       // 食物纤维含量
-    var category: BFoodCategory? = null         // 食材的分类
+    var category: BFoodCategory? = null             // 食材的分类
     var fat: Float = 0f                             // 脂肪含量
     var carbohydrate: Float = 0f                    // 碳水化合物含量
     var calories: Float = 0f                        // 卡路里含量
     var water: Float = 0f                           // 食材水分
+    var Cholesterol: Float = 0f                     // 胆固醇含量
 
 }

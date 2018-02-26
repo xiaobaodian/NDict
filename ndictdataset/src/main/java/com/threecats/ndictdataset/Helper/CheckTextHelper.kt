@@ -13,6 +13,11 @@ class CheckTextHelper {
         textBoxs.add(CheckItem(0, editBox))
     }
 
+    fun addEditBox(editBox: EditText, text: String){
+        textBoxs.add(CheckItem(0, editBox))
+        editBox.text.append(text)
+    }
+
     fun initHash(){
         textBoxs.forEach { it.hash = it.editBox.text.toString().hashCode() }
     }
