@@ -11,11 +11,16 @@ import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
+import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodVitamin
+import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 
 import com.threecats.ndictdataset.R
+import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
 
 
 /**
@@ -57,6 +62,19 @@ class FoodVitaminFragment : FoodPropertyFragment() {
                 } else {
                     vitaminItem = BFoodVitamin()
                     vitaminItem!!.Food = food
+                }
+            }
+        })
+    }
+
+    private fun saveVitaminItem(food: BFood){
+        currentFood.save(object: SaveListener<String>() {
+            override fun done(objectID: String?, e: BmobException?) {
+                if (e == null) {
+                    toast("添加了食材，objectID：$objectID")
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodAppend))  //Sticky
+                } else {
+                    toast("${e.message}")
                 }
             }
         })
