@@ -24,7 +24,9 @@ import org.jetbrains.anko.toast
 
 class FoodEditerActivity : AppCompatActivity() {
 
+    val currentCategory = BDM.ShareSet?.CurrentCategory!!
     val currentFood = BDM.ShareSet!!.CurrentFood!!
+    val editerState = BDM.ShareSet?.ItemEditState
     val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,14 +83,14 @@ class FoodEditerActivity : AppCompatActivity() {
         //currentFood.name = NameIEditText.text.toString()
         //currentFood.alias = AliasIEditText.text.toString()
 
-        when (BDM.ShareSet?.ItemEditState){
+        when (editerState){
             EditerState.FoodAppend -> {
-                currentFood.category = BDM.ShareSet?.CurrentCategory
+                currentFood.category = currentCategory
                 currentFood.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
                             toast("添加了食材，objectID：$objectID")
-                            EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood))  //Sticky
+                            EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodAppend))  //Sticky
                         } else {
                             toast("${e.message}")
                         }
@@ -100,7 +102,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     override fun done(e: BmobException?) {
                         if (e == null) {
                             toast("更新了数据")
-                            EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood))  //Sticky
+                            EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodEdit))  //Sticky
                         } else {
                             toast("${e.message}")
                         }

@@ -6,15 +6,15 @@ import android.widget.EditText
  * 由 zhang 创建于 2018/2/20.
  */
 
-class CheckTextHelper {
-    var textBoxs: MutableList<CheckItem> = ArrayList<CheckItem>()
+class EditTextHelper {
+    var textBoxs: MutableList<EditItem> = ArrayList<EditItem>()
 
     fun addEditBox(editBox: EditText){
-        textBoxs.add(CheckItem(0, editBox))
+        textBoxs.add(EditItem(0, editBox))
     }
 
     fun addEditBox(editBox: EditText, text: String){
-        textBoxs.add(CheckItem(0, editBox))
+        textBoxs.add(EditItem(0, editBox))
         editBox.text.append(text)
     }
 
@@ -28,5 +28,5 @@ class CheckTextHelper {
         return sum
     }
 
-    inner class CheckItem(var hash: Int, var editBox: EditText)
+    inner class EditItem(var hash: Int, var editBox: EditText)
 }

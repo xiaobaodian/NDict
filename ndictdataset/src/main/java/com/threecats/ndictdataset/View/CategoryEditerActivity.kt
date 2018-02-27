@@ -14,7 +14,7 @@ import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
-import com.threecats.ndictdataset.Helper.CheckTextHelper
+import com.threecats.ndictdataset.Helper.EditTextHelper
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_category_editer.*
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +24,7 @@ import org.jetbrains.anko.toast
 class CategoryEditerActivity : AppCompatActivity() {
 
     val currentCategory = BDM.ShareSet!!.CurrentCategory!!
-    val checkTextHelper = CheckTextHelper()
+    val checkTextHelper = EditTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +95,7 @@ class CategoryEditerActivity : AppCompatActivity() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
                             toast("添加了分类，objectID：$objectID")
-                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory))  //Sticky
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryAppend))  //Sticky
                         } else {
                             toast("${e.message}")
                         }
@@ -107,7 +107,7 @@ class CategoryEditerActivity : AppCompatActivity() {
                     override fun done(e: BmobException?) {
                         if (e == null) {
                             toast("更新了分类数据")
-                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory))  //Sticky
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))  //Sticky
                         } else {
                             toast("${e.message}")
                         }

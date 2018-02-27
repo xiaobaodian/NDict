@@ -6,11 +6,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Helper.CheckTextHelper
 
 import com.threecats.ndictdataset.R
-import kotlinx.android.synthetic.main.fragment_food_name.*
 import kotlinx.android.synthetic.main.fragment_food_note.*
 
 
