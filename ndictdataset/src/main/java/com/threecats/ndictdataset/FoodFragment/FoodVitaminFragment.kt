@@ -67,8 +67,8 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         })
     }
 
-    private fun saveVitaminItem(food: BFood){
-        currentFood.save(object: SaveListener<String>() {
+    private fun saveVitaminItem(vitaminItem: BFoodVitamin){
+        vitaminItem.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     toast("添加了食材，objectID：$objectID")
