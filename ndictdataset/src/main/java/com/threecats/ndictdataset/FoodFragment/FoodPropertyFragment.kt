@@ -9,7 +9,9 @@ import com.threecats.ndictdataset.Helper.EditTextHelper
  */
 abstract class FoodPropertyFragment : Fragment() {
 
+    val currentCategory = BDM.ShareSet?.CurrentCategory!!
     val currentFood = BDM.ShareSet!!.CurrentFood!!
+    val editerState = BDM.ShareSet?.ItemEditState
     val checkTextHelper = EditTextHelper()
 
     var TabsTitle: String? = null

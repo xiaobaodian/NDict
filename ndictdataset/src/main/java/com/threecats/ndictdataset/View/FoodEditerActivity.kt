@@ -4,11 +4,16 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.Bmob.BFoodVitamin
 import com.threecats.ndictdataset.BuildConfig
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
@@ -16,6 +21,7 @@ import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
+import kotlinx.android.synthetic.main.content_food_list.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.alert

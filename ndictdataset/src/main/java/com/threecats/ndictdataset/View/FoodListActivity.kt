@@ -26,6 +26,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 class FoodListActivity : AppCompatActivity() {
 
+    val currentCategory = BDM.ShareSet?.CurrentCategory!!
+    val currentFood = BDM.ShareSet!!.CurrentFood!!
+    val editerState = BDM.ShareSet?.ItemEditState
     private var foodList: MutableList<BFood>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +36,7 @@ class FoodListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_food_list)
         setSupportActionBar(FoodToolbar)
 
-        FoodToolbar.title = BDM.ShareSet?.CurrentCategory?.LongTitle
+        FoodToolbar.title = currentCategory.LongTitle
         FoodToolbar.subtitle = "食材列表"
         FoodToolbar.setNavigationOnClickListener { onBackPressed() }
 
@@ -53,7 +56,7 @@ class FoodListActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (foodList == null) {
-            var currentCategory = BDM.ShareSet?.CurrentCategory
+            //var currentCategory = BDM.ShareSet?.CurrentCategory
             var query: BmobQuery<BFood> = BmobQuery()
             //query.addWhereEqualTo("category", category?.objectId)
             query.addWhereEqualTo("category", BmobPointer(currentCategory))
@@ -61,7 +64,7 @@ class FoodListActivity : AppCompatActivity() {
             query.findObjects(object: FindListener<BFood>(){
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
-                        if (currentCategory?.FoodTotal != foods!!.size) {
+                        if (currentCategory.FoodTotal != foods!!.size) {
                             updateCategoryFoodSize(foods!!.size, true)
                         }
                         foodList = foods
