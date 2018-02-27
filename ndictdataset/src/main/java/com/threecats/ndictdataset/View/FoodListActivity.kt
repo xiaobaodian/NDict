@@ -34,9 +34,14 @@ class FoodListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_food_list)
         setSupportActionBar(FoodToolbar)
 
-        FoodToolbar.title = currentCategory.LongTitle
-        FoodToolbar.subtitle = "食材列表"
-        FoodToolbar.setNavigationOnClickListener { onBackPressed() }
+        with (FoodToolbar){
+            title = currentCategory.LongTitle
+            subtitle = "食材列表"
+            setNavigationOnClickListener { onBackPressed() }
+        }
+//        FoodToolbar.title = currentCategory.LongTitle
+//        FoodToolbar.subtitle = "食材列表"
+//        FoodToolbar.setNavigationOnClickListener { onBackPressed() }
 
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
