@@ -27,8 +27,6 @@ import org.greenrobot.eventbus.ThreadMode
 class FoodListActivity : AppCompatActivity() {
 
     val currentCategory = BDM.ShareSet?.CurrentCategory!!
-    val currentFood = BDM.ShareSet!!.CurrentFood!!
-    val editerState = BDM.ShareSet?.ItemEditState
     private var foodList: MutableList<BFood>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

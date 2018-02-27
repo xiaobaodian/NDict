@@ -20,7 +20,7 @@
             android:visibility="visible">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/CaloriesILayout"
+                android:id="@+id/VitaminAILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -28,15 +28,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/CaloriesIEditText"
+                    android:id="@+id/VitaminAIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="卡路里"
+                    android:hint="维生素A"
                     android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/WaterIlayout"
+                android:id="@+id/CaroteneIlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -44,15 +44,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/WaterIEditText"
+                    android:id="@+id/CaroteneIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="含水量"
+                    android:hint="胡萝卜素"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/ProteinILayout"
+                android:id="@+id/VitaminB1ILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -60,15 +60,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/ProteinIEditText"
+                    android:id="@+id/VitaminB1IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="蛋白质"
+                    android:hint="维生素B1"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/CholesterolILayout"
+                android:id="@+id/VitaminB2ILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -76,15 +76,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/CholesterolIEditText"
+                    android:id="@+id/VitaminB2IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="胆固醇"
+                    android:hint="维生素B2"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/FiberILayout"
+                android:id="@+id/NiacinILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -92,15 +92,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/FiberIEditText"
+                    android:id="@+id/NiacinIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="食物纤维"
+                    android:hint="烟酸"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/CarbohydrateILayout"
+                android:id="@+id/VitaminB6ILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -108,15 +108,15 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/CarbohydrateIEditText"
+                    android:id="@+id/VitaminB6IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="碳水化合物"
+                    android:hint="维生素B6"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/FatILayout"
+                android:id="@+id/PantothenicAcidILayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -124,10 +124,186 @@
                 android:nestedScrollingEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/FatIEditText"
+                    android:id="@+id/PantothenicAcidIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="脂肪"
+                    android:hint="泛酸"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminHILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminHIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="生物素（维生素H）"
+                    android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/FolicAcidIlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/FolicAcidIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="叶酸"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminB12ILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminB12IEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素B12"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/CholineILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/CholineIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="胆碱"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminCILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminCIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素C"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminDILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminDIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素D"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminEILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminEIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素E"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminKILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminKIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素K"
+                    android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/VitaminPIlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/VitaminPIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="维生素P（生物类黄酮）"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/InositolILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/InositolIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="肌醇"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/PABAILayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/PABAIEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="对氨基苯甲酸"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
