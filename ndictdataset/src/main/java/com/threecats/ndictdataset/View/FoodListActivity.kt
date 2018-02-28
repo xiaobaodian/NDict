@@ -64,7 +64,7 @@ class FoodListActivity : AppCompatActivity() {
         super.onStart()
         if (foodList == null) {
             //var currentCategory = BDM.ShareSet?.CurrentCategory
-            var query: BmobQuery<BFood> = BmobQuery()
+            val query: BmobQuery<BFood> = BmobQuery()
             //query.addWhereEqualTo("category", category?.objectId)
             query.addWhereEqualTo("category", BmobPointer(currentCategory))
             query.setLimit(300)
@@ -72,7 +72,7 @@ class FoodListActivity : AppCompatActivity() {
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
                         if (currentCategory.FoodTotal != foods!!.size) {
-                            updateCategoryFoodSize(foods!!.size, true)
+                            updateCategoryFoodSize(foods.size, true)
                         }
                         foodList = foods
                         FoodRView.adapter = FoodListAdapter(foodList!!, this@FoodListActivity)
@@ -122,7 +122,7 @@ class FoodListActivity : AppCompatActivity() {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))
                     if (showMessage) {
                         Toast.makeText(this@FoodListActivity,
-                                "更新${currentCategory?.LongTitle}类的食材总数：$size ",
+                                "更新${currentCategory.LongTitle}类的食材总数：$size ",
                                 Toast.LENGTH_SHORT).show()
                     }
                 } else {

@@ -102,6 +102,15 @@ class FoodEditerActivity : AppCompatActivity() {
                         }
                     }
                 })
+                BDM.ShareSet?.CurrentVitamin?.save(object: SaveListener<String>() {
+                    override fun done(objectID: String?, e: BmobException?) {
+                        if (e == null) {
+                            toast("添加了维生素，objectID：$objectID")
+                        } else {
+                            toast("${e.message}")
+                        }
+                    }
+                })
             }
             EditerState.FoodEdit -> {
                 currentFood.update(object: UpdateListener(){
@@ -109,6 +118,15 @@ class FoodEditerActivity : AppCompatActivity() {
                         if (e == null) {
                             toast("更新了数据")
                             EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodEdit))  //Sticky
+                        } else {
+                            toast("${e.message}")
+                        }
+                    }
+                })
+                BDM.ShareSet?.CurrentVitamin?.update(object: UpdateListener(){
+                    override fun done(e: BmobException?) {
+                        if (e == null) {
+                            toast("更新了维生素数据")
                         } else {
                             toast("${e.message}")
                         }

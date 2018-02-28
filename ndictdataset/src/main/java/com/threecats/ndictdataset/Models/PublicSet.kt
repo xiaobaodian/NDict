@@ -33,32 +33,7 @@ class PublicSet(val appContext: Context) {
     fun editFoodItem(food: BFood){
         ItemEditState = EditerState.FoodEdit
         CurrentFood = food
-
-        var query: BmobQuery<BFoodVitamin> = BmobQuery()
-        query.addWhereEqualTo("Food", BmobPointer(food))
-        query.setLimit(1)
-        query.findObjects(object: FindListener<BFoodVitamin>(){
-            override fun done(vitamins: MutableList<BFoodVitamin>?, e: BmobException?) {
-                if (e == null) {
-                    vitamins?.forEach { CurrentVitamin = it }
-                } else {
-                    CurrentVitamin = BFoodVitamin()
-                    appendVitaminItem(CurrentVitamin!!)
-                }
-            }
-        })
+        CurrentVitamin = null
     }
 
-    private fun appendVitaminItem(vitaminItem: BFoodVitamin){
-        vitaminItem.Food = CurrentFood
-        vitaminItem.save(object: SaveListener<String>() {
-            override fun done(objectID: String?, e: BmobException?) {
-                if (e == null) {
-                    appContext.toast("添补了维生素数据记录")
-                } else {
-                    appContext.toast("${e.message}")
-                }
-            }
-        })
-    }
 }
