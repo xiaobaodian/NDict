@@ -26,7 +26,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 class FoodListActivity : AppCompatActivity() {
 
-    val currentCategory = BDM.ShareSet?.CurrentCategory!!
+    val shareSet = BDM.ShareSet!!
+    val currentCategory = shareSet.CurrentCategory!!
+
     private var foodList: MutableList<BFood>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +48,10 @@ class FoodListActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //        .setAction("Action", null).show()
-            BDM.ShareSet?.ItemEditState = EditerState.FoodAppend
-            BDM.ShareSet?.CurrentFood = BFood()
+            shareSet.createFoodItem()
+//            BDM.ShareSet?.ItemEditState = EditerState.FoodAppend
+//            BDM.ShareSet?.CurrentFood = BFood()
+//            BDM.ShareSet?.CurrentVitamin = BFoodVitamin()
             val intent = Intent(this@FoodListActivity, FoodEditerActivity::class.java)
             startActivity(intent)
         }

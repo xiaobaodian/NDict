@@ -71,7 +71,7 @@ class BDMMainActivity : AppCompatActivity() {
 
     private fun initShareSet(){
         if (BDM.ShareSet == null) {
-            BDM.ShareSet = PublicSet()
+            BDM.ShareSet = PublicSet(this)
             //Toast.makeText(applicationContext,"生成 ShareSet 对象！",Toast.LENGTH_SHORT).show()
         }
     }
