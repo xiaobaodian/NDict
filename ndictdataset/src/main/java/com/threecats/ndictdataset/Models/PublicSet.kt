@@ -21,13 +21,14 @@ class PublicSet(val appContext: Context) {
     var CurrentCategory: BFoodCategory? = null
     var CurrentCategoryPosition: Int = 0
     var CurrentFood: BFood? = null
-    var CurrentFoodPosition: Int = 0
     var CurrentVitamin: BFoodVitamin? = null
 
     fun createFoodItem(){
         ItemEditState = EditerState.FoodAppend
-        CurrentFood = BFood().apply { category = CurrentCategory }
-        CurrentFood!!.Vitamin = BFoodVitamin().apply { Food = CurrentFood }
+        CurrentFood = BFood().apply {
+            category = CurrentCategory
+            Vitamin = BFoodVitamin()
+        }
     }
 
     fun editFoodItem(food: BFood){

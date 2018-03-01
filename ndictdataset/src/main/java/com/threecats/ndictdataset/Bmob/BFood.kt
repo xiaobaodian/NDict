@@ -22,5 +22,7 @@ class BFood: BmobObject() {
     var cholesterol: Float = 0f                     // 胆固醇含量
 
     var Vitamin: BFoodVitamin? = null
+    var Mineral: BFoodMineral? = null
+    var MineralExt: BFoodMineralExt? = null
 
 }
