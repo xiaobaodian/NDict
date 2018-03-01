@@ -120,7 +120,10 @@ class FoodListActivity : AppCompatActivity() {
             if (it.Vitamin == null) {
                 nullVitamins.add(it)
             } else {
-                //if (it.Vitamin!!.objectId == null) nullVitamins.add(it)
+                if (it.Vitamin!!.objectId == null){
+                    it.Vitamin = null
+                    nullVitamins.add(it)
+                }
             }
 
         }

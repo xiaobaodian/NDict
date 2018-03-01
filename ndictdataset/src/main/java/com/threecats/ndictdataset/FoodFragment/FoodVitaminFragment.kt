@@ -36,11 +36,13 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (currentVitamin == null) {
-            findVitaminFromBmob(currentFood)
-        } else {
-            assignFields()
-        }
+//        if (currentVitamin == null) {
+//            findVitaminFromBmob(currentFood)
+//        } else {
+//            assignFields()
+//        }
+
+        assignFields(currentFood.Vitamin!!)
     }
 
     override fun onDestroyView() {
@@ -51,60 +53,60 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     override fun getFoodFields(): Int {
         val changeNumber = checkTextHelper.ChangeNumber()
         if (changeNumber > 0) {
-            assemblyFields()
+            assemblyFields(currentFood.Vitamin!!)
         }
         return changeNumber
     }
 
-    private fun assignFields(){
+    private fun assignFields(vit: BFoodVitamin){
 
         with (checkTextHelper) {
-            addEditBox(VitaminAIEditText, currentVitamin?.VitaminA.toString())
-            addEditBox(CaroteneIEditText, currentVitamin?.Carotene.toString())
-            addEditBox(VitaminB1IEditText, currentVitamin?.VitaminB1.toString())
-            addEditBox(VitaminB2IEditText, currentVitamin?.VitaminB2.toString())
-            addEditBox(NiacinIEditText, currentVitamin?.Niacin.toString())
-            addEditBox(VitaminB6IEditText, currentVitamin?.VitaminB6.toString())
-            addEditBox(PantothenicAcidIEditText, currentVitamin?.PantothenicAcid.toString())
-            addEditBox(VitaminHIEditText, currentVitamin?.VitaminH.toString())
-            addEditBox(FolicAcidIEditText, currentVitamin?.FolicAcid.toString())
-            addEditBox(VitaminB12IEditText, currentVitamin?.VitaminB12.toString())
-            addEditBox(CholineIEditText, currentVitamin?.Choline.toString())
-            addEditBox(VitaminCIEditText, currentVitamin?.VitaminC.toString())
-            addEditBox(VitaminDIEditText, currentVitamin?.VitaminD.toString())
-            addEditBox(VitaminEIEditText, currentVitamin?.VitaminE.toString())
-            addEditBox(VitaminKIEditText, currentVitamin?.VitaminK.toString())
-            addEditBox(VitaminPIEditText, currentVitamin?.VitaminP.toString())
-            addEditBox(InositolIEditText, currentVitamin?.Inositol.toString())
-            addEditBox(PABAIEditText, currentVitamin?.PABA.toString())
+            addEditBox(VitaminAIEditText, vit.VitaminA.toString())
+            addEditBox(CaroteneIEditText, vit.Carotene.toString())
+            addEditBox(VitaminB1IEditText, vit.VitaminB1.toString())
+            addEditBox(VitaminB2IEditText, vit.VitaminB2.toString())
+            addEditBox(NiacinIEditText, vit.Niacin.toString())
+            addEditBox(VitaminB6IEditText, vit.VitaminB6.toString())
+            addEditBox(PantothenicAcidIEditText, vit.PantothenicAcid.toString())
+            addEditBox(VitaminHIEditText, vit.VitaminH.toString())
+            addEditBox(FolicAcidIEditText, vit.FolicAcid.toString())
+            addEditBox(VitaminB12IEditText, vit.VitaminB12.toString())
+            addEditBox(CholineIEditText, vit.Choline.toString())
+            addEditBox(VitaminCIEditText, vit.VitaminC.toString())
+            addEditBox(VitaminDIEditText, vit.VitaminD.toString())
+            addEditBox(VitaminEIEditText, vit.VitaminE.toString())
+            addEditBox(VitaminKIEditText, vit.VitaminK.toString())
+            addEditBox(VitaminPIEditText, vit.VitaminP.toString())
+            addEditBox(InositolIEditText, vit.Inositol.toString())
+            addEditBox(PABAIEditText, vit.PABA.toString())
             initHash()
         }
 
     }
 
-    private fun assemblyFields(){
+    private fun assemblyFields(vit: BFoodVitamin){
 
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
 
-                VitaminAIEditText -> currentVitamin?.VitaminA = it.editBox.text.toString().toFloat()
-                CaroteneIEditText -> currentVitamin?.Carotene = it.editBox.text.toString().toFloat()
-                VitaminB1IEditText -> currentVitamin?.VitaminB1 = it.editBox.text.toString().toFloat()
-                VitaminB2IEditText -> currentVitamin?.VitaminB2 = it.editBox.text.toString().toFloat()
-                NiacinIEditText -> currentVitamin?.Niacin = it.editBox.text.toString().toFloat()
-                VitaminB6IEditText -> currentVitamin?.VitaminB6 = it.editBox.text.toString().toFloat()
-                PantothenicAcidIEditText -> currentVitamin?.PantothenicAcid = it.editBox.text.toString().toFloat()
-                VitaminHIEditText -> currentVitamin?.VitaminH = it.editBox.text.toString().toFloat()
-                FolicAcidIEditText -> currentVitamin?.FolicAcid = it.editBox.text.toString().toFloat()
-                VitaminB12IEditText -> currentVitamin?.VitaminB12 = it.editBox.text.toString().toFloat()
-                CholineIEditText -> currentVitamin?.Choline = it.editBox.text.toString().toFloat()
-                VitaminCIEditText -> currentVitamin?.VitaminC = it.editBox.text.toString().toFloat()
-                VitaminDIEditText -> currentVitamin?.VitaminD = it.editBox.text.toString().toFloat()
-                VitaminEIEditText -> currentVitamin?.VitaminE = it.editBox.text.toString().toFloat()
-                VitaminKIEditText -> currentVitamin?.VitaminK = it.editBox.text.toString().toFloat()
-                VitaminPIEditText -> currentVitamin?.VitaminP = it.editBox.text.toString().toFloat()
-                InositolIEditText -> currentVitamin?.Inositol = it.editBox.text.toString().toFloat()
-                PABAIEditText -> currentVitamin?.PABA = it.editBox.text.toString().toFloat()
+                VitaminAIEditText -> vit.VitaminA = it.editBox.text.toString().toFloat()
+                CaroteneIEditText -> vit.Carotene = it.editBox.text.toString().toFloat()
+                VitaminB1IEditText -> vit.VitaminB1 = it.editBox.text.toString().toFloat()
+                VitaminB2IEditText -> vit.VitaminB2 = it.editBox.text.toString().toFloat()
+                NiacinIEditText -> vit.Niacin = it.editBox.text.toString().toFloat()
+                VitaminB6IEditText -> vit.VitaminB6 = it.editBox.text.toString().toFloat()
+                PantothenicAcidIEditText -> vit.PantothenicAcid = it.editBox.text.toString().toFloat()
+                VitaminHIEditText -> vit.VitaminH = it.editBox.text.toString().toFloat()
+                FolicAcidIEditText -> vit.FolicAcid = it.editBox.text.toString().toFloat()
+                VitaminB12IEditText -> vit.VitaminB12 = it.editBox.text.toString().toFloat()
+                CholineIEditText -> vit.Choline = it.editBox.text.toString().toFloat()
+                VitaminCIEditText -> vit.VitaminC = it.editBox.text.toString().toFloat()
+                VitaminDIEditText -> vit.VitaminD = it.editBox.text.toString().toFloat()
+                VitaminEIEditText -> vit.VitaminE = it.editBox.text.toString().toFloat()
+                VitaminKIEditText -> vit.VitaminK = it.editBox.text.toString().toFloat()
+                VitaminPIEditText -> vit.VitaminP = it.editBox.text.toString().toFloat()
+                InositolIEditText -> vit.Inositol = it.editBox.text.toString().toFloat()
+                PABAIEditText -> vit.PABA = it.editBox.text.toString().toFloat()
 
             }
         }
@@ -122,11 +124,11 @@ class FoodVitaminFragment : FoodPropertyFragment() {
                         shareSet.CurrentVitamin = BFoodVitamin()
                         currentVitamin = shareSet.CurrentVitamin
                         appendVitaminItem(currentVitamin!!)
-                        assignFields()
+                        assignFields(currentFood.Vitamin!!)
                     } else {
                         vitamins?.forEach { shareSet.CurrentVitamin = it }
                         currentVitamin = shareSet.CurrentVitamin
-                        assignFields()
+                        assignFields(currentFood.Vitamin!!)
                     }
                 } else {
                     context.toast("${e.message}")
