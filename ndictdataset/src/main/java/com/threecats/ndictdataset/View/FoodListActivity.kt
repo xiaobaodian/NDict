@@ -131,6 +131,7 @@ class FoodListActivity : AppCompatActivity() {
                     nullVitamins.add(it)
                 }
             }
+
             if (it.Mineral == null) {
                 nullMinerals.add(it)
             } else {
@@ -139,6 +140,7 @@ class FoodListActivity : AppCompatActivity() {
                     nullMinerals.add(it)
                 }
             }
+
             if (it.MineralExt == null) {
                 nullMineralexts.add(it)
             } else {
@@ -195,7 +197,7 @@ class FoodListActivity : AppCompatActivity() {
 
             nullMineralexts.forEach {
                 it.MineralExt = BFoodMineralExt()
-                mineralexts.add(it.Vitamin!!)
+                mineralexts.add(it.MineralExt!!)
             }
 
             BmobBatch().insertBatch(mineralexts).doBatch(object: QueryListListener<BatchResult>(){
