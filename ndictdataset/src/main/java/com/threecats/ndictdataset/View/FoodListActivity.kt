@@ -77,7 +77,7 @@ class FoodListActivity : AppCompatActivity() {
                         FoodRView.adapter = FoodListAdapter(foodList!!, this@FoodListActivity)
                         if (foodList!!.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(foodList!!))
                     } else {
-                        Toast.makeText(this@FoodListActivity, e.message, Toast.LENGTH_SHORT).show()
+                        toast("${e.message}")
                     }
                 }
             })
@@ -116,7 +116,14 @@ class FoodListActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doCheckFoodTraceElement(checkElement: CheckFoodTraceElement){
         val nullVitamins: MutableList<BFood> = arrayListOf()
-        checkElement.Foods.forEach { if (it.Vitamin == null || it.Vitamin?.objectId == null) nullVitamins.add(it)}
+        checkElement.Foods.forEach {
+            if (it.Vitamin == null) {
+                nullVitamins.add(it)
+            } else {
+                if (it.Vitamin!!.objectId == null) nullVitamins.add(it)
+            }
+
+        }
         if (nullVitamins.size > 0) {
             val vitamins: MutableList<BmobObject> = arrayListOf()
             nullVitamins.forEach {
