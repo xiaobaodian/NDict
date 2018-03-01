@@ -21,4 +21,6 @@ class BFood: BmobObject() {
     var water: Float = 0f                           // 食材水分
     var cholesterol: Float = 0f                     // 胆固醇含量
 
+    var Vitamin: BFoodVitamin? = null
+
 }
