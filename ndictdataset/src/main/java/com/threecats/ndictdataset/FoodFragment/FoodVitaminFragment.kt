@@ -35,7 +35,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        assignFields( currentFood.Vitamin!! )
+        assignFields( currentFood.Vitamin!!)
     }
 
     override fun onDestroyView() {
