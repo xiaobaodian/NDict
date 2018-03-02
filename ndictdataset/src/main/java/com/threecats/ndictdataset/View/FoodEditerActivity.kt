@@ -4,24 +4,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import cn.bmob.v3.BmobQuery
-import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Bmob.BFoodVitamin
 import com.threecats.ndictdataset.BuildConfig
+import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
-import kotlinx.android.synthetic.main.content_food_list.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.alert
@@ -34,6 +29,8 @@ class FoodEditerActivity : AppCompatActivity() {
     val currentFood = BDM.ShareSet!!.CurrentFood!!
     val editerState = BDM.ShareSet?.ItemEditState
     val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
+
+    val changBlockList: MutableList<ChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,9 +65,16 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        var save = false
-        foodPropertyFragments.forEach { if (it.getFoodFields() > 0) save = true }
-        if (save) updateFood()
+        changBlockList.clear()
+        foodPropertyFragments.forEach { it.BlockChangeState(this) }
+        if (changBlockList.size > 0) updateFood()
+    }
+
+    fun addChangeBlock(changeBlock: ChangeBlock){
+        val position = changBlockList.indexOf(changeBlock)
+        if (position < 0) {
+            changBlockList.add(changeBlock)
+        }
     }
 
     private fun addFragments(fragment: FoodPropertyFragment, name: String){
@@ -89,22 +93,31 @@ class FoodEditerActivity : AppCompatActivity() {
 
         when (editerState){
             EditerState.FoodAppend -> {
-                addVitaminItem(currentFood.Vitamin!!)
+                // 加入数据需要在Bmob段建立关联，需要加入维生素、矿物质数据后获取返回的objectId，所以
+                // 采用链式调用
+                addVitaminItem(currentFood)
             }
             EditerState.FoodEdit -> {
-                updateFoodItem(currentFood)
-                updateVitaminItem(currentFood.Vitamin!!)
+                changBlockList.forEach {
+                    when (it) {
+                        ChangeBlock.Food -> updateFoodItem(currentFood)
+                        ChangeBlock.Vitamin -> updateVitaminItem(currentFood)
+                        ChangeBlock.Mineral -> updateMineralItem(currentFood)
+                        ChangeBlock.MineralExt -> updateMineralExtItem(currentFood)
+                    }
+                }
             }
         }
     }
 
-    private fun addVitaminItem(vit: BFoodVitamin){
-        vit.save(object: SaveListener<String>() {
+    private fun addVitaminItem(food: BFood){
+        val v = food.Vitamin!!
+        v.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     toast("添加了维生素，objectID：$objectID")
-                    vit.objectId = objectID
-                    addFoodItem(currentFood)
+                    v.objectId = objectID
+                    addMineral(food)
                 } else {
                     toast("${e.message}")
                 }
@@ -112,11 +125,28 @@ class FoodEditerActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateVitaminItem(vit: BFoodVitamin){
-        vit.update(object: UpdateListener(){
-            override fun done(e: BmobException?) {
+    private fun addMineralExt(food: BFood){
+        val mext = food.MineralExt!!
+        mext.save(object: SaveListener<String>() {
+            override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    toast("更新了维生素数据")
+                    toast("添加了矿物质扩展，objectID：$objectID")
+                    mext.objectId = objectID
+                    addFoodItem(food)
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+    }
+    private fun addMineral(food: BFood){
+        val m = food.Mineral!!
+        m.save(object: SaveListener<String>() {
+            override fun done(objectID: String?, e: BmobException?) {
+                if (e == null) {
+                    toast("添加了矿物资，objectID：$objectID")
+                    m.objectId = objectID
+                    addMineralExt(food)
                 } else {
                     toast("${e.message}")
                 }
@@ -131,6 +161,45 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     toast("添加了食材，objectID：$objectID")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodAppend))  //Sticky
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+    }
+
+    private fun updateMineralItem(food: BFood){
+        val m = food.Mineral!!
+        m.update(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("更新了矿物质数据")
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+    }
+
+    private fun updateMineralExtItem(food: BFood){
+        val mext = food.MineralExt!!
+        mext.update(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("更新了矿物质扩展数据")
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+    }
+
+    private fun updateVitaminItem(food: BFood){
+        val v = food.Vitamin!!
+        v.update(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("更新了维生素数据")
                 } else {
                     toast("${e.message}")
                 }
@@ -161,6 +230,33 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun deleteFoodFromBmob(food: BFood){
+        food.Mineral?.delete(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("删除${food.name}矿物质数据成功")
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+        food.MineralExt?.delete(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("删除${food.name}矿物质扩展数据成功")
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
+        food.Vitamin?.delete(object: UpdateListener(){
+            override fun done(e: BmobException?) {
+                if (e == null) {
+                    toast("删除${food.name}维生素数据成功")
+                } else {
+                    toast("${e.message}")
+                }
+            }
+        })
         food.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {

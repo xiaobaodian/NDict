@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndictdataset.Enum.ChangeBlock
 
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.View.FoodEditerActivity
 
 
 /**
@@ -21,12 +23,11 @@ class FoodPictureFragment : FoodPropertyFragment() {
         return inflater!!.inflate(R.layout.fragment_food_picture, container, false)
     }
 
-    override fun getFoodFields(): Int {
+    override fun BlockChangeState(parent: FoodEditerActivity) {
         val changeNumber = checkTextHelper.ChangeNumber()
         if (changeNumber > 0) {
-
+            //parent.addChangeBlock(ChangeBlock.Food)
         }
-        return changeNumber
     }
 
 }// Required empty public constructor

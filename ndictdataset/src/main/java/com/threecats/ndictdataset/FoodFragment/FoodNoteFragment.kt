@@ -6,8 +6,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.Enum.ChangeBlock
 
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_note.*
 
 
@@ -30,18 +33,21 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        getFoodFields()
+        assemblyFields(currentFood)
     }
 
-    override fun getFoodFields(): Int {
+    override fun BlockChangeState(parent: FoodEditerActivity) {
         val changeNumber = checkTextHelper.ChangeNumber()
         if (changeNumber > 0) {
-            checkTextHelper.textBoxs.forEach {
-                when (it.editBox){
-                    FoodNoteIEditText -> currentFood.note = it.editBox.text.toString()
-                }
+            parent.addChangeBlock(ChangeBlock.Food)
+        }
+    }
+
+    private fun assemblyFields(food: BFood){
+        checkTextHelper.textBoxs.forEach {
+            when (it.editBox){
+                FoodNoteIEditText -> food.note = it.editBox.text.toString()
             }
         }
-        return changeNumber
     }
 }// Required empty public constructor

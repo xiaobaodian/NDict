@@ -63,11 +63,9 @@ class FoodListActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (foodList == null) {
-            //var currentCategory = BDM.ShareSet?.CurrentCategory
             val query: BmobQuery<BFood> = BmobQuery()
-            //query.addWhereEqualTo("category", category?.objectId)
             query.addWhereEqualTo("category", BmobPointer(currentCategory))
-            query.include("Vitamin, Mineral, MineralExt")
+            query.include("Vitamin,Mineral,MineralExt")
             query.setLimit(300)
             query.findObjects(object: FindListener<BFood>(){
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
@@ -123,10 +121,11 @@ class FoodListActivity : AppCompatActivity() {
         val nullMineralexts: MutableList<BFood> = arrayListOf()
 
         checkElement.Foods.forEach {
+
             if (it.Vitamin == null) {
                 nullVitamins.add(it)
             } else {
-                if (it.Vitamin!!.objectId == null){
+                if (it.Vitamin!!.objectId == ""){
                     it.Vitamin = null
                     nullVitamins.add(it)
                 }
@@ -135,7 +134,7 @@ class FoodListActivity : AppCompatActivity() {
             if (it.Mineral == null) {
                 nullMinerals.add(it)
             } else {
-                if (it.Mineral!!.objectId == null){
+                if (it.Mineral!!.objectId == ""){
                     it.Mineral = null
                     nullMinerals.add(it)
                 }
@@ -144,7 +143,7 @@ class FoodListActivity : AppCompatActivity() {
             if (it.MineralExt == null) {
                 nullMineralexts.add(it)
             } else {
-                if (it.MineralExt!!.objectId == null){
+                if (it.MineralExt!!.objectId == ""){
                     it.MineralExt = null
                     nullMineralexts.add(it)
                 }
@@ -230,19 +229,16 @@ class FoodListActivity : AppCompatActivity() {
     }
 
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
-        val currentCategory = BDM.ShareSet?.CurrentCategory!!
         currentCategory.FoodTotal = size
         currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))
                     if (showMessage) {
-                        Toast.makeText(this@FoodListActivity,
-                                "更新${currentCategory.LongTitle}类的食材总数：$size ",
-                                Toast.LENGTH_SHORT).show()
+                        toast("更新${currentCategory.LongTitle}类的食材总数：$size ")
                     }
                 } else {
-                    Toast.makeText(this@FoodListActivity, e.message, Toast.LENGTH_SHORT).show()
+                    toast("${e.message}")
                 }
             }
         })

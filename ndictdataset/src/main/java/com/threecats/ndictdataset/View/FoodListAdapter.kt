@@ -28,9 +28,7 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
 
         holder.view.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.food)
-//            BDM.ShareSet?.CurrentFood = food
-//            BDM.ShareSet?.CurrentFoodPosition = position
-//            BDM.ShareSet?.ItemEditState = EditerState.FoodEdit
+
             BDM.ShareSet?.editFoodItem(food)
             val intent = Intent(context, FoodEditerActivity::class.java)
             context.startActivity(intent)

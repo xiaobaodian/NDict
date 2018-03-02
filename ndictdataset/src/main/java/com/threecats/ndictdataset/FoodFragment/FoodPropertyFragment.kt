@@ -2,7 +2,9 @@ package com.threecats.ndictdataset.FoodFragment
 
 import android.support.v4.app.Fragment
 import com.threecats.ndictdataset.BDM
+import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.Helper.EditTextHelper
+import com.threecats.ndictdataset.View.FoodEditerActivity
 
 /**
  * 由 zhang 于 2018/2/21 创建
@@ -18,5 +20,5 @@ abstract class FoodPropertyFragment : Fragment() {
 
     var TabsTitle: String? = null
 
-    abstract fun getFoodFields(): Int
+    abstract fun BlockChangeState(parent: FoodEditerActivity)
 }

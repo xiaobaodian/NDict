@@ -11,10 +11,11 @@ import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
-import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodVitamin
+import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
 import org.jetbrains.anko.toast
 
@@ -25,8 +26,6 @@ import org.jetbrains.anko.toast
 
 class FoodVitaminFragment : FoodPropertyFragment() {
 
-    var vitaminItem: BFoodVitamin? = null
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -36,26 +35,19 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        if (currentVitamin == null) {
-//            findVitaminFromBmob(currentFood)
-//        } else {
-//            assignFields()
-//        }
-
         assignFields(currentFood.Vitamin!!)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        getFoodFields()
+        assemblyFields(currentFood.Vitamin!!)
     }
 
-    override fun getFoodFields(): Int {
+    override fun BlockChangeState(parent: FoodEditerActivity) {
         val changeNumber = checkTextHelper.ChangeNumber()
         if (changeNumber > 0) {
-            assemblyFields(currentFood.Vitamin!!)
+            parent.addChangeBlock(ChangeBlock.Vitamin)
         }
-        return changeNumber
     }
 
     private fun assignFields(vit: BFoodVitamin){
@@ -90,6 +82,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
             when (it.editBox){
 
                 VitaminAIEditText -> vit.VitaminA = it.editBox.text.toString().toFloat()
+                //VitaminAIEditText -> vit.VitaminA = 471f
                 CaroteneIEditText -> vit.Carotene = it.editBox.text.toString().toFloat()
                 VitaminB1IEditText -> vit.VitaminB1 = it.editBox.text.toString().toFloat()
                 VitaminB2IEditText -> vit.VitaminB2 = it.editBox.text.toString().toFloat()

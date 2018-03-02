@@ -6,9 +6,7 @@ import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
-import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Bmob.BFoodVitamin
+import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EditerState
 import org.jetbrains.anko.toast
 
@@ -28,6 +26,8 @@ class PublicSet(val appContext: Context) {
         CurrentFood = BFood().apply {
             category = CurrentCategory
             Vitamin = BFoodVitamin()
+            Mineral = BFoodMineral()
+            MineralExt = BFoodMineralExt()
         }
     }
 
