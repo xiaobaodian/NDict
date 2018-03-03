@@ -27,8 +27,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkTextHelper.addEditBox(FoodNoteIEditText, currentFood.note)
-        checkTextHelper.initHash()
+        assignFields(currentFood)
     }
 
     override fun onDestroyView() {
@@ -43,8 +42,26 @@ class FoodNoteFragment: FoodPropertyFragment() {
         }
     }
 
+    override fun ImportFields(food: BFood) {
+        checkTextHelper.textBoxs.clear()
+        assignFields(food)
+    }
+
+    override fun ExportFields(food: BFood) {
+        assemblyFields(food)
+    }
+
+    private fun assignFields(food: BFood){
+
+        with (checkTextHelper) {
+            addEditBox(FoodNoteIEditText, food.note)
+            initHash()
+        }
+
+    }
+
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull()
+        checkTextHelper.CheckNull("")
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                 FoodNoteIEditText -> food.note = it.editBox.text.toString()

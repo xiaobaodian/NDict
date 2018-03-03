@@ -27,14 +27,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkTextHelper.addEditBox(CaloriesIEditText, currentFood.calories.toString())
-        checkTextHelper.addEditBox(WaterIEditText, currentFood.water.toString())
-        checkTextHelper.addEditBox(ProteinIEditText, currentFood.protein.toString())
-        checkTextHelper.addEditBox(CholesterolIEditText, currentFood.cholesterol.toString())
-        checkTextHelper.addEditBox(FiberIEditText, currentFood.foodFiber.toString())
-        checkTextHelper.addEditBox(CarbohydrateIEditText, currentFood.carbohydrate.toString())
-        checkTextHelper.addEditBox(FatIEditText, currentFood.fat.toString())
-        checkTextHelper.initHash()
+        assignFields(currentFood)
     }
 
     override fun onDestroyView() {
@@ -49,8 +42,32 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         }
     }
 
+    override fun ImportFields(food: BFood) {
+        checkTextHelper.textBoxs.clear()
+        assignFields(food)
+    }
+
+    override fun ExportFields(food: BFood) {
+        assemblyFields(food)
+    }
+
+    private fun assignFields(food: BFood){
+
+        with (checkTextHelper) {
+            addEditBox(CaloriesIEditText, food.calories.toString())
+            addEditBox(WaterIEditText, food.water.toString())
+            addEditBox(ProteinIEditText, food.protein.toString())
+            addEditBox(CholesterolIEditText, food.cholesterol.toString())
+            addEditBox(FiberIEditText, food.foodFiber.toString())
+            addEditBox(CarbohydrateIEditText, food.carbohydrate.toString())
+            addEditBox(FatIEditText, food.fat.toString())
+            initHash()
+        }
+
+    }
+
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull()
+        checkTextHelper.CheckNull("0.0")
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                 CaloriesIEditText -> food.calories = it.editBox.text.toString().toFloat()

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/DeleteFood"
@@ -8,8 +9,10 @@
         android:id="@+id/ChangedCategory"
         android:title="更换分类" />
     <item
-        android:id="@+id/SaveWork"
-        android:title="保存" />
+        android:id="@+id/SaveAddItem"
+        android:icon="@drawable/ic_drak_saveadd"
+        android:title="保存并新增"
+        app:showAsAction="always" />
     <item
         android:id="@+id/CancelWork"
         android:title="放弃编辑" />

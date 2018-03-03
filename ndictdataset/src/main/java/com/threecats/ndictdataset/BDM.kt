@@ -34,6 +34,7 @@ class BDM : Application() {
          */
         var APPID = "92c3bbfbecf25dd1991485ee41597f1a"
         var ShareSet: PublicSet? = null
+        val ShowTips = false
     }
 
 }

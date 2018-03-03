@@ -50,6 +50,15 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         }
     }
 
+    override fun ImportFields(food: BFood) {
+        checkTextHelper.textBoxs.clear()
+        assignFields(food.Vitamin!!)
+    }
+
+    override fun ExportFields(food: BFood) {
+        assemblyFields(food.Vitamin!!)
+    }
+
     private fun assignFields(vit: BFoodVitamin){
 
         with (checkTextHelper) {
@@ -78,7 +87,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(vit: BFoodVitamin){
 
-        checkTextHelper.CheckNull()
+        checkTextHelper.CheckNull("0.0")
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
 

@@ -31,8 +31,10 @@
                     android:id="@+id/VitaminAIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素A"
                     android:inputType="number|numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -47,8 +49,10 @@
                     android:id="@+id/CaroteneIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="胡萝卜素"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -63,8 +67,10 @@
                     android:id="@+id/VitaminB1IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素B1"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -79,8 +85,10 @@
                     android:id="@+id/VitaminB2IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素B2"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -95,8 +103,10 @@
                     android:id="@+id/NiacinIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="烟酸"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -111,8 +121,10 @@
                     android:id="@+id/VitaminB6IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素B6"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -127,8 +139,10 @@
                     android:id="@+id/PantothenicAcidIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="泛酸"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -143,8 +157,10 @@
                     android:id="@+id/VitaminHIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="生物素（维生素H）"
                     android:inputType="number|numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -159,8 +175,10 @@
                     android:id="@+id/FolicAcidIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="叶酸"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -175,8 +193,10 @@
                     android:id="@+id/VitaminB12IEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素B12"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -191,8 +211,10 @@
                     android:id="@+id/CholineIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="胆碱"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -207,8 +229,10 @@
                     android:id="@+id/VitaminCIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素C"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -223,8 +247,10 @@
                     android:id="@+id/VitaminDIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素D"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -239,8 +265,10 @@
                     android:id="@+id/VitaminEIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素E"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -255,8 +283,10 @@
                     android:id="@+id/VitaminKIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素K"
                     android:inputType="number|numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -271,8 +301,10 @@
                     android:id="@+id/VitaminPIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="维生素P（生物类黄酮）"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -287,8 +319,10 @@
                     android:id="@+id/InositolIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="肌醇"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -303,8 +337,10 @@
                     android:id="@+id/PABAIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
                     android:hint="对氨基苯甲酸"
                     android:inputType="numberDecimal" />
+
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>

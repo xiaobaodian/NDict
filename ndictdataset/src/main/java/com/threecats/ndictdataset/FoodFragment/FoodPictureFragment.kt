@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.ChangeBlock
 
 import com.threecats.ndictdataset.R
@@ -28,6 +29,15 @@ class FoodPictureFragment : FoodPropertyFragment() {
         if (changeNumber > 0) {
             //parent.addChangeBlock(ChangeBlock.Food)
         }
+    }
+
+    override fun ImportFields(food: BFood) {
+        //checkTextHelper.textBoxs.clear()
+        //assignFields(food)
+    }
+
+    override fun ExportFields(food: BFood) {
+        //assemblyFields(food)
     }
 
 }// Required empty public constructor

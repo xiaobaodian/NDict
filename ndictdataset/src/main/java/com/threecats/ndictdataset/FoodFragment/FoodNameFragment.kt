@@ -27,38 +27,7 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkTextHelper.addEditBox(NameIEditText)
-        with (NameIEditText) {
-            text.append(currentFood.name)
-            addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                    if (s?.length == 0) {
-                        NameILayout.error = "食材名称不能为空"
-                        NameILayout.isErrorEnabled = true
-                    } else {
-                        NameILayout.isErrorEnabled = false
-                    }
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-            })
-        }
-
-        checkTextHelper.addEditBox(AliasIEditText)
-        with (AliasIEditText) {
-            text.append(currentFood.alias)
-            addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-                override fun afterTextChanged(s: Editable?) {
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-            })
-        }
-        checkTextHelper.initHash()
+        assignFields(currentFood)
     }
 
     override fun onDestroyView() {
@@ -73,8 +42,57 @@ class FoodNameFragment: FoodPropertyFragment() {
         }
     }
 
+    override fun ImportFields(food: BFood) {
+        checkTextHelper.textBoxs.clear()
+        assignFields(food)
+    }
+
+    override fun ExportFields(food: BFood) {
+        assemblyFields(food)
+    }
+
+    private fun assignFields(food: BFood){
+
+        with (checkTextHelper) {
+            addEditBox(NameIEditText)
+            with (NameIEditText) {
+                text.append(food.name)
+                addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
+                    override fun afterTextChanged(s: Editable?) {
+                        if (s?.length == 0) {
+                            NameILayout.error = "食材名称不能为空"
+                            NameILayout.isErrorEnabled = true
+                        } else {
+                            NameILayout.isErrorEnabled = false
+                        }
+                    }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    }
+                })
+            }
+
+            checkTextHelper.addEditBox(AliasIEditText)
+            with (AliasIEditText) {
+                text.append(food.alias)
+                addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
+                    override fun afterTextChanged(s: Editable?) {
+                    }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    }
+                })
+            }
+            checkTextHelper.initHash()
+            initHash()
+        }
+
+    }
+
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull()
+        checkTextHelper.CheckNull("")
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                 NameIEditText -> food.name = it.editBox.text.toString()

@@ -95,10 +95,10 @@ class FoodListActivity : AppCompatActivity() {
         when (updateItem.State){
             EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position!!)
             EditerState.FoodAppend -> {
-                foodList?.add(BDM.ShareSet?.CurrentFood!!)
+                foodList?.add(updateItem.Food)
                 val foodSize = foodList?.size!!
                 FoodRView?.adapter?.notifyItemInserted(foodSize)
-                BDM.ShareSet?.ItemEditState = EditerState.CategoryEdit
+                BDM.ShareSet?.ItemEditState = EditerState.CategoryEdit  // ??? 应该可以去掉
                 updateCategoryFoodSize(foodSize)
             }
         }

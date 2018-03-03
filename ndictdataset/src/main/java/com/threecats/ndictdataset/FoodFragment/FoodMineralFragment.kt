@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodMineral
 import com.threecats.ndictdataset.Bmob.BFoodMineralExt
 import com.threecats.ndictdataset.Enum.ChangeBlock
@@ -51,6 +52,15 @@ class FoodMineralFragment : FoodPropertyFragment() {
         }
     }
 
+    override fun ImportFields(food: BFood) {
+        checkTextHelper.textBoxs.clear()
+        assignFields(food.Mineral!!, food.MineralExt!!)
+    }
+
+    override fun ExportFields(food: BFood) {
+        assemblyFields(food.Mineral!!, food.MineralExt!!)
+    }
+
     private fun assignFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         with (checkTextHelper) {
@@ -88,7 +98,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
-        checkTextHelper.CheckNull()
+        checkTextHelper.CheckNull("0.0")
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                   KIEditText    ->  mineral.mK  = it.editBox.text.toString().toFloat()
@@ -112,7 +122,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
                   SiIEditText   ->  mineral.mSi = it.editBox.text.toString().toFloat()
             }
         }
-        checkTextExtHelper.CheckNull()
+        checkTextExtHelper.CheckNull("0.0")
         checkTextExtHelper.textBoxs.forEach {
             when (it.editBox){
                 CiIEditText   ->  mineralext.mCi = it.editBox.text.toString().toFloat()

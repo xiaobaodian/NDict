@@ -16,6 +16,7 @@ class EditTextHelper {
     fun addEditBox(editBox: EditText, text: String){
         textBoxs.add(EditItem(0, editBox))
         editBox.text.append(text)
+        editBox.setSelectAllOnFocus(true)
     }
 
     fun initHash(){
@@ -28,8 +29,8 @@ class EditTextHelper {
         return sum
     }
 
-    fun CheckNull(){
-        textBoxs.forEach { if (it.editBox.text.isEmpty()) it.editBox.text.append("0.0") }
+    fun CheckNull(initStr: String){
+        textBoxs.forEach { if (it.editBox.text.isEmpty()) it.editBox.text.append(initStr) }
     }
 
     inner class EditItem(var hash: Int, var editBox: EditText)
