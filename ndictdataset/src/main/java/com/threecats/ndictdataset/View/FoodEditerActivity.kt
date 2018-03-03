@@ -115,7 +115,7 @@ class FoodEditerActivity : AppCompatActivity() {
         v.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    toast("添加了维生素，objectID：$objectID")
+                    if (BuildConfig.DEBUG) toast("添加了维生素，objectID：$objectID")
                     v.objectId = objectID
                     addMineral(food)
                 } else {
@@ -130,7 +130,7 @@ class FoodEditerActivity : AppCompatActivity() {
         mext.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    toast("添加了矿物质扩展，objectID：$objectID")
+                    if (BuildConfig.DEBUG) toast("添加了矿物质扩展，objectID：$objectID")
                     mext.objectId = objectID
                     addFoodItem(food)
                 } else {
@@ -144,7 +144,7 @@ class FoodEditerActivity : AppCompatActivity() {
         m.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    toast("添加了矿物资，objectID：$objectID")
+                    if (BuildConfig.DEBUG) toast("添加了矿物资，objectID：$objectID")
                     m.objectId = objectID
                     addMineralExt(food)
                 } else {
@@ -159,7 +159,7 @@ class FoodEditerActivity : AppCompatActivity() {
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    toast("添加了食材，objectID：$objectID")
+                    if (BuildConfig.DEBUG) toast("添加了食材，objectID：$objectID")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodAppend))  //Sticky
                 } else {
                     toast("${e.message}")
@@ -173,7 +173,7 @@ class FoodEditerActivity : AppCompatActivity() {
         m.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("更新了矿物质数据")
+                    if (BuildConfig.DEBUG) toast("更新了矿物质数据")
                 } else {
                     toast("${e.message}")
                 }
@@ -186,7 +186,7 @@ class FoodEditerActivity : AppCompatActivity() {
         mext.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("更新了矿物质扩展数据")
+                    if (BuildConfig.DEBUG) toast("更新了矿物质扩展数据")
                 } else {
                     toast("${e.message}")
                 }
@@ -199,7 +199,7 @@ class FoodEditerActivity : AppCompatActivity() {
         v.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("更新了维生素数据")
+                    if (BuildConfig.DEBUG) toast("更新了维生素数据")
                 } else {
                     toast("${e.message}")
                 }
@@ -233,7 +233,7 @@ class FoodEditerActivity : AppCompatActivity() {
         food.Mineral?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("删除${food.name}矿物质数据成功")
+                    if (BuildConfig.DEBUG) toast("删除${food.name}矿物质数据成功")
                 } else {
                     toast("${e.message}")
                 }
@@ -242,7 +242,7 @@ class FoodEditerActivity : AppCompatActivity() {
         food.MineralExt?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("删除${food.name}矿物质扩展数据成功")
+                    if (BuildConfig.DEBUG) toast("删除${food.name}矿物质扩展数据成功")
                 } else {
                     toast("${e.message}")
                 }
@@ -251,7 +251,7 @@ class FoodEditerActivity : AppCompatActivity() {
         food.Vitamin?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("删除${food.name}维生素数据成功")
+                    if (BuildConfig.DEBUG) toast("删除${food.name}维生素数据成功")
                 } else {
                     toast("${e.message}")
                 }
