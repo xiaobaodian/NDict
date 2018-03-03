@@ -28,5 +28,9 @@ class EditTextHelper {
         return sum
     }
 
+    fun CheckNull(){
+        textBoxs.forEach { if (it.editBox.text.isEmpty()) it.editBox.text.append("0.0") }
+    }
+
     inner class EditItem(var hash: Int, var editBox: EditText)
 }

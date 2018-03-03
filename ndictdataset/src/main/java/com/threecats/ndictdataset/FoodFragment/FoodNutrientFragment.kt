@@ -50,6 +50,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
     }
 
     private fun assemblyFields(food: BFood){
+        checkTextHelper.CheckNull()
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                 CaloriesIEditText -> food.calories = it.editBox.text.toString().toFloat()

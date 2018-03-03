@@ -44,6 +44,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
     }
 
     private fun assemblyFields(food: BFood){
+        checkTextHelper.CheckNull()
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                 FoodNoteIEditText -> food.note = it.editBox.text.toString()

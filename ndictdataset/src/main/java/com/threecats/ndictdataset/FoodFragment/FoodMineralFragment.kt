@@ -37,7 +37,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //BlockChangeState()
         assemblyFields(currentFood.Mineral!!, currentFood.MineralExt!!)
     }
 
@@ -89,6 +88,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
+        checkTextHelper.CheckNull()
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
                   KIEditText    ->  mineral.mK  = it.editBox.text.toString().toFloat()
@@ -112,6 +112,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
                   SiIEditText   ->  mineral.mSi = it.editBox.text.toString().toFloat()
             }
         }
+        checkTextExtHelper.CheckNull()
         checkTextExtHelper.textBoxs.forEach {
             when (it.editBox){
                 CiIEditText   ->  mineralext.mCi = it.editBox.text.toString().toFloat()

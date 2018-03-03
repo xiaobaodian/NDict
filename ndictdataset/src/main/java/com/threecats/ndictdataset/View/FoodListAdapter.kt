@@ -24,7 +24,7 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
         val food = foods[position]
         holder.food = food
         holder.name.text = food.name
-        holder.alias.text = "alias"
+        holder.alias.text = if (food.alias == "") "别名" else food.alias
 
         holder.view.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.food)

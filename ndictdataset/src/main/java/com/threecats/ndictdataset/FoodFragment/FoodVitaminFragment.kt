@@ -78,6 +78,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(vit: BFoodVitamin){
 
+        checkTextHelper.CheckNull()
         checkTextHelper.textBoxs.forEach {
             when (it.editBox){
 
