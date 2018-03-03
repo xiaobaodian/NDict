@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import cn.bmob.v3.BmobBatch
 import cn.bmob.v3.BmobObject
@@ -28,6 +30,8 @@ import kotlinx.android.synthetic.main.content_food_list.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 
 class FoodListActivity : AppCompatActivity() {
@@ -58,6 +62,28 @@ class FoodListActivity : AppCompatActivity() {
 
         FoodRView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         EventBus.getDefault().register(this@FoodListActivity)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.foodlist_menu, menu!!)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId){
+            R.id.CheckFoodElement -> {
+                toast("检查元素关联")
+                checkFoodRelevant()
+            }
+            R.id.SaveAddItem -> {
+
+            }
+        }
+        return true
     }
 
     override fun onStart() {
@@ -242,6 +268,60 @@ class FoodListActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun checkFoodRelevant(){
+
+        val logshow = AnkoLogger("NDIC")
+
+        val Vitamins: MutableList<BmobObject> = arrayListOf()
+        val Minerals: MutableList<BmobObject> = arrayListOf()
+        val Mineralexts: MutableList<BmobObject> = arrayListOf()
+
+        foodList?.forEach {
+            val vitamin: BFoodVitamin = it.Vitamin!!
+            val mineral: BFoodMineral = it.Mineral!!
+            val mineralExt: BFoodMineralExt = it.MineralExt!!
+            if (vitamin.Food == null) {
+                vitamin.Food = it
+                Vitamins.add(vitamin)
+                logshow.info { "${it.name} Vitamin: ${vitamin.objectId} -> ${vitamin.Food!!.name}" }
+            }
+            if (mineral.Food == null) {
+                mineral.Food = it
+                Minerals.add(mineral)
+                logshow.info { "${it.name} Mineral: ${mineral.objectId} -> ${mineral.Food!!.name}" }
+            }
+            if (mineralExt.Food == null) {
+                mineralExt.Food = it
+                Mineralexts.add(mineralExt)
+                logshow.info { "${it.name} MineralExt: ${mineralExt.objectId} -> ${mineralExt.Food!!.name}" }
+            }
+        }
+        toast("${Vitamins.size} / ${Minerals.size} / ${Mineralexts.size}")
+        if (Vitamins.size > 0) {
+            //
+        }
+        if (Minerals.size > 0) {
+            BmobBatch().updateBatch(Minerals).doBatch(object: QueryListListener<BatchResult>(){
+                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
+                    if (e == null) {
+                        toast("补增了${results?.size}个矿物质记录")
+                    } else {
+                        toast("${e.message}")
+                    }
+                }
+            })
+        }
+//        BmobBatch().updateBatch(Mineralexts).doBatch(object: QueryListListener<BatchResult>(){
+//            override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
+//                if (e == null) {
+//                    toast("补增了${results?.size}个矿物资扩展记录")
+//                } else {
+//                    toast("${e.message}")
+//                }
+//            }
+//        })
     }
 
 }
