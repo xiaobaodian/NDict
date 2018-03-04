@@ -14,6 +14,7 @@ class EditTextHelper {
 //    }
 
     fun addEditBox(editBox: EditText, text: String){
+        if (editBox == null) return
         textBoxs.add(EditItem(0, editBox))
         editBox.text.clear()
         editBox.text.append(text)

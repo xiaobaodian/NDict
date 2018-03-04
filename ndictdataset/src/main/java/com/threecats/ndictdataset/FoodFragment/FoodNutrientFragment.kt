@@ -12,6 +12,7 @@ import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_nutrient.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -26,7 +27,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //assignFields(currentFood)
+        //getFields(currentFood)
     }
 
     override fun onResume() {
@@ -39,7 +40,8 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(shareSet.CurrentFood!!)
+
+        //setFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -50,14 +52,14 @@ class FoodNutrientFragment : FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        assignFields(food)
+        getFields(food)
     }
 
     override fun ExportFields(food: BFood) {
-        assemblyFields(food)
+        setFields(food)
     }
 
-    private fun assignFields(food: BFood){
+    private fun getFields(food: BFood){
 
         with (foodEditTextHelper) {
             textBoxs.clear()
@@ -73,17 +75,17 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     }
 
-    private fun assemblyFields(food: BFood){
+    private fun setFields(food: BFood){
         foodEditTextHelper.CheckNull("0.0")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
-                CaloriesIEditText -> food.calories = it.editBox.text.toString().toFloat()
-                WaterIEditText -> food.water = it.editBox.text.toString().toFloat()
-                ProteinIEditText -> food.protein = it.editBox.text.toString().toFloat()
-                CholesterolIEditText -> food.cholesterol = it.editBox.text.toString().toFloat()
-                FiberIEditText -> food.foodFiber = it.editBox.text.toString().toFloat()
-                CarbohydrateIEditText -> food.carbohydrate = it.editBox.text.toString().toFloat()
-                FatIEditText -> food.fat = it.editBox.text.toString().toFloat()
+                CaloriesIEditText       -> food.calories = it.editBox.text.toString().toFloat()
+                WaterIEditText          -> food.water = it.editBox.text.toString().toFloat()
+                ProteinIEditText        -> food.protein = it.editBox.text.toString().toFloat()
+                CholesterolIEditText    -> food.cholesterol = it.editBox.text.toString().toFloat()
+                FiberIEditText          -> food.foodFiber = it.editBox.text.toString().toFloat()
+                CarbohydrateIEditText   -> food.carbohydrate = it.editBox.text.toString().toFloat()
+                FatIEditText            -> food.fat = it.editBox.text.toString().toFloat()
             }
         }
     }

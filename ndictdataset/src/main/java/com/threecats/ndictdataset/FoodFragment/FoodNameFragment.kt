@@ -14,6 +14,7 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_name.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.toast
 
 
 /**
@@ -69,7 +70,8 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(shareSet.CurrentFood!!)
+
+        //setFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -80,14 +82,14 @@ class FoodNameFragment: FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        assignFields(food)
+        getFields(food)
     }
 
     override fun ExportFields(food: BFood) {
-        assemblyFields(food)
+        setFields(food)
     }
 
-    private fun assignFields(food: BFood){
+    private fun getFields(food: BFood){
 
         val logshow = AnkoLogger("NDIC")
 
@@ -100,7 +102,7 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     }
 
-    private fun assemblyFields(food: BFood){
+    private fun setFields(food: BFood){
         foodEditTextHelper.CheckNull("")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){

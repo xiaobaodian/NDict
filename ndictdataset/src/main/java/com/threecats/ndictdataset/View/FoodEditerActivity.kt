@@ -29,6 +29,8 @@ class FoodEditerActivity : AppCompatActivity() {
     var currentFragment: FoodPropertyFragment? = null
     val changBlockList: MutableList<ChangeBlock> = arrayListOf()
 
+    var test = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_editer)
@@ -44,6 +46,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
         currentFragment = foodPropertyFragments[0]
 
+        FoodEditerViewPage.offscreenPageLimit = 6
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
         FoodPropertyTabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
@@ -80,19 +83,18 @@ class FoodEditerActivity : AppCompatActivity() {
                 foodPropertyFragments.forEach { it.ExportFields(saveFood) }
                 processFood(saveFood)
                 shareSet.createFood()
-                foodPropertyFragments.forEach { it.initFieldsFlag = true }
-                currentFragment?.ImportFields(shareSet.CurrentFood!!)
+                //foodPropertyFragments.forEach { it.initFieldsFlag = true }
+                foodPropertyFragments.forEach { it.ImportFields(shareSet.CurrentFood!!) }
                 FoodPropertyTabs.getTabAt(0)?.select()
+                //currentFragment?.ImportFields(shareSet.CurrentFood!!)
             }
         }
         return true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onBackPressed() {
         if (shareSet.ItemEditState == EditerState.FoodAppend) {
-            var f = shareSet.CurrentFood
-
+            test = true
             foodPropertyFragments.forEach { it.ExportFields(shareSet.CurrentFood!!) }
             processFood(shareSet.CurrentFood!!)
         } else {
@@ -103,6 +105,11 @@ class FoodEditerActivity : AppCompatActivity() {
                 processFood(shareSet.CurrentFood!!)
             }
         }
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     fun addChangeBlock(changeBlock: ChangeBlock){
@@ -118,13 +125,17 @@ class FoodEditerActivity : AppCompatActivity() {
         fragment.setArguments(bundle)
         foodPropertyFragments.add(fragment)
 
-        if (BuildConfig.DEBUG) {
-            val logshow = AnkoLogger("NDIC")
-            logshow.info { "设置Fragment参数传递" }
-        }
+//        if (BuildConfig.DEBUG) {
+//            val logshow = AnkoLogger("NDIC")
+//            logshow.info { "设置Fragment参数传递" }
+//        }
     }
 
     private fun processFood(food: BFood){
+
+        if (test) {
+            var f = food
+        }
 
         if (food.name.length == 0) return
 

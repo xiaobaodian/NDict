@@ -12,6 +12,7 @@ import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_note.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -27,7 +28,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //assignFields(currentFood)
+        //getFields(currentFood)
     }
 
     override fun onResume() {
@@ -40,7 +41,8 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(shareSet.CurrentFood!!)
+
+        //setFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -51,14 +53,14 @@ class FoodNoteFragment: FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        assignFields(food)
+        getFields(food)
     }
 
     override fun ExportFields(food: BFood) {
-        assemblyFields(food)
+        setFields(food)
     }
 
-    private fun assignFields(food: BFood){
+    private fun getFields(food: BFood){
 
         with (foodEditTextHelper) {
             textBoxs.clear()
@@ -68,7 +70,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     }
 
-    private fun assemblyFields(food: BFood){
+    private fun setFields(food: BFood){
         foodEditTextHelper.CheckNull("")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){

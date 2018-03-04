@@ -6,11 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cn.bmob.v3.BmobQuery
-import cn.bmob.v3.datatype.BmobPointer
-import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.FindListener
-import cn.bmob.v3.listener.SaveListener
+import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodVitamin
 import com.threecats.ndictdataset.Enum.ChangeBlock
@@ -47,7 +43,8 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(shareSet.CurrentFood?.Vitamin!!)
+
+        //setFields(shareSet.CurrentFood?.Vitamin!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -58,16 +55,14 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        assignFields(food.Vitamin!!)
+        getFields(food.Vitamin!!)
     }
 
     override fun ExportFields(food: BFood) {
-        assemblyFields(food.Vitamin!!)
+        setFields(food.Vitamin!!)
     }
 
-    private fun assignFields(vit: BFoodVitamin){
-
-        context.toast("${VitaminAIEditText.text.toString()}, ${vit.VitaminA.toString()}")
+    private fun getFields(vit: BFoodVitamin){
 
         with (foodEditTextHelper) {
             textBoxs.clear()
@@ -94,7 +89,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     }
 
-    private fun assemblyFields(vit: BFoodVitamin){
+    private fun setFields(vit: BFoodVitamin){
 
         foodEditTextHelper.CheckNull("0.0")
         foodEditTextHelper.textBoxs.forEach {

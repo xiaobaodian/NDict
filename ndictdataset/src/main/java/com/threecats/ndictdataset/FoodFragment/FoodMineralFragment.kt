@@ -15,6 +15,7 @@ import com.threecats.ndictdataset.Helper.EditTextHelper
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -33,7 +34,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //assignFields(currentFood.Mineral!!, currentFood.MineralExt!!)
+        //getFields(currentFood.Mineral!!, currentFood.MineralExt!!)
     }
 
     override fun onResume() {
@@ -46,7 +47,8 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(shareSet.CurrentFood?.Mineral!!, shareSet.CurrentFood?.MineralExt!!)
+
+        //setFields(shareSet.CurrentFood?.Mineral!!, shareSet.CurrentFood?.MineralExt!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -61,14 +63,14 @@ class FoodMineralFragment : FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        assignFields(food.Mineral!!, food.MineralExt!!)
+        getFields(food.Mineral!!, food.MineralExt!!)
     }
 
     override fun ExportFields(food: BFood) {
-        assemblyFields(food.Mineral!!, food.MineralExt!!)
+        setFields(food.Mineral!!, food.MineralExt!!)
     }
 
-    private fun assignFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
+    private fun getFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         with (foodEditTextHelper) {
             textBoxs.clear()
@@ -105,7 +107,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     }
 
-    private fun assemblyFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
+    private fun setFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         foodEditTextHelper.CheckNull("0.0")
         foodEditTextHelper.textBoxs.forEach {
