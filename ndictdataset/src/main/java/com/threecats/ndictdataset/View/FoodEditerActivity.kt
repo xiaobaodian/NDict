@@ -330,12 +330,12 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     toast("删除${food.name}成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(currentFood))
-                    onBackPressed()
                 } else {
                     toast("${e.message}")
                 }
             }
         })
+        onBackPressed()
     }
 
 
