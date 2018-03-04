@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.View
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.view.Menu
 import android.view.MenuItem
 import cn.bmob.v3.exception.BmobException
@@ -9,6 +10,7 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.BuildConfig
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.Enum.EditerState
@@ -25,12 +27,17 @@ import org.jetbrains.anko.toast
 
 class FoodEditerActivity : AppCompatActivity() {
 
-    val currentCategory = BDM.ShareSet?.CurrentCategory!!
-    val currentFood = BDM.ShareSet!!.CurrentFood!!
-    val editerState = BDM.ShareSet?.ItemEditState
-    val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
+    lateinit var  currentCategory: BFoodCategory
+    lateinit var  currentFood: BFood
+    lateinit var  editerState: EditerState
 
+    val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
+    var currentFragment: FoodPropertyFragment? = null
     val changBlockList: MutableList<ChangeBlock> = arrayListOf()
+
+    init {
+        initShareVar()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +52,19 @@ class FoodEditerActivity : AppCompatActivity() {
         addFragments(FoodMineralFragment(),"矿物质")
         addFragments(FoodPictureFragment(),"图片")
 
+        currentFragment = foodPropertyFragments[0]
+
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
+        FoodPropertyTabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let { currentFragment = foodPropertyFragments[tab!!.position] }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,7 +86,13 @@ class FoodEditerActivity : AppCompatActivity() {
                 alertDeleteFood()
             }
             R.id.SaveAddItem -> {
-
+                foodPropertyFragments.forEach { it.ExportFields(currentFood) }
+                processFood(currentFood)
+                BDM.ShareSet?.createFoodItem()
+                initShareVar()
+                foodPropertyFragments.forEach { it.initShareVar() }
+                currentFragment?.ImportFields(currentFood)
+                //foodPropertyFragments.forEach { it.ImportFields(BDM.ShareSet?.CurrentFood!!) }
             }
         }
         return true
@@ -78,7 +102,7 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onDestroy()
         changBlockList.clear()
         foodPropertyFragments.forEach { it.BlockChangeState(this) }
-        if (changBlockList.size > 0) updateFood()
+        if (changBlockList.size > 0) processFood(currentFood)
     }
 
     fun addChangeBlock(changeBlock: ChangeBlock){
@@ -86,6 +110,12 @@ class FoodEditerActivity : AppCompatActivity() {
         if (position < 0) {
             changBlockList.add(changeBlock)
         }
+    }
+
+    private fun initShareVar(){
+        currentCategory = BDM.ShareSet?.CurrentCategory?: BFoodCategory()
+        currentFood = BDM.ShareSet!!.CurrentFood?: BFood()
+        editerState = BDM.ShareSet?.ItemEditState?: EditerState.FoodEdit
     }
 
     private fun addFragments(fragment: FoodPropertyFragment, name: String){
@@ -100,21 +130,24 @@ class FoodEditerActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateFood(){
+    private fun processFood(food: BFood){
 
         when (editerState){
             EditerState.FoodAppend -> {
                 // 加入数据需要在Bmob段建立关联，需要加入维生素、矿物质数据后获取返回的objectId，所以
                 // 采用链式调用
-                addVitaminItem(currentFood)
+                if (food.name.isEmpty() || food.name.isBlank()) {
+                    onBackPressed()
+                }
+                addVitaminItem(food)
             }
             EditerState.FoodEdit -> {
                 changBlockList.forEach {
                     when (it) {
-                        ChangeBlock.Food -> updateFoodItem(currentFood)
-                        ChangeBlock.Vitamin -> updateVitaminItem(currentFood)
-                        ChangeBlock.Mineral -> updateMineralItem(currentFood)
-                        ChangeBlock.MineralExt -> updateMineralExtItem(currentFood)
+                        ChangeBlock.Food -> updateFoodItem(food)
+                        ChangeBlock.Vitamin -> updateVitaminItem(food)
+                        ChangeBlock.Mineral -> updateMineralItem(food)
+                        ChangeBlock.MineralExt -> updateMineralExtItem(food)
                     }
                 }
             }
@@ -146,6 +179,14 @@ class FoodEditerActivity : AppCompatActivity() {
                     addFoodItem(food)
                 } else {
                     toast("${e.message}")
+                    food.Mineral?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
+                    food.Vitamin?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
                 }
             }
         })
@@ -160,6 +201,10 @@ class FoodEditerActivity : AppCompatActivity() {
                     addMineralExt(food)
                 } else {
                     toast("${e.message}")
+                    food.Vitamin?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
                 }
             }
         })
@@ -171,9 +216,21 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("添加了食材，objectID：$objectID")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodAppend))  //Sticky
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodAppend))  //Sticky
                 } else {
                     toast("${e.message}")
+                    food.Vitamin?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
+                    food.Mineral?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
+                    food.MineralExt?.delete(object: UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                        }
+                    })
                 }
             }
         })

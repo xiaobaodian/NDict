@@ -15,8 +15,13 @@ class EditTextHelper {
 
     fun addEditBox(editBox: EditText, text: String){
         textBoxs.add(EditItem(0, editBox))
+        editBox.text.clear()
         editBox.text.append(text)
         editBox.setSelectAllOnFocus(true)
+    }
+
+    fun clear(){
+        textBoxs.forEach { it.editBox.text.clear() }
     }
 
     fun initHash(){

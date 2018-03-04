@@ -13,6 +13,8 @@ import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_name.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 
 
 /**
@@ -22,6 +24,7 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_name, container, false)
     }
 
@@ -53,10 +56,12 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     private fun assignFields(food: BFood){
 
+        val logshow = AnkoLogger("NDIC")
+
         with (checkTextHelper) {
-            addEditBox(NameIEditText)
+            addEditBox(NameIEditText, food.name)
             with (NameIEditText) {
-                text.append(food.name)
+                //logshow.info {text.toString()}
                 addTextChangedListener(object: TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                     }
@@ -73,9 +78,8 @@ class FoodNameFragment: FoodPropertyFragment() {
                 })
             }
 
-            checkTextHelper.addEditBox(AliasIEditText)
+            checkTextHelper.addEditBox(AliasIEditText, food.alias)
             with (AliasIEditText) {
-                text.append(food.alias)
                 addTextChangedListener(object: TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                     }

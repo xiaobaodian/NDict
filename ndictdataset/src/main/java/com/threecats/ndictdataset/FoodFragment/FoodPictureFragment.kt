@@ -20,7 +20,7 @@ class FoodPictureFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_picture, container, false)
     }
 
