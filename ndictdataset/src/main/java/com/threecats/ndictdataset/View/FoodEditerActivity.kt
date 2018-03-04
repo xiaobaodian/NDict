@@ -108,10 +108,6 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     fun addChangeBlock(changeBlock: ChangeBlock){
         val position = changBlockList.indexOf(changeBlock)
         if (position < 0) {
