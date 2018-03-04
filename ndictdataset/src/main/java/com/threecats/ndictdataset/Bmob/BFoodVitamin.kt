@@ -7,7 +7,7 @@ import cn.bmob.v3.BmobObject
  */
 class BFoodVitamin: BmobObject()  {
 
-    var Food: BFood? = null             // 食材，对应关系
+    var FoodID: String? = null          // 食材，对应关系
     var VitaminA: Float = 0f            // 维生素A
     var Carotene: Float = 0f            // 胡萝卜素
     var VitaminB1: Float = 0f           // 维生素B1

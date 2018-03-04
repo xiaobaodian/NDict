@@ -282,25 +282,33 @@ class FoodListActivity : AppCompatActivity() {
             val vitamin: BFoodVitamin = it.Vitamin!!
             val mineral: BFoodMineral = it.Mineral!!
             val mineralExt: BFoodMineralExt = it.MineralExt!!
-            if (vitamin.Food == null) {
-                vitamin.Food = it
+            if (vitamin.FoodID == null) {
+                vitamin.FoodID = it.objectId
                 Vitamins.add(vitamin)
-                logshow.info { "${it.name} Vitamin: ${vitamin.objectId} -> ${vitamin.Food!!.name}" }
+                logshow.info { "${it.name} Vitamin: ${vitamin.objectId} -> ${vitamin.FoodID}" }
             }
-            if (mineral.Food == null) {
-                mineral.Food = it
+            if (mineral.FoodID == null) {
+                mineral.FoodID = it.objectId
                 Minerals.add(mineral)
-                logshow.info { "${it.name} Mineral: ${mineral.objectId} -> ${mineral.Food!!.name}" }
+                logshow.info { "${it.name} Mineral: ${mineral.objectId} -> ${mineral.FoodID}" }
             }
-            if (mineralExt.Food == null) {
-                mineralExt.Food = it
+            if (mineralExt.FoodID == null) {
+                mineralExt.FoodID = it.objectId
                 Mineralexts.add(mineralExt)
-                logshow.info { "${it.name} MineralExt: ${mineralExt.objectId} -> ${mineralExt.Food!!.name}" }
+                logshow.info { "${it.name} MineralExt: ${mineralExt.objectId} -> ${mineralExt.FoodID}" }
             }
         }
         toast("${Vitamins.size} / ${Minerals.size} / ${Mineralexts.size}")
         if (Vitamins.size > 0) {
-            //
+            BmobBatch().updateBatch(Vitamins).doBatch(object: QueryListListener<BatchResult>(){
+                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
+                    if (e == null) {
+                        toast("补增了${results?.size}个矿物资扩展记录")
+                    } else {
+                        toast("${e.message}")
+                    }
+                }
+            })
         }
         if (Minerals.size > 0) {
             BmobBatch().updateBatch(Minerals).doBatch(object: QueryListListener<BatchResult>(){
@@ -313,15 +321,18 @@ class FoodListActivity : AppCompatActivity() {
                 }
             })
         }
-//        BmobBatch().updateBatch(Mineralexts).doBatch(object: QueryListListener<BatchResult>(){
-//            override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-//                if (e == null) {
-//                    toast("补增了${results?.size}个矿物资扩展记录")
-//                } else {
-//                    toast("${e.message}")
-//                }
-//            }
-//        })
+        if (Mineralexts.size > 0) {
+            BmobBatch().updateBatch(Mineralexts).doBatch(object: QueryListListener<BatchResult>(){
+                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
+                    if (e == null) {
+                        toast("补增了${results?.size}个矿物资扩展记录")
+                    } else {
+                        toast("${e.message}")
+                    }
+                }
+            })
+        }
+
     }
 
 }

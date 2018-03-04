@@ -141,7 +141,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     }
 
     private fun appendVitaminItem(vitaminItem: BFoodVitamin){
-        vitaminItem.Food = currentFood
+        vitaminItem.FoodID = currentFood.objectId
         vitaminItem.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {

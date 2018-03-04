@@ -7,7 +7,7 @@ import cn.bmob.v3.BmobObject
  */
 class BFoodMineralExt: BmobObject() {
 
-    var Food: BFood? = null             // 食材，对应关系
+    var FoodID: String? = null      // 食材，对应关系
     var mAi: Float = 0f             // 铝含量
     var mCi: Float = 0f             // 氯含量
     var mF: Float = 0f              // 氟含量
