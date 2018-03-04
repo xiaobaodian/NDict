@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.R
 
 class FoodListAdapter(private val foods: MutableList<BFood>, val context: Context) : RecyclerView.Adapter<FoodListAdapter.ViewHolder>() {
@@ -29,7 +28,7 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
         holder.view.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.food)
 
-            BDM.ShareSet?.editFoodItem(food)
+            BDM.ShareSet?.editFood(food)
             val intent = Intent(context, FoodEditerActivity::class.java)
             context.startActivity(intent)
         }

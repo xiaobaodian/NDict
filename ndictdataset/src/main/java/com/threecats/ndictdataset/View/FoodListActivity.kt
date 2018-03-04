@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import cn.bmob.v3.BmobBatch
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.BmobQuery
@@ -55,7 +54,7 @@ class FoodListActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //        .setAction("Action", null).show()
-            shareSet.createFoodItem()
+            shareSet.createFood()
             val intent = Intent(this@FoodListActivity, FoodEditerActivity::class.java)
             startActivity(intent)
         }
@@ -124,7 +123,6 @@ class FoodListActivity : AppCompatActivity() {
                 foodList?.add(updateItem.Food)
                 val foodSize = foodList?.size!!
                 FoodRView?.adapter?.notifyItemInserted(foodSize)
-                BDM.ShareSet?.ItemEditState = EditerState.CategoryEdit  // ??? 应该可以去掉
                 updateCategoryFoodSize(foodSize)
             }
         }

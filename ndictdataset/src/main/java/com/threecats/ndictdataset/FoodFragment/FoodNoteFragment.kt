@@ -21,29 +21,36 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
+        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_note, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        assignFields(currentFood)
+        //assignFields(currentFood)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(currentFood)
+        assemblyFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
     override fun ImportFields(food: BFood) {
-        checkTextHelper.textBoxs.clear()
         assignFields(food)
     }
 
@@ -53,7 +60,8 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     private fun assignFields(food: BFood){
 
-        with (checkTextHelper) {
+        with (foodEditTextHelper) {
+            textBoxs.clear()
             addEditBox(FoodNoteIEditText, food.note)
             initHash()
         }
@@ -61,8 +69,8 @@ class FoodNoteFragment: FoodPropertyFragment() {
     }
 
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull("")
-        checkTextHelper.textBoxs.forEach {
+        foodEditTextHelper.CheckNull("")
+        foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 FoodNoteIEditText -> food.note = it.editBox.text.toString()
             }

@@ -21,29 +21,35 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_nutrient, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        assignFields(currentFood)
+        //assignFields(currentFood)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(currentFood)
+        assemblyFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
     override fun ImportFields(food: BFood) {
-        checkTextHelper.textBoxs.clear()
         assignFields(food)
     }
 
@@ -53,7 +59,8 @@ class FoodNutrientFragment : FoodPropertyFragment() {
 
     private fun assignFields(food: BFood){
 
-        with (checkTextHelper) {
+        with (foodEditTextHelper) {
+            textBoxs.clear()
             addEditBox(CaloriesIEditText, food.calories.toString())
             addEditBox(WaterIEditText, food.water.toString())
             addEditBox(ProteinIEditText, food.protein.toString())
@@ -67,8 +74,8 @@ class FoodNutrientFragment : FoodPropertyFragment() {
     }
 
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull("0.0")
-        checkTextHelper.textBoxs.forEach {
+        foodEditTextHelper.CheckNull("0.0")
+        foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 CaloriesIEditText -> food.calories = it.editBox.text.toString().toFloat()
                 WaterIEditText -> food.water = it.editBox.text.toString().toFloat()

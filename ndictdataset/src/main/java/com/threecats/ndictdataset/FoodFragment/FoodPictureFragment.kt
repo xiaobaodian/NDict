@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.ChangeBlock
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
@@ -20,19 +19,27 @@ class FoodPictureFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
+        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_picture, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
+    }
+
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             //parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
     override fun ImportFields(food: BFood) {
-        //checkTextHelper.textBoxs.clear()
+        //foodEditTextHelper.textBoxs.clear()
         //assignFields(food)
     }
 

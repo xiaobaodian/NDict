@@ -10,7 +10,6 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.BuildConfig
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.Enum.EditerState
@@ -20,24 +19,15 @@ import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 class FoodEditerActivity : AppCompatActivity() {
 
-    lateinit var  currentCategory: BFoodCategory
-    lateinit var  currentFood: BFood
-    lateinit var  editerState: EditerState
+    val shareSet = BDM.ShareSet!!
 
     val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     var currentFragment: FoodPropertyFragment? = null
     val changBlockList: MutableList<ChangeBlock> = arrayListOf()
-
-    init {
-        initShareVar()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +63,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        when (editerState){
+        when (shareSet.ItemEditState){
             EditerState.FoodAppend -> {menu!!.findItem(R.id.SaveAddItem).isVisible = true}
             EditerState.FoodEdit   -> {menu!!.findItem(R.id.SaveAddItem).isVisible = false}
         }
@@ -86,13 +76,13 @@ class FoodEditerActivity : AppCompatActivity() {
                 alertDeleteFood()
             }
             R.id.SaveAddItem -> {
-                foodPropertyFragments.forEach { it.ExportFields(currentFood) }
-                processFood(currentFood)
-                BDM.ShareSet?.createFoodItem()
-                initShareVar()
-                foodPropertyFragments.forEach { it.initShareVar() }
-                currentFragment?.ImportFields(currentFood)
-                //foodPropertyFragments.forEach { it.ImportFields(BDM.ShareSet?.CurrentFood!!) }
+                var saveFood = shareSet.CurrentFood!!
+                foodPropertyFragments.forEach { it.ExportFields(saveFood) }
+                processFood(saveFood)
+                shareSet.createFood()
+                foodPropertyFragments.forEach { it.initFieldsFlag = true }
+                currentFragment?.ImportFields(shareSet.CurrentFood!!)
+                FoodPropertyTabs.getTabAt(0)?.select()
             }
         }
         return true
@@ -100,9 +90,19 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        changBlockList.clear()
-        foodPropertyFragments.forEach { it.BlockChangeState(this) }
-        if (changBlockList.size > 0) processFood(currentFood)
+        if (shareSet.ItemEditState == EditerState.FoodAppend) {
+            var f = shareSet.CurrentFood
+
+            foodPropertyFragments.forEach { it.ExportFields(shareSet.CurrentFood!!) }
+            processFood(shareSet.CurrentFood!!)
+        } else {
+            changBlockList.clear()
+            foodPropertyFragments.forEach { it.BlockChangeState(this) }
+            if (changBlockList.size > 0) {
+                foodPropertyFragments.forEach { it.ExportFields(shareSet.CurrentFood!!) }
+                processFood(shareSet.CurrentFood!!)
+            }
+        }
     }
 
     fun addChangeBlock(changeBlock: ChangeBlock){
@@ -110,12 +110,6 @@ class FoodEditerActivity : AppCompatActivity() {
         if (position < 0) {
             changBlockList.add(changeBlock)
         }
-    }
-
-    private fun initShareVar(){
-        currentCategory = BDM.ShareSet?.CurrentCategory?: BFoodCategory()
-        currentFood = BDM.ShareSet!!.CurrentFood?: BFood()
-        editerState = BDM.ShareSet?.ItemEditState?: EditerState.FoodEdit
     }
 
     private fun addFragments(fragment: FoodPropertyFragment, name: String){
@@ -132,13 +126,12 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private fun processFood(food: BFood){
 
-        when (editerState){
+        if (food.name.length == 0) return
+
+        when (shareSet.ItemEditState){
             EditerState.FoodAppend -> {
                 // 加入数据需要在Bmob段建立关联，需要加入维生素、矿物质数据后获取返回的objectId，所以
                 // 采用链式调用
-                if (food.name.isEmpty() || food.name.isBlank()) {
-                    onBackPressed()
-                }
                 addVitaminItem(food)
             }
             EditerState.FoodEdit -> {
@@ -211,7 +204,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun addFoodItem(food: BFood){
-        food.category = currentCategory
+        food.category = shareSet.CurrentCategory
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
@@ -280,7 +273,7 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了食材数据")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(currentFood, EditerState.FoodEdit))  //Sticky
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(shareSet.CurrentFood!!, EditerState.FoodEdit))  //Sticky
                 } else {
                     toast("${e.message}")
                 }
@@ -290,8 +283,8 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private fun alertDeleteFood(){
 
-        alert("确实要删除食材 ${currentFood.name} 吗？", "删除食材") {
-            positiveButton("确定") { deleteFoodFromBmob(currentFood) }
+        alert("确实要删除食材 ${shareSet.CurrentFood?.name} 吗？", "删除食材") {
+            positiveButton("确定") { deleteFoodFromBmob(shareSet.CurrentFood!!) }
             negativeButton("取消") {  }
         }.show()
 
@@ -329,7 +322,7 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(e: BmobException?) {
                 if (e == null) {
                     toast("删除${food.name}成功")
-                    EventBus.getDefault().post(DeleteFoodRecyclerItem(currentFood))
+                    EventBus.getDefault().post(DeleteFoodRecyclerItem(shareSet.CurrentFood!!))
                 } else {
                     toast("${e.message}")
                 }

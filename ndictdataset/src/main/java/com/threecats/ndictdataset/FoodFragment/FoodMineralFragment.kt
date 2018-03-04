@@ -26,23 +26,31 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
+        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_mineral, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        assignFields(currentFood.Mineral!!, currentFood.MineralExt!!)
+        //assignFields(currentFood.Mineral!!, currentFood.MineralExt!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(currentFood.Mineral!!, currentFood.MineralExt!!)
+        assemblyFields(shareSet.CurrentFood?.Mineral!!, shareSet.CurrentFood?.MineralExt!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         val extChangeNumber = checkTextExtHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Mineral)
@@ -53,7 +61,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        checkTextHelper.textBoxs.clear()
         assignFields(food.Mineral!!, food.MineralExt!!)
     }
 
@@ -63,7 +70,8 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     private fun assignFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
-        with (checkTextHelper) {
+        with (foodEditTextHelper) {
+            textBoxs.clear()
             addEditBox(KIEditText, mineral.mK.toString())
             addEditBox(NIEditText, mineral.mN.toString())
             addEditBox(CaIEditText, mineral.mCa.toString())
@@ -86,6 +94,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
             initHash()
         }
         with (checkTextExtHelper) {
+            textBoxs.clear()
             addEditBox(AiIEditText, mineralext.mAi.toString())
             addEditBox(CiIEditText, mineralext.mCi.toString())
             addEditBox(FIEditText, mineralext.mF.toString())
@@ -98,8 +107,8 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
-        checkTextHelper.CheckNull("0.0")
-        checkTextHelper.textBoxs.forEach {
+        foodEditTextHelper.CheckNull("0.0")
+        foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                   KIEditText    ->  mineral.mK  = it.editBox.text.toString().toFloat()
                   NIEditText    ->  mineral.mN  = it.editBox.text.toString().toFloat()

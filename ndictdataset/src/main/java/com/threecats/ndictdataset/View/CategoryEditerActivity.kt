@@ -32,9 +32,8 @@ class CategoryEditerActivity : AppCompatActivity() {
         setSupportActionBar(CategoryEditerToolbar)
         CategoryEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
-        checkTextHelper.addEditBox(LongTitleIEditText)
+        checkTextHelper.addEditBox(LongTitleIEditText, currentCategory.LongTitle.toString())
         with (LongTitleIEditText) {
-            text.append(currentCategory.LongTitle)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
@@ -45,9 +44,8 @@ class CategoryEditerActivity : AppCompatActivity() {
             })
         }
 
-        checkTextHelper.addEditBox(ShortTitleIEditText)
+        checkTextHelper.addEditBox(ShortTitleIEditText, currentCategory.ShortTitle.toString())
         with (ShortTitleIEditText) {
-            text.append(currentCategory.ShortTitle)
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }

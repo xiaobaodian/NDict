@@ -19,9 +19,8 @@ class PublicSet(val appContext: Context) {
     var CurrentCategory: BFoodCategory? = null
     var CurrentCategoryPosition: Int = 0
     var CurrentFood: BFood? = null
-    var CurrentVitamin: BFoodVitamin? = null
 
-    fun createFoodItem(){
+    fun createFood(){
         ItemEditState = EditerState.FoodAppend
         CurrentFood = BFood().apply {
             category = CurrentCategory
@@ -31,10 +30,9 @@ class PublicSet(val appContext: Context) {
         }
     }
 
-    fun editFoodItem(food: BFood){
+    fun editFood(food: BFood){
         ItemEditState = EditerState.FoodEdit
         CurrentFood = food
-        CurrentVitamin = null
     }
 
 }

@@ -9,9 +9,9 @@ import android.widget.EditText
 class EditTextHelper {
     var textBoxs: MutableList<EditItem> = ArrayList<EditItem>()
 
-    fun addEditBox(editBox: EditText){
-        textBoxs.add(EditItem(0, editBox))
-    }
+//    fun addEditBox(editBox: EditText){
+//        textBoxs.add(EditItem(0, editBox))
+//    }
 
     fun addEditBox(editBox: EditText, text: String){
         textBoxs.add(EditItem(0, editBox))

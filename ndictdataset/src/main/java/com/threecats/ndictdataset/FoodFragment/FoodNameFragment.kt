@@ -14,7 +14,6 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_name.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
 
 /**
@@ -24,29 +23,63 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
+        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_name, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        assignFields(currentFood)
+
+        with (NameIEditText) {
+            //logshow.info {text.toString()}
+            addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.length == 0) {
+                        NameILayout.error = "食材名称不能为空"
+                        NameILayout.isErrorEnabled = true
+                    } else {
+                        NameILayout.isErrorEnabled = false
+                    }
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+        }
+        with (AliasIEditText) {
+            addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun afterTextChanged(s: Editable?) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(currentFood)
+        assemblyFields(shareSet.CurrentFood!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
     override fun ImportFields(food: BFood) {
-        checkTextHelper.textBoxs.clear()
         assignFields(food)
     }
 
@@ -58,46 +91,18 @@ class FoodNameFragment: FoodPropertyFragment() {
 
         val logshow = AnkoLogger("NDIC")
 
-        with (checkTextHelper) {
+        with (foodEditTextHelper) {
+            textBoxs.clear()
             addEditBox(NameIEditText, food.name)
-            with (NameIEditText) {
-                //logshow.info {text.toString()}
-                addTextChangedListener(object: TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    }
-                    override fun afterTextChanged(s: Editable?) {
-                        if (s?.length == 0) {
-                            NameILayout.error = "食材名称不能为空"
-                            NameILayout.isErrorEnabled = true
-                        } else {
-                            NameILayout.isErrorEnabled = false
-                        }
-                    }
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    }
-                })
-            }
-
-            checkTextHelper.addEditBox(AliasIEditText, food.alias)
-            with (AliasIEditText) {
-                addTextChangedListener(object: TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    }
-                    override fun afterTextChanged(s: Editable?) {
-                    }
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    }
-                })
-            }
-            checkTextHelper.initHash()
+            addEditBox(AliasIEditText, food.alias)
             initHash()
         }
 
     }
 
     private fun assemblyFields(food: BFood){
-        checkTextHelper.CheckNull("")
-        checkTextHelper.textBoxs.forEach {
+        foodEditTextHelper.CheckNull("")
+        foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 NameIEditText -> food.name = it.editBox.text.toString()
                 AliasIEditText -> food.alias = it.editBox.text.toString()

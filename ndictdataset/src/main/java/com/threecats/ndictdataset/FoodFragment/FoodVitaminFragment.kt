@@ -28,30 +28,36 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        initShareVar()
+
         return inflater!!.inflate(R.layout.fragment_food_vitamin, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        assignFields(currentFood.Vitamin!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (initFieldsFlag) {
+            initFieldsFlag = false
+            ImportFields(shareSet.CurrentFood!!)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        assemblyFields(currentFood.Vitamin!!)
+        assemblyFields(shareSet.CurrentFood?.Vitamin!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = checkTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Vitamin)
         }
     }
 
     override fun ImportFields(food: BFood) {
-        checkTextHelper.textBoxs.clear()
         assignFields(food.Vitamin!!)
     }
 
@@ -61,7 +67,10 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     private fun assignFields(vit: BFoodVitamin){
 
-        with (checkTextHelper) {
+        context.toast("${VitaminAIEditText.text.toString()}, ${vit.VitaminA.toString()}")
+
+        with (foodEditTextHelper) {
+            textBoxs.clear()
             addEditBox(VitaminAIEditText, vit.VitaminA.toString())
             addEditBox(CaroteneIEditText, vit.Carotene.toString())
             addEditBox(VitaminB1IEditText, vit.VitaminB1.toString())
@@ -87,12 +96,11 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     private fun assemblyFields(vit: BFoodVitamin){
 
-        checkTextHelper.CheckNull("0.0")
-        checkTextHelper.textBoxs.forEach {
+        foodEditTextHelper.CheckNull("0.0")
+        foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
 
                 VitaminAIEditText -> vit.VitaminA = it.editBox.text.toString().toFloat()
-                //VitaminAIEditText -> vit.VitaminA = 471f
                 CaroteneIEditText -> vit.Carotene = it.editBox.text.toString().toFloat()
                 VitaminB1IEditText -> vit.VitaminB1 = it.editBox.text.toString().toFloat()
                 VitaminB2IEditText -> vit.VitaminB2 = it.editBox.text.toString().toFloat()
@@ -114,43 +122,6 @@ class FoodVitaminFragment : FoodPropertyFragment() {
             }
         }
 
-    }
-
-    private fun findVitaminFromBmob(food: BFood){
-        var query: BmobQuery<BFoodVitamin> = BmobQuery()
-        query.addWhereEqualTo("Food", BmobPointer(food))
-        query.setLimit(1)
-        query.findObjects(object: FindListener<BFoodVitamin>(){
-            override fun done(vitamins: MutableList<BFoodVitamin>?, e: BmobException?) {
-                if (e == null) {
-                    if (vitamins?.size == 0) {
-                        shareSet.CurrentVitamin = BFoodVitamin()
-                        currentVitamin = shareSet.CurrentVitamin
-                        appendVitaminItem(currentVitamin!!)
-                        assignFields(currentFood.Vitamin!!)
-                    } else {
-                        vitamins?.forEach { shareSet.CurrentVitamin = it }
-                        currentVitamin = shareSet.CurrentVitamin
-                        assignFields(currentFood.Vitamin!!)
-                    }
-                } else {
-                    context.toast("${e.message}")
-                }
-            }
-        })
-    }
-
-    private fun appendVitaminItem(vitaminItem: BFoodVitamin){
-        vitaminItem.FoodID = currentFood.objectId
-        vitaminItem.save(object: SaveListener<String>() {
-            override fun done(objectID: String?, e: BmobException?) {
-                if (e == null) {
-                    context.toast("添补了维生素数据记录")
-                } else {
-                    context.toast("${e.message}")
-                }
-            }
-        })
     }
 
 }// Required empty public constructor
