@@ -10,7 +10,6 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.BuildConfig
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
@@ -54,6 +53,11 @@ class FoodEditerActivity : AppCompatActivity() {
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let { currentFragment = foodPropertyFragments[tab!!.position] }
+                if (tab?.position == 0) {
+                    FoodEditerToolbar.title = "食材详情"
+                } else {
+                    FoodEditerToolbar.title = shareSet.CurrentFood?.name
+                }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
@@ -155,7 +159,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun addVitaminItem(food: BFood){
-        val v = food.Vitamin!!
+        val v = food.vitamin!!
         v.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
@@ -170,7 +174,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun addMineralExt(food: BFood){
-        val mext = food.MineralExt!!
+        val mext = food.mineralExt!!
         mext.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
@@ -179,11 +183,11 @@ class FoodEditerActivity : AppCompatActivity() {
                     addFoodItem(food)
                 } else {
                     toast("${e.message}")
-                    food.Mineral?.delete(object: UpdateListener(){
+                    food.mineral?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
-                    food.Vitamin?.delete(object: UpdateListener(){
+                    food.vitamin?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
@@ -192,7 +196,7 @@ class FoodEditerActivity : AppCompatActivity() {
         })
     }
     private fun addMineral(food: BFood){
-        val m = food.Mineral!!
+        val m = food.mineral!!
         m.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
@@ -201,7 +205,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     addMineralExt(food)
                 } else {
                     toast("${e.message}")
-                    food.Vitamin?.delete(object: UpdateListener(){
+                    food.vitamin?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
@@ -219,15 +223,15 @@ class FoodEditerActivity : AppCompatActivity() {
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodAppend))  //Sticky
                 } else {
                     toast("${e.message}")
-                    food.Vitamin?.delete(object: UpdateListener(){
+                    food.vitamin?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
-                    food.Mineral?.delete(object: UpdateListener(){
+                    food.mineral?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
-                    food.MineralExt?.delete(object: UpdateListener(){
+                    food.mineralExt?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
                     })
@@ -237,7 +241,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun updateMineralItem(food: BFood){
-        val m = food.Mineral!!
+        val m = food.mineral!!
         m.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
@@ -250,7 +254,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun updateMineralExtItem(food: BFood){
-        val mext = food.MineralExt!!
+        val mext = food.mineralExt!!
         mext.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
@@ -263,7 +267,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun updateVitaminItem(food: BFood){
-        val v = food.Vitamin!!
+        val v = food.vitamin!!
         v.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
@@ -298,7 +302,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun deleteFoodFromBmob(food: BFood){
-        food.Mineral?.delete(object: UpdateListener(){
+        food.mineral?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("删除${food.name}矿物质数据成功")
@@ -307,7 +311,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
-        food.MineralExt?.delete(object: UpdateListener(){
+        food.mineralExt?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("删除${food.name}矿物质扩展数据成功")
@@ -316,7 +320,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
-        food.Vitamin?.delete(object: UpdateListener(){
+        food.vitamin?.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("删除${food.name}维生素数据成功")

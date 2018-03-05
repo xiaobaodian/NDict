@@ -46,7 +46,7 @@ class FoodListActivity : AppCompatActivity() {
         setSupportActionBar(FoodToolbar)
 
         with (FoodToolbar){
-            title = currentCategory.LongTitle
+            title = currentCategory.longTitle
             subtitle = "食材列表"
             setNavigationOnClickListener { onBackPressed() }
         }
@@ -90,12 +90,12 @@ class FoodListActivity : AppCompatActivity() {
         if (foodList == null) {
             val query: BmobQuery<BFood> = BmobQuery()
             query.addWhereEqualTo("category", BmobPointer(currentCategory))
-            query.include("Vitamin,Mineral,MineralExt")
+            query.include("vitamin,mineral,mineralExt")
             query.setLimit(300)
             query.findObjects(object: FindListener<BFood>(){
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
-                        if (currentCategory.FoodTotal != foods!!.size) {
+                        if (currentCategory.foodTotal != foods!!.size) {
                             updateCategoryFoodSize(foods.size, true)
                         }
                         foodList = foods
@@ -146,29 +146,29 @@ class FoodListActivity : AppCompatActivity() {
 
         checkElement.Foods.forEach {
 
-            if (it.Vitamin == null) {
+            if (it.vitamin == null) {
                 nullVitamins.add(it)
             } else {
-                if (it.Vitamin!!.objectId == ""){
-                    it.Vitamin = null
+                if (it.vitamin!!.objectId == ""){
+                    it.vitamin = null
                     nullVitamins.add(it)
                 }
             }
 
-            if (it.Mineral == null) {
+            if (it.mineral == null) {
                 nullMinerals.add(it)
             } else {
-                if (it.Mineral!!.objectId == ""){
-                    it.Mineral = null
+                if (it.mineral!!.objectId == ""){
+                    it.mineral = null
                     nullMinerals.add(it)
                 }
             }
 
-            if (it.MineralExt == null) {
+            if (it.mineralExt == null) {
                 nullMineralexts.add(it)
             } else {
-                if (it.MineralExt!!.objectId == ""){
-                    it.MineralExt = null
+                if (it.mineralExt!!.objectId == ""){
+                    it.mineralExt = null
                     nullMineralexts.add(it)
                 }
             }
@@ -178,14 +178,14 @@ class FoodListActivity : AppCompatActivity() {
             val vitamins: MutableList<BmobObject> = arrayListOf()
 
             nullVitamins.forEach {
-                it.Vitamin = BFoodVitamin()
-                vitamins.add(it.Vitamin!!)
+                it.vitamin = BFoodVitamin()
+                vitamins.add(it.vitamin!!)
             }
             BmobBatch().insertBatch(vitamins).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
                         toast("补增了${results?.size}个维生素记录")
-                        results?.forEachIndexed { i, batchResult -> nullVitamins[i].Vitamin?.objectId = batchResult.objectId }
+                        results?.forEachIndexed { i, batchResult -> nullVitamins[i].vitamin?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullVitamins, "维生素"))
                     } else {
                         toast("${e.message}")
@@ -198,15 +198,15 @@ class FoodListActivity : AppCompatActivity() {
             val minerals: MutableList<BmobObject> = arrayListOf()
 
             nullMinerals.forEach {
-                it.Mineral = BFoodMineral()
-                minerals.add(it.Mineral!!)
+                it.mineral = BFoodMineral()
+                minerals.add(it.mineral!!)
             }
 
             BmobBatch().insertBatch(minerals).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
                         toast("补增了${results?.size}个矿物质记录")
-                        results?.forEachIndexed { i, batchResult -> nullMinerals[i].Mineral?.objectId = batchResult.objectId }
+                        results?.forEachIndexed { i, batchResult -> nullMinerals[i].mineral?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMinerals, "矿物资"))
                     } else {
                         toast("${e.message}")
@@ -219,15 +219,15 @@ class FoodListActivity : AppCompatActivity() {
             val mineralexts: MutableList<BmobObject> = arrayListOf()
 
             nullMineralexts.forEach {
-                it.MineralExt = BFoodMineralExt()
-                mineralexts.add(it.MineralExt!!)
+                it.mineralExt = BFoodMineralExt()
+                mineralexts.add(it.mineralExt!!)
             }
 
             BmobBatch().insertBatch(mineralexts).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
                         toast("补增了${results?.size}个矿物资扩展记录")
-                        results?.forEachIndexed { i, batchResult -> nullMineralexts[i].MineralExt?.objectId = batchResult.objectId }
+                        results?.forEachIndexed { i, batchResult -> nullMineralexts[i].mineralExt?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMineralexts, "矿物质扩展"))
                     } else {
                         toast("${e.message}")
@@ -253,13 +253,13 @@ class FoodListActivity : AppCompatActivity() {
     }
 
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
-        currentCategory.FoodTotal = size
+        currentCategory.foodTotal = size
         currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))
                     if (showMessage) {
-                        toast("更新${currentCategory.LongTitle}类的食材总数：$size ")
+                        toast("更新${currentCategory.longTitle}类的食材总数：$size ")
                     }
                 } else {
                     toast("${e.message}")
@@ -277,23 +277,23 @@ class FoodListActivity : AppCompatActivity() {
         val Mineralexts: MutableList<BmobObject> = arrayListOf()
 
         foodList?.forEach {
-            val vitamin: BFoodVitamin = it.Vitamin!!
-            val mineral: BFoodMineral = it.Mineral!!
-            val mineralExt: BFoodMineralExt = it.MineralExt!!
-            if (vitamin.FoodID == null) {
-                vitamin.FoodID = it.objectId
+            val vitamin: BFoodVitamin = it.vitamin!!
+            val mineral: BFoodMineral = it.mineral!!
+            val mineralExt: BFoodMineralExt = it.mineralExt!!
+            if (vitamin.foodID == null) {
+                vitamin.foodID = it.objectId
                 Vitamins.add(vitamin)
-                logshow.info { "${it.name} Vitamin: ${vitamin.objectId} -> ${vitamin.FoodID}" }
+                logshow.info { "${it.name} vitamin: ${vitamin.objectId} -> ${vitamin.foodID}" }
             }
-            if (mineral.FoodID == null) {
-                mineral.FoodID = it.objectId
+            if (mineral.foodID == null) {
+                mineral.foodID = it.objectId
                 Minerals.add(mineral)
-                logshow.info { "${it.name} Mineral: ${mineral.objectId} -> ${mineral.FoodID}" }
+                logshow.info { "${it.name} mineral: ${mineral.objectId} -> ${mineral.foodID}" }
             }
-            if (mineralExt.FoodID == null) {
-                mineralExt.FoodID = it.objectId
+            if (mineralExt.foodID == null) {
+                mineralExt.foodID = it.objectId
                 Mineralexts.add(mineralExt)
-                logshow.info { "${it.name} MineralExt: ${mineralExt.objectId} -> ${mineralExt.FoodID}" }
+                logshow.info { "${it.name} mineralExt: ${mineralExt.objectId} -> ${mineralExt.foodID}" }
             }
         }
         toast("${Vitamins.size} / ${Minerals.size} / ${Mineralexts.size}")

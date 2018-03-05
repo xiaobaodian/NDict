@@ -23,12 +23,12 @@ class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, va
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categorys[position]
         holder.category = category
-        holder.title.text = category.LongTitle
-        holder.subTotal.text = category.FoodTotal.toString()
+        holder.title.text = category.longTitle
+        holder.subTotal.text = category.foodTotal.toString()
 
         holder.view.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.food)
-            //Toast.makeText(holder.context,"点击了：${category.LongTitle}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(holder.context,"点击了：${category.longTitle}", Toast.LENGTH_SHORT).show()
             BDM.ShareSet?.CurrentCategory = category
             BDM.ShareSet?.CurrentCategoryPosition = position
             val intent = Intent(parentContext, FoodListActivity::class.java)

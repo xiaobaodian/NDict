@@ -20,7 +20,6 @@ import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 
 import com.threecats.ndictdataset.R
-import kotlinx.android.synthetic.main.content_food_list.*
 import kotlinx.android.synthetic.main.fragment_category_foods.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -79,7 +78,7 @@ class CategoryFoodsFragment : Fragment() {
         categoryQuery.getObject(objectID, object : QueryListener<BFoodCategory>() {
             override fun done(category: BFoodCategory?, e: BmobException?) {
                 if (e == null) {
-                    //message.text = food!!.LongTitle
+                    //message.text = food!!.longTitle
                 } else {
                     //message.text = e.message
                 }
@@ -113,8 +112,8 @@ class CategoryFoodsFragment : Fragment() {
     private fun saveCategoryOne(categoryID: Int, longTitle: String, shortTitle: String){
         var category = BFoodCategory()  //categoryID, longTitle, shortTitle
         category.categoryID = categoryID
-        category.LongTitle = longTitle
-        category.ShortTitle = shortTitle
+        category.longTitle = longTitle
+        category.shortTitle = shortTitle
         category.save(object : SaveListener<String>() {
             override fun done(objectId: String?, e: BmobException?) {
                 if (e == null) {

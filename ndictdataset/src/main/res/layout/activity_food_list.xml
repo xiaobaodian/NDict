@@ -18,7 +18,10 @@
             android:background="?attr/colorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="title" />
+            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:title="title"
+            app:titleMarginBottom="6dp"
+            app:titleMarginTop="6dp" />
 
     </android.support.design.widget.AppBarLayout>
 

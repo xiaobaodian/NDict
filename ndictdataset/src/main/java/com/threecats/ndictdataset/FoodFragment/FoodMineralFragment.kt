@@ -15,7 +15,6 @@ import com.threecats.ndictdataset.Helper.EditTextHelper
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
-import org.jetbrains.anko.toast
 
 
 /**
@@ -34,7 +33,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //getFields(currentFood.Mineral!!, currentFood.MineralExt!!)
+        //getFields(currentFood.mineral!!, currentFood.mineralExt!!)
     }
 
     override fun onResume() {
@@ -48,7 +47,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        //setFields(shareSet.CurrentFood?.Mineral!!, shareSet.CurrentFood?.MineralExt!!)
+        //setFields(shareSet.CurrentFood?.mineral!!, shareSet.CurrentFood?.mineralExt!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
@@ -63,11 +62,11 @@ class FoodMineralFragment : FoodPropertyFragment() {
     }
 
     override fun ImportFields(food: BFood) {
-        getFields(food.Mineral!!, food.MineralExt!!)
+        getFields(food.mineral!!, food.mineralExt!!)
     }
 
     override fun ExportFields(food: BFood) {
-        setFields(food.Mineral!!, food.MineralExt!!)
+        setFields(food.mineral!!, food.mineralExt!!)
     }
 
     private fun getFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){

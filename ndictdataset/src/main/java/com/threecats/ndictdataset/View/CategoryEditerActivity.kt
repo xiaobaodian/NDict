@@ -32,7 +32,7 @@ class CategoryEditerActivity : AppCompatActivity() {
         setSupportActionBar(CategoryEditerToolbar)
         CategoryEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
-        checkTextHelper.addEditBox(LongTitleIEditText, currentCategory.LongTitle.toString())
+        checkTextHelper.addEditBox(LongTitleIEditText, currentCategory.longTitle.toString())
         with (LongTitleIEditText) {
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -44,7 +44,7 @@ class CategoryEditerActivity : AppCompatActivity() {
             })
         }
 
-        checkTextHelper.addEditBox(ShortTitleIEditText, currentCategory.ShortTitle.toString())
+        checkTextHelper.addEditBox(ShortTitleIEditText, currentCategory.shortTitle.toString())
         with (ShortTitleIEditText) {
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -83,8 +83,8 @@ class CategoryEditerActivity : AppCompatActivity() {
     }
 
     private fun updateCategory(){
-        currentCategory.LongTitle = LongTitleIEditText.text.toString()
-        currentCategory.ShortTitle = ShortTitleIEditText.text.toString()
+        currentCategory.longTitle = LongTitleIEditText.text.toString()
+        currentCategory.shortTitle = ShortTitleIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
 
@@ -117,7 +117,7 @@ class CategoryEditerActivity : AppCompatActivity() {
 
     private fun alertDeleteCategory(){
 
-        alert("确实要删除分类 ${currentCategory.LongTitle} 吗？", "删除分类") {
+        alert("确实要删除分类 ${currentCategory.longTitle} 吗？", "删除分类") {
             positiveButton("确定") { deleteCategoryFromBmob(currentCategory) }
             negativeButton("取消") {  }
         }.show()
@@ -128,7 +128,7 @@ class CategoryEditerActivity : AppCompatActivity() {
         category.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("删除${category.LongTitle}成功")
+                    toast("删除${category.longTitle}成功")
                     EventBus.getDefault().post(DeleteCategoryRecyclerItem(currentCategory))
                     onBackPressed()
                 } else {

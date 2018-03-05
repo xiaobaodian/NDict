@@ -8,7 +8,6 @@ import cn.bmob.v3.datatype.BmobPointer
  */
 class BFood: BmobObject() {
 
-    var category: BFoodCategory? = null             // 食材的分类
     var name: String = ""                           // 食材名称
     var alias: String = ""                          // 食材别名
     var protein: Float = 0f                         // 蛋白质含量
@@ -21,8 +20,9 @@ class BFood: BmobObject() {
     var water: Float = 0f                           // 食材水分
     var cholesterol: Float = 0f                     // 胆固醇含量
 
-    var Vitamin: BFoodVitamin? = null
-    var Mineral: BFoodMineral? = null
-    var MineralExt: BFoodMineralExt? = null
+    var category: BFoodCategory? = null             // 食材的分类
+    var vitamin: BFoodVitamin? = null
+    var mineral: BFoodMineral? = null
+    var mineralExt: BFoodMineralExt? = null
 
 }
