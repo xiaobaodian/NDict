@@ -21,5 +21,6 @@ abstract class FoodPropertyFragment : Fragment() {
     abstract fun BlockChangeState(parent: FoodEditerActivity)
     abstract fun ImportFields(food: BFood)
     abstract fun ExportFields(food: BFood)
+    abstract fun FirstEditTextFocus()
 
 }

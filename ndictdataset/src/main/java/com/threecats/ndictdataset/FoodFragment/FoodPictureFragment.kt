@@ -47,5 +47,8 @@ class FoodPictureFragment : FoodPropertyFragment() {
     override fun ExportFields(food: BFood) {
         //assemblyFields(food)
     }
+    override fun FirstEditTextFocus(){
+
+    }
 
 }// Required empty public constructor

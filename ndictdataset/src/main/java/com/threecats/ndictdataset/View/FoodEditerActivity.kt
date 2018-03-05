@@ -87,10 +87,9 @@ class FoodEditerActivity : AppCompatActivity() {
                 foodPropertyFragments.forEach { it.ExportFields(saveFood) }
                 processFood(saveFood)
                 shareSet.createFood()
-                //foodPropertyFragments.forEach { it.initFieldsFlag = true }
                 foodPropertyFragments.forEach { it.ImportFields(shareSet.CurrentFood!!) }
+                foodPropertyFragments.forEach { it.FirstEditTextFocus() }
                 FoodPropertyTabs.getTabAt(0)?.select()
-                //currentFragment?.ImportFields(shareSet.CurrentFood!!)
             }
         }
         return true

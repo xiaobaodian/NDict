@@ -11,6 +11,7 @@ import com.threecats.ndictdataset.Bmob.BFoodVitamin
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
+import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
 
 
@@ -58,6 +59,14 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun ExportFields(food: BFood) {
         setFields(food.vitamin!!)
+    }
+
+    override fun FirstEditTextFocus(){
+        with (VitaminAIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
     }
 
     private fun getFields(vit: BFoodVitamin){

@@ -69,6 +69,15 @@ class FoodMineralFragment : FoodPropertyFragment() {
         setFields(food.mineral!!, food.mineralExt!!)
     }
 
+    override fun FirstEditTextFocus(){
+
+        with (KIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
+    }
+
     private fun getFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         with (foodEditTextHelper) {

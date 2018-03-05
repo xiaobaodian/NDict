@@ -12,6 +12,7 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
+import kotlinx.android.synthetic.main.fragment_food_mineral.*
 import kotlinx.android.synthetic.main.fragment_food_name.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
@@ -87,6 +88,14 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     override fun ExportFields(food: BFood) {
         setFields(food)
+    }
+
+    override fun FirstEditTextFocus(){
+        with (NameIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
     }
 
     private fun getFields(food: BFood){
