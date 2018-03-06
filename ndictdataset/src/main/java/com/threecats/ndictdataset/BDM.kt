@@ -39,10 +39,6 @@ class BDM : Application() {
 
         val ShowTips = false
 
-//        fun getShareSet(): PublicSet {
-//            if (shareSet == null) shareSet = PublicSet()
-//            return shareSet!!
-//        }
     }
 
 }
