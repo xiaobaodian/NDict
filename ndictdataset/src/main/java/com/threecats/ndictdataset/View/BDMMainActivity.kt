@@ -22,7 +22,7 @@ class BDMMainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                MainToolbar.title = "食材数据"
+                MainToolbar.title = "食材分类"
                 if (categoryFoodsFragment == null) categoryFoodsFragment = CategoryFoodsFragment()
                 loadFragment(categoryFoodsFragment)
                 return@OnNavigationItemSelectedListener true
@@ -47,12 +47,11 @@ class BDMMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initShareSet()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (categoryFoodsFragment == null) {
-            MainToolbar.title = "食材数据"
+            MainToolbar.title = "食材分类"
             categoryFoodsFragment = CategoryFoodsFragment()
         }
         loadFragment(categoryFoodsFragment)
@@ -69,10 +68,4 @@ class BDMMainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun initShareSet(){
-        if (BDM.ShareSet == null) {
-            BDM.ShareSet = PublicSet(this)
-            //Toast.makeText(applicationContext,"生成 ShareSet 对象！",Toast.LENGTH_SHORT).show()
-        }
-    }
 }

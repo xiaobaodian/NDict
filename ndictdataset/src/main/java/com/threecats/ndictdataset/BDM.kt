@@ -29,12 +29,20 @@ class BDM : Application() {
     }
 
     companion object {
-        /**
-         * SDK初始化也可以放到Application中
-         */
         var APPID = "92c3bbfbecf25dd1991485ee41597f1a"
+
         var ShareSet: PublicSet? = null
+            get() {
+                if (field == null) field = PublicSet()
+                return field
+            }
+
         val ShowTips = false
+
+//        fun getShareSet(): PublicSet {
+//            if (shareSet == null) shareSet = PublicSet()
+//            return shareSet!!
+//        }
     }
 
 }

@@ -91,6 +91,7 @@ class CategoryFoodsFragment : Fragment() {
         query.findObjects(object : FindListener<BFoodCategory>() {
             override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
                 if (e == null) {
+                    progressBarCategory.visibility = View.GONE
                     categoryList = categorys
                     if (categoryRView == null) {
                         Toast.makeText(view!!.context,"Recycler is null ",Toast.LENGTH_LONG).show()

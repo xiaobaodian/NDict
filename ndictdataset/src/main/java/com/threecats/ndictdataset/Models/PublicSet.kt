@@ -7,7 +7,7 @@ import com.threecats.ndictdataset.Enum.EditerState
 /**
  * 由 zhang 于 2018/2/17 创建
  */
-class PublicSet(val appContext: Context) {
+class PublicSet() {
 
     var ItemEditState = EditerState.FoodEdit
     var CurrentCategory: BFoodCategory? = null

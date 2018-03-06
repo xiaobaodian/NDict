@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import cn.bmob.v3.BmobBatch
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.BmobQuery
@@ -47,7 +48,7 @@ class FoodListActivity : AppCompatActivity() {
 
         with (FoodToolbar){
             title = currentCategory.longTitle
-            subtitle = "食材列表"
+            //subtitle = "食材列表"
             setNavigationOnClickListener { onBackPressed() }
         }
 
@@ -95,6 +96,7 @@ class FoodListActivity : AppCompatActivity() {
             query.findObjects(object: FindListener<BFood>(){
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
+                        progressBarFood.visibility = View.GONE
                         if (currentCategory.foodTotal != foods!!.size) {
                             updateCategoryFoodSize(foods.size, true)
                         }
