@@ -132,10 +132,6 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private fun processFood(food: BFood){
 
-        if (test) {
-            var f = food
-        }
-
         if (food.name.length == 0) return
 
         when (shareSet.ItemEditState){
@@ -166,7 +162,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     v.objectId = objectID
                     addMineral(food)
                 } else {
-                    toast("${e.message}")
+                    toast("${e.message} -- ${e.errorCode}")
                 }
             }
         })
