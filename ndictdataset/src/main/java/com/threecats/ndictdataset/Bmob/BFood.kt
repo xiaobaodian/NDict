@@ -24,5 +24,6 @@ class BFood: BmobObject() {
     var vitamin: BFoodVitamin? = null
     var mineral: BFoodMineral? = null
     var mineralExt: BFoodMineralExt? = null
+    var article: _Article? = null
 
 }

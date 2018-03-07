@@ -37,15 +37,15 @@ class FoodEditerActivity : AppCompatActivity() {
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodNutrientFragment
 
         addFragments(FoodNameFragment(),"名称")
-        addFragments(FoodNoteFragment(),"描述")
         addFragments(FoodNutrientFragment(),"营养素")
         addFragments(FoodVitaminFragment(),"维生素")
         addFragments(FoodMineralFragment(),"矿物质")
-        addFragments(FoodPictureFragment(),"图片")
+        addFragments(FoodNoteFragment(),"描述")
+        //addFragments(FoodPictureFragment(),"图片")
 
         currentFragment = foodPropertyFragments[0]
 
-        FoodEditerViewPage.offscreenPageLimit = 6
+        FoodEditerViewPage.offscreenPageLimit = foodPropertyFragments.size
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
         FoodPropertyTabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
