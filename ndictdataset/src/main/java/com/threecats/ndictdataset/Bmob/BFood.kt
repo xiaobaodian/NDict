@@ -12,7 +12,6 @@ class BFood: BmobObject() {
     var alias: String = ""                          // 食材别名
     var protein: Float = 0f                         // 蛋白质含量
     //var picture: Int = 0                            // 食材的图片
-    var note: String = ""                           // 食材的描述文本
     var foodFiber: Float = 0f                       // 食物纤维含量
     var fat: Float = 0f                             // 脂肪含量
     var carbohydrate: Float = 0f                    // 碳水化合物含量
