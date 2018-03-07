@@ -91,7 +91,7 @@ class FoodListActivity : AppCompatActivity() {
         if (foodList == null) {
             val query: BmobQuery<BFood> = BmobQuery()
             query.addWhereEqualTo("category", BmobPointer(currentCategory))
-            query.include("vitamin,mineral,mineralExt")
+            query.include("vitamin,mineral,mineralExt,article")
             query.setLimit(300)
             query.findObjects(object: FindListener<BFood>(){
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
