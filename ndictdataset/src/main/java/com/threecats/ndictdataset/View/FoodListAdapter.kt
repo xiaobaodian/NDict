@@ -22,8 +22,8 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val food = foods[position]
         holder.food = food
-        holder.name.text = food.name
-        holder.alias.text = if (food.alias == "") "别名" else food.alias
+        holder.name.text = if (food.alias.length == 0) food.name else "${food.name}、${food.alias}"
+        holder.updateTime.text = food.updatedAt
 
         holder.view.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.food)
@@ -41,12 +41,12 @@ class FoodListAdapter(private val foods: MutableList<BFood>, val context: Contex
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val context: Context = view.context
         val name: TextView
-        val alias: TextView
+        val updateTime: TextView
         var food: BFood? = null
 
         init {
             name = view.findViewById<View>(R.id.ItemName) as TextView
-            alias = view.findViewById<View>(R.id.ItemAlias) as TextView
+            updateTime = view.findViewById<View>(R.id.ItemAlias) as TextView
         }
     }
 }
