@@ -1,6 +1,9 @@
 package com.threecats.ndictdataset.Helper
 
 import android.widget.EditText
+import com.threecats.ndictdataset.Bmob.BFood
+import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KProperty
 
 /**
  * 由 zhang 创建于 2018/2/20.
@@ -9,9 +12,11 @@ import android.widget.EditText
 class EditTextHelper {
     var textBoxs: MutableList<EditItem> = ArrayList<EditItem>()
 
-//    fun addEditBox(editBox: EditText){
-//        textBoxs.add(EditItem(0, editBox))
-//    }
+    fun addEditBox(editBox: EditText){
+        //var v: KProperty<MutableList<EditItem>> = EditTextHelper::textBoxs
+
+        textBoxs.add(EditItem(0, editBox))
+    }
 
     fun addEditBox(editBox: EditText, text: String){
         if (editBox == null) return
@@ -39,5 +44,5 @@ class EditTextHelper {
         textBoxs.forEach { if (it.editBox.text.isEmpty()) it.editBox.text.append(initStr) }
     }
 
-    inner class EditItem(var hash: Int, var editBox: EditText)
+    inner class EditItem(var hash: Int, var editBox: EditText)  //, var foodField: KMutableProperty<R>
 }

@@ -17,10 +17,7 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Bmob.BFoodMineral
-import com.threecats.ndictdataset.Bmob.BFoodMineralExt
-import com.threecats.ndictdataset.Bmob.BFoodVitamin
+import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.*
 import com.threecats.ndictdataset.R
@@ -37,7 +34,15 @@ import org.jetbrains.anko.toast
 class FoodListActivity : AppCompatActivity() {
 
     val shareSet = BDM.ShareSet!!
-    val currentCategory = shareSet.CurrentCategory!!
+    lateinit var currentCategory: BFoodCategory
+
+    init{
+        if (shareSet.CurrentCategory == null) {
+            onBackPressed()
+        } else {
+            currentCategory = shareSet.CurrentCategory!!
+        }
+    }
 
     private var foodList: MutableList<BFood>? = null
 

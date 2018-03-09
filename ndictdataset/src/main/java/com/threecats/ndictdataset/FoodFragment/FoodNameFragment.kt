@@ -21,11 +21,11 @@ import org.jetbrains.anko.toast
 /**
  * A simple [Fragment] subclass.
  */
+
 class FoodNameFragment: FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_name, container, false)
     }
 
@@ -65,7 +65,7 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            ImportFields(shareSet.CurrentFood!!)
+            shareSet.CurrentFood?.let { ImportFields(shareSet.CurrentFood!!) }
         }
     }
 
