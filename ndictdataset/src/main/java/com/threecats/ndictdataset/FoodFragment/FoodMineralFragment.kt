@@ -26,21 +26,19 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        //initShareVar()
         return inflater!!.inflate(R.layout.fragment_food_mineral, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //getFields(currentFood.mineral!!, currentFood.mineralExt!!)
     }
 
     override fun onResume() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            ImportFields(shareSet.CurrentFood!!)
+            shareSet.CurrentFood?.let { ImportFields(it) }
         }
     }
 

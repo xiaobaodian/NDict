@@ -36,7 +36,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            ImportFields(shareSet.CurrentFood!!)
+            shareSet.CurrentFood?.let { ImportFields(it) }
         }
     }
 

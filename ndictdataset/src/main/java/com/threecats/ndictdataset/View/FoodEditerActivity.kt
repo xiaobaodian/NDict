@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.view.Menu
 import android.view.MenuItem
+import cn.bmob.v3.BmobBatch
+import cn.bmob.v3.BmobObject
+import cn.bmob.v3.datatype.BatchResult
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
@@ -27,8 +31,6 @@ class FoodEditerActivity : AppCompatActivity() {
     val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     var currentFragment: FoodPropertyFragment? = null
     val changBlockList: MutableList<ChangeBlock> = arrayListOf()
-
-    var test = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,15 +82,20 @@ class FoodEditerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId){
             R.id.DeleteFood -> {
-                alertDeleteFood()
+                shareSet.CurrentFood?.let { alertDeleteFood(it) }
             }
             R.id.SaveAddItem -> {
-                var saveFood = shareSet.CurrentFood!!
-                foodPropertyFragments.forEach { it.ExportFields(saveFood) }
-                processFood(saveFood)
+                shareSet.CurrentFood?.let {
+                    val food = it
+                    foodPropertyFragments.forEach { it.ExportFields(food) }
+                    processFood(food)
+                }
                 shareSet.createFood()
-                foodPropertyFragments.forEach { it.ImportFields(shareSet.CurrentFood!!) }
-                foodPropertyFragments.forEach { it.FirstEditTextFocus() }
+                shareSet.CurrentFood?.let {
+                    val food = it
+                    foodPropertyFragments.forEach { it.ImportFields(food) }
+                    foodPropertyFragments.forEach { it.FirstEditTextFocus() }
+                }
                 FoodPropertyTabs.getTabAt(0)?.select()
             }
         }
@@ -97,15 +104,14 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (shareSet.ItemEditState == EditerState.FoodAppend) {
-            test = true
             foodPropertyFragments.forEach { it.ExportFields(shareSet.CurrentFood!!) }
-            processFood(shareSet.CurrentFood!!)
+            shareSet.CurrentFood?.let { processFood(it) }
         } else {
             changBlockList.clear()
             foodPropertyFragments.forEach { it.BlockChangeState(this) }
             if (changBlockList.size > 0) {
                 foodPropertyFragments.forEach { it.ExportFields(shareSet.CurrentFood!!) }
-                processFood(shareSet.CurrentFood!!)
+                shareSet.CurrentFood?.let { processFood(it) }
             }
         }
         super.onBackPressed()
@@ -162,7 +168,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     v.objectId = objectID
                     addMineral(food)
                 } else {
-                    toast("${e.message} -- ${e.errorCode}")
+                    longToast("添加食材${food.name}维生素出现错误。错误信息：${e.message} -- ${e.errorCode}")
                 }
             }
         })
@@ -177,7 +183,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     mext.objectId = objectID
                     addFoodItem(food)
                 } else {
-                    toast("${e.message}")
+                    longToast("添加食材${food.name}矿物质扩展出现错误，回滚资料。错误信息：${e.message}")
                     food.mineral?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
@@ -195,11 +201,11 @@ class FoodEditerActivity : AppCompatActivity() {
         m.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    if (BDM.ShowTips) toast("添加了矿物资，objectID：$objectID")
+                    if (BDM.ShowTips) toast("添加了矿物质，objectID：$objectID")
                     m.objectId = objectID
                     addMineralExt(food)
                 } else {
-                    toast("${e.message}")
+                    longToast("添加食材${food.name}矿物质出现错误，回滚资料。错误信息：${e.message}")
                     food.vitamin?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
@@ -217,7 +223,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     if (BDM.ShowTips) toast("添加了食材，objectID：$objectID")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodAppend))  //Sticky
                 } else {
-                    toast("${e.message}")
+                    longToast("添加食材${food.name}出现错误，回滚资料。错误信息：${e.message}")
                     food.vitamin?.delete(object: UpdateListener(){
                         override fun done(p0: BmobException?) {
                         }
@@ -242,7 +248,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了矿物质数据")
                 } else {
-                    toast("${e.message}")
+                    longToast("更新矿物质数据出现错误：${e.message}")
                 }
             }
         })
@@ -255,7 +261,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了矿物质扩展数据")
                 } else {
-                    toast("${e.message}")
+                    longToast("更新矿物质扩展数据出现错误：${e.message}")
                 }
             }
         })
@@ -268,7 +274,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了维生素数据")
                 } else {
-                    toast("${e.message}")
+                    longToast("更新维生素数据出现错误：${e.message}")
                 }
             }
         })
@@ -281,56 +287,186 @@ class FoodEditerActivity : AppCompatActivity() {
                     if (BDM.ShowTips) toast("更新了食材数据")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(shareSet.CurrentFood!!, EditerState.FoodEdit))  //Sticky
                 } else {
-                    toast("${e.message}")
+                    longToast("更新了食材数据出现错误：${e.message}")
                 }
             }
         })
     }
 
-    private fun alertDeleteFood(){
+    private fun alertDeleteFood(food: BFood){
 
         alert("确实要删除食材 ${shareSet.CurrentFood?.name} 吗？", "删除食材") {
-            positiveButton("确定") { deleteFoodFromBmob(shareSet.CurrentFood!!) }
+            positiveButton("确定") { deleteFood(food) }
             negativeButton("取消") {  }
         }.show()
 
     }
 
     private fun deleteFoodFromBmob(food: BFood){
-        food.mineral?.delete(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("删除${food.name}矿物质数据成功")
-                } else {
-                    toast("${e.message}")
-                }
+
+        var number = 3
+
+        while (food.mineral != null || food.mineralExt != null || food.vitamin != null){
+
+            if (number < 0) break
+
+            food.mineral?.let {
+                it.delete(object: UpdateListener(){
+                    override fun done(e: BmobException?) {
+                        if (e == null) {
+                            if (BDM.ShowTips) toast("删除${food.name}矿物质数据成功")
+                            food.mineral = null
+                        } else {
+                            if (e.errorCode == 9006) {
+                                food.mineral = null
+                            } else {
+                                longToast("删除${food.name}矿物质数据出现错误：${e.message}")
+                                number -= 1
+                            }
+                        }
+                    }
+                })
             }
-        })
-        food.mineralExt?.delete(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("删除${food.name}矿物质扩展数据成功")
-                } else {
-                    toast("${e.message}")
-                }
+            food.mineralExt?.let {
+                it?.delete(object: UpdateListener(){
+                    override fun done(e: BmobException?) {
+                        if (e == null) {
+                            if (BDM.ShowTips) toast("删除${food.name}矿物质扩展数据成功")
+                            food.mineralExt = null
+                        } else {
+                            if (e.errorCode == 9006) {
+                                food.mineral = null
+                            } else {
+                                longToast("删除${food.name}矿物质扩展数据出现错误：${e.message}")
+                                number -= 1
+                            }
+                        }
+                    }
+                })
+
             }
-        })
-        food.vitamin?.delete(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("删除${food.name}维生素数据成功")
-                } else {
-                    toast("${e.message}")
-                }
+
+            food.vitamin?.let {
+                it.delete(object: UpdateListener(){
+                    override fun done(e: BmobException?) {
+                        if (e == null) {
+                            if (BDM.ShowTips) toast("删除${food.name}维生素数据成功")
+                            food.vitamin = null
+                        } else {
+                            if (e.errorCode == 9006) {
+                                food.mineral = null
+                            } else {
+                                longToast("删除${food.name}维生素数据出现错误：${e.message}")
+                                number -= 1
+                            }
+                        }
+                    }
+                })
             }
-        })
-        food.delete(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    toast("删除${food.name}成功")
+        }
+
+        if (food.vitamin == null && food.mineral == null && food.mineralExt == null) {
+            food.delete(object: UpdateListener(){
+                override fun done(e: BmobException?) {
+                    if (e == null) {
+                        toast("删除${food.name}成功")
+                        EventBus.getDefault().post(DeleteFoodRecyclerItem(shareSet.CurrentFood!!))
+                    } else {
+                        longToast("删除${food.name}出现错误：${e.message}")
+                    }
+                }
+            })
+        } else {
+            food.update()
+            longToast("删除${food.name}的扩展属性出现错误，终止删除。数据不完整！")
+        }
+        onBackPressed()
+    }
+
+    private fun deleteFoodBmob(food: BFood){
+
+        food.mineral?.let {
+            it.delete(object: UpdateListener(){
+                override fun done(e: BmobException?) {
+                    if (e == null) {
+                        if (BDM.ShowTips) toast("删除${food.name}矿物质数据成功")
+                        food.mineral = null
+                    } else {
+                        if (e.errorCode == 9006) {
+                            food.mineral = null
+                        } else {
+                            longToast("删除${food.name}矿物质数据出现错误：${e.message}")
+                        }
+                    }
+                }
+            })
+        }
+        food.mineralExt?.let {
+            it?.delete(object: UpdateListener(){
+                override fun done(e: BmobException?) {
+                    if (e == null) {
+                        if (BDM.ShowTips) toast("删除${food.name}矿物质扩展数据成功")
+                        food.mineralExt = null
+                    } else {
+                        if (e.errorCode == 9006) {
+                            food.mineral = null
+                        } else {
+                            longToast("删除${food.name}矿物质扩展数据出现错误：${e.message}")
+                        }
+                    }
+                }
+            })
+
+        }
+
+        food.vitamin?.let {
+            it.delete(object: UpdateListener(){
+                override fun done(e: BmobException?) {
+                    if (e == null) {
+                        if (BDM.ShowTips) toast("删除${food.name}维生素数据成功")
+                        food.vitamin = null
+                    } else {
+                        if (e.errorCode == 9006) {
+                            food.mineral = null
+                        } else {
+                            longToast("删除${food.name}维生素数据出现错误：${e.message}")
+                        }
+                    }
+                }
+            })
+        }
+
+        if (food.vitamin == null && food.mineral == null && food.mineralExt == null) {
+            food.delete(object: UpdateListener(){
+                override fun done(e: BmobException?) {
+                    if (e == null) {
+                        toast("删除${food.name}成功")
+                        EventBus.getDefault().post(DeleteFoodRecyclerItem(shareSet.CurrentFood!!))
+                    } else {
+                        longToast("删除${food.name}出现错误：${e.message}")
+                    }
+                }
+            })
+        } else {
+            food.update()
+            longToast("删除${food.name}的扩展属性出现错误，终止删除。数据不完整！")
+        }
+        onBackPressed()
+    }
+
+    private fun deleteFood(food: BFood){
+        var items: MutableList<BmobObject> = arrayListOf()
+        food.vitamin?.let { items.add(it) }
+        food.mineral?.let { items.add(it) }
+        food.mineralExt?.let { items.add(it) }
+        items.add(food)
+        BmobBatch().deleteBatch(items).doBatch(object: QueryListListener<BatchResult>() {
+            override fun done(p0: MutableList<BatchResult>?, p1: BmobException?) {
+                if (p1 == null) {
+                    toast("批量模式删除食材成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(shareSet.CurrentFood!!))
                 } else {
-                    toast("${e.message}")
+                    toast("批量模式删除食材失败")
                 }
             }
         })

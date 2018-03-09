@@ -65,7 +65,7 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { ImportFields(shareSet.CurrentFood!!) }
+            shareSet.CurrentFood?.let { ImportFields(it) }
         }
     }
 
