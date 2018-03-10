@@ -33,7 +33,7 @@ class BDM : Application() {
 
         var ShareSet: PublicSet? = null
             get() {
-                if (field == null) field = PublicSet()
+                if (field == null) field = PublicSet(this)
                 return field
             }
 

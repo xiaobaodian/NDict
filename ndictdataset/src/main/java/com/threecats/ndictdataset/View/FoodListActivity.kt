@@ -259,6 +259,7 @@ class FoodListActivity : AppCompatActivity() {
         })
     }
 
+    // 已建立DataModel代码
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
         currentCategory.foodTotal = size
         currentCategory.update(object: UpdateListener(){
@@ -275,6 +276,7 @@ class FoodListActivity : AppCompatActivity() {
         })
     }
 
+    // 已建立DataModel代码
     private fun checkFoodRelevant(){
 
         val logshow = AnkoLogger("NDIC")

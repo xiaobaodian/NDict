@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class CategoryFoodsFragment : Fragment() {
 
+    private val shareSet = BDM.ShareSet!!
+
     private var categoryList: MutableList<BFoodCategory>? = null
     private var categoryRView: RecyclerView? = null
 
@@ -58,6 +60,7 @@ class CategoryFoodsFragment : Fragment() {
 
     private fun bindCategoryList(){
         categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
+        progressBarCategory.visibility = View.GONE
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -66,7 +69,7 @@ class CategoryFoodsFragment : Fragment() {
         when (updateItem.State){
             EditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position!!)
             EditerState.CategoryAppend -> {
-                categoryList?.add(BDM.ShareSet?.CurrentCategory!!)
+                categoryList?.add(shareSet.CurrentCategory!!)
                 val categorySize = categoryList?.size!!
                 CategoryRView?.adapter?.notifyItemInserted(categorySize)
             }
