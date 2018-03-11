@@ -2,6 +2,7 @@ package com.threecats.ndictdataset
 
 import android.app.Application
 import cn.bmob.v3.Bmob
+import cn.bmob.v3.Bmob.getApplicationContext
 import com.threecats.ndictdataset.Models.PublicSet
 
 /**
@@ -33,7 +34,7 @@ class BDM : Application() {
 
         var ShareSet: PublicSet? = null
             get() {
-                if (field == null) field = PublicSet(this)
+                if (field == null) field = PublicSet(getApplicationContext())
                 return field
             }
 

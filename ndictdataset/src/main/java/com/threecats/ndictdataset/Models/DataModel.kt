@@ -19,7 +19,7 @@ import org.jetbrains.anko.toast
 class DataModel {
 
     val shareSet = BDM.ShareSet!!
-    val context = shareSet.ApplicationContext
+    val context = shareSet.AppContext
 
     fun updateCategoryFoodSize(category: BFoodCategory, size: Int){
         category.foodTotal = size
