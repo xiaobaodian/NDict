@@ -31,7 +31,7 @@
                     android:id="@+id/KIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钾（K）"
+                    android:hint="钾（K，毫克）"
                     android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +47,7 @@
                     android:id="@+id/NIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钠(N)"
+                    android:hint="钠(N，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +63,7 @@
                     android:id="@+id/CaIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钙(Ca)"
+                    android:hint="钙(Ca，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -79,7 +79,7 @@
                     android:id="@+id/MgIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="镁（Mg）"
+                    android:hint="镁（Mg，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -95,7 +95,7 @@
                     android:id="@+id/FeIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="铁（Fe）"
+                    android:hint="铁（Fe，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +111,7 @@
                     android:id="@+id/MnIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="锰（Mn）"
+                    android:hint="锰（Mn，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -127,7 +127,7 @@
                     android:id="@+id/ZnIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="锌(Zn)"
+                    android:hint="锌(Zn，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -143,7 +143,7 @@
                     android:id="@+id/CuIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="铜(Cu)"
+                    android:hint="铜(Cu，毫克)"
                     android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -159,7 +159,7 @@
                     android:id="@+id/SeIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="硒(Se)"
+                    android:hint="硒(Se，微克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -175,7 +175,7 @@
                     android:id="@+id/PIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="磷（P）"
+                    android:hint="磷（P，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -191,7 +191,7 @@
                     android:id="@+id/IIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="碘（I）"
+                    android:hint="碘（I，微克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -207,7 +207,7 @@
                     android:id="@+id/MoIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钼（Mo）"
+                    android:hint="钼（Mo，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -223,7 +223,7 @@
                     android:id="@+id/CrIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="铬(Cr)"
+                    android:hint="铬(Cr，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -239,7 +239,7 @@
                     android:id="@+id/CeIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="锗(Ce)"
+                    android:hint="锗(Ce，微克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -255,7 +255,7 @@
                     android:id="@+id/CoIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钴（Co）"
+                    android:hint="钴（Co，微克）"
                     android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -271,7 +271,7 @@
                     android:id="@+id/SnIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="锡（Sn）"
+                    android:hint="锡（Sn，毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -287,7 +287,7 @@
                     android:id="@+id/NiIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="镍(Ni)"
+                    android:hint="镍(Ni，微克？)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -303,7 +303,7 @@
                     android:id="@+id/VIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="钒(V)"
+                    android:hint="钒(V，微克？)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -319,7 +319,7 @@
                     android:id="@+id/SiIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="硅(Si)"
+                    android:hint="硅(Si，毫克？)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -335,7 +335,7 @@
                     android:id="@+id/CiIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="氯(Ci)"
+                    android:hint="氯(Ci，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -351,57 +351,10 @@
                     android:id="@+id/SIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="硫(S)"
+                    android:hint="硫(S，毫克)"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/FILayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/FIEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="氟(F)"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/AiILayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/AiIEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="铝(Ai)"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/PbILayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/PbIEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="铅(Pb)"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>

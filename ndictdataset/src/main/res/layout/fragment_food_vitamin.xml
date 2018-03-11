@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素A"
+                    android:hint="维生素A（毫克）"
                     android:inputType="number|numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="胡萝卜素"
+                    android:hint="胡萝卜素（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素B1"
+                    android:hint="维生素B1（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素B2"
+                    android:hint="维生素B2（核黄素，毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="烟酸"
+                    android:hint="烟酸（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素B6"
+                    android:hint="维生素B6（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="泛酸"
+                    android:hint="泛酸（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="生物素（维生素H）"
+                    android:hint="生物素（维生素H，微克）"
                     android:inputType="number|numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -176,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="叶酸"
+                    android:hint="叶酸（微克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -194,7 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素B12"
+                    android:hint="维生素B12（微克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -212,7 +212,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="胆碱"
+                    android:hint="胆碱（毫克，考虑去掉）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -230,7 +230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素C"
+                    android:hint="维生素C（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -248,7 +248,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素D"
+                    android:hint="维生素D（微克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -266,7 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素E"
+                    android:hint="维生素E（毫克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -284,7 +284,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素K"
+                    android:hint="维生素K（微克）"
                     android:inputType="number|numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -302,7 +302,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="维生素P（生物类黄酮）"
+                    android:hint="维生素P（生物类黄酮，微克）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -338,7 +338,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
-                    android:hint="对氨基苯甲酸"
+                    android:hint="对氨基苯甲酸（保留）"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>

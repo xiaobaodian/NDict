@@ -31,7 +31,7 @@
                     android:id="@+id/CaloriesIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="卡路里"
+                    android:hint="卡路里（千卡）"
                     android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +47,7 @@
                     android:id="@+id/WaterIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="含水量"
+                    android:hint="含水量（克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +63,7 @@
                     android:id="@+id/ProteinIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="蛋白质"
+                    android:hint="蛋白质（克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -79,7 +79,7 @@
                     android:id="@+id/CholesterolIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="胆固醇"
+                    android:hint="胆固醇（毫克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -95,7 +95,7 @@
                     android:id="@+id/FiberIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="食物纤维"
+                    android:hint="食物纤维（克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +111,7 @@
                     android:id="@+id/CarbohydrateIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="碳水化合物"
+                    android:hint="碳水化合物（克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
@@ -127,7 +127,7 @@
                     android:id="@+id/FatIEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="脂肪"
+                    android:hint="脂肪（克）"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 

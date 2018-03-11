@@ -103,10 +103,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
         }
         with (checkTextExtHelper) {
             textBoxs.clear()
-            addEditBox(AiIEditText, mineralext.mAi.toString())
             addEditBox(CiIEditText, mineralext.mCi.toString())
-            addEditBox(FIEditText, mineralext.mF.toString())
-            addEditBox(PbIEditText, mineralext.mPb.toString())
             addEditBox(SIEditText, mineralext.mS.toString())
             initHash()
         }
@@ -144,9 +141,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
             when (it.editBox){
                 CiIEditText   ->  mineralext.mCi = it.editBox.text.toString().toFloat()
                 SIEditText    ->  mineralext.mS = it.editBox.text.toString().toFloat()
-                FIEditText    ->  mineralext.mF = it.editBox.text.toString().toFloat()
-                AiIEditText   ->  mineralext.mAi = it.editBox.text.toString().toFloat()
-                PbIEditText   ->  mineralext.mPb = it.editBox.text.toString().toFloat()
             }
         }
 

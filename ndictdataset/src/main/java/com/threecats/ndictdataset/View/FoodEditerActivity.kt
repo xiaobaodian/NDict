@@ -57,8 +57,10 @@ class FoodEditerActivity : AppCompatActivity() {
                 tab?.let { currentFragment = foodPropertyFragments[tab!!.position] }
                 if (tab?.position == 0) {
                     FoodEditerToolbar.title = "食材详情"
+                    FoodEditerToolbar.subtitle = ""
                 } else {
                     FoodEditerToolbar.title = shareSet.CurrentFood?.name
+                    FoodEditerToolbar.subtitle = "每100克中的含量"
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
