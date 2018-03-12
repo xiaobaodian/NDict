@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.fragment_food_name.*
 import kotlinx.android.synthetic.main.fragment_food_note.*
 import org.jetbrains.anko.toast
 
-
 /**
  * A simple [Fragment] subclass.
  */
+
 class FoodNoteFragment: FoodPropertyFragment() {
 
     var isLoadUrl = true
@@ -33,7 +33,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
         val article = shareSet.CurrentFood?.article
         if (isLoadUrl) {
             article?.let {
-                NoteWebView.loadUrl(article!!.url)
+                NoteWebView.loadUrl(it.url)
                 isLoadUrl = false
             }
         }

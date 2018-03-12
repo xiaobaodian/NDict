@@ -16,22 +16,17 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
 
-
 /**
  * A simple [Fragment] subclass.
  */
+
 class FoodMineralFragment : FoodPropertyFragment() {
 
-    val checkTextExtHelper = EditTextHelper()
+    private val checkTextExtHelper = EditTextHelper()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_food_mineral, container, false)
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onResume() {
@@ -40,12 +35,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
             initFieldsFlag = false
             shareSet.CurrentFood?.let { ImportFields(it) }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        //setFields(shareSet.CurrentFood?.mineral!!, shareSet.CurrentFood?.mineralExt!!)
     }
 
     override fun BlockChangeState(parent: FoodEditerActivity) {
