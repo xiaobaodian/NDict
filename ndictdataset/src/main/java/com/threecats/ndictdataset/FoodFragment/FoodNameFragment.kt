@@ -12,10 +12,8 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
-import kotlinx.android.synthetic.main.fragment_food_mineral.*
 import kotlinx.android.synthetic.main.fragment_food_name.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
 
 
 /**
@@ -33,7 +31,6 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with (NameIEditText) {
-            //logshow.info {text.toString()}
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
@@ -65,32 +62,26 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { ImportFields(it) }
+            shareSet.CurrentFood?.let { importFields(it) }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        //setFields(shareSet.CurrentFood!!)
-    }
-
-    override fun BlockChangeState(parent: FoodEditerActivity) {
+    override fun blockChangeState(parent: FoodEditerActivity) {
         val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
-    override fun ImportFields(food: BFood) {
+    override fun importFields(food: BFood) {
         getFields(food)
     }
 
-    override fun ExportFields(food: BFood) {
+    override fun exportFields(food: BFood) {
         setFields(food)
     }
 
-    override fun FirstEditTextFocus(){
+    override fun firstEditTextFocus(){
         with (NameIEditText){
             isFocusable = true
             isFocusableInTouchMode = true

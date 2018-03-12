@@ -24,11 +24,13 @@ import kotlinx.android.synthetic.main.fragment_category_foods.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.toast
 
 
 /**
  * A simple [Fragment] subclass.
  */
+
 class CategoryFoodsFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
@@ -65,13 +67,20 @@ class CategoryFoodsFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem){
-        val position = categoryList?.indexOf(updateItem.Category)
-        when (updateItem.State){
-            EditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position!!)
-            EditerState.CategoryAppend -> {
-                categoryList?.add(shareSet.CurrentCategory!!)
-                val categorySize = categoryList?.size!!
-                CategoryRView?.adapter?.notifyItemInserted(categorySize)
+        categoryList?.let {
+            val position = it.indexOf(updateItem.Category)
+            if (position >= 0) {
+                when (updateItem.State){
+                    EditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
+                    EditerState.CategoryAppend -> {
+                        val list = it
+                        shareSet.CurrentCategory?.let {
+                            list.add(it)
+                            CategoryRView?.adapter?.notifyItemInserted(list.size)
+                        }
+                    }
+                    else -> context.toast("EditState Error !")
+                }
             }
         }
     }
@@ -97,7 +106,7 @@ class CategoryFoodsFragment : Fragment() {
                     progressBarCategory.visibility = View.GONE
                     categoryList = categorys
                     if (categoryRView == null) {
-                        Toast.makeText(view!!.context,"Recycler is null ",Toast.LENGTH_LONG).show()
+                        context.toast("Recycler is null ")
                     }
                     if (categoryList != null) {
                         categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
@@ -106,7 +115,7 @@ class CategoryFoodsFragment : Fragment() {
                 } else {
                     //message.text = e.message
                     if (view != null) {
-                        Toast.makeText(view!!.context,e.message,Toast.LENGTH_LONG).show()
+                        context.toast("${e.message}")
                     }
                 }
             }
@@ -114,7 +123,7 @@ class CategoryFoodsFragment : Fragment() {
     }
 
     private fun saveCategoryOne(categoryID: Int, longTitle: String, shortTitle: String){
-        var category = BFoodCategory()  //categoryID, longTitle, shortTitle
+        val category = BFoodCategory()  //categoryID, longTitle, shortTitle
         category.categoryID = categoryID
         category.longTitle = longTitle
         category.shortTitle = shortTitle

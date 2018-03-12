@@ -40,19 +40,19 @@ class FoodNoteFragment: FoodPropertyFragment() {
     }
 
 
-    override fun BlockChangeState(parent: FoodEditerActivity) {
+    override fun blockChangeState(parent: FoodEditerActivity) {
 
     }
 
-    override fun ImportFields(food: BFood) {
+    override fun importFields(food: BFood) {
         getFields(food)
     }
 
-    override fun ExportFields(food: BFood) {
+    override fun exportFields(food: BFood) {
 
     }
 
-    override fun FirstEditTextFocus(){
+    override fun firstEditTextFocus(){
 
     }
 

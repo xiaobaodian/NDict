@@ -92,14 +92,14 @@ class FoodEditerActivity : AppCompatActivity() {
             R.id.SaveAddItem -> {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.ExportFields(food) }
+                    foodPropertyFragments.forEach { it.exportFields(food) }
                     processFood(food)
                 }
                 shareSet.createFood()
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.ImportFields(food) }
-                    foodPropertyFragments.forEach { it.FirstEditTextFocus() }
+                    foodPropertyFragments.forEach { it.importFields(food) }
+                    foodPropertyFragments.forEach { it.firstEditTextFocus() }
                 }
                 FoodPropertyTabs.getTabAt(0)?.select()
             }
@@ -111,16 +111,16 @@ class FoodEditerActivity : AppCompatActivity() {
         if (shareSet.ItemEditState == EditerState.FoodAppend) {
             shareSet.CurrentFood?.let {
                 val food = it
-                foodPropertyFragments.forEach { it.ExportFields(food) }
+                foodPropertyFragments.forEach { it.exportFields(food) }
                 processFood(food)
             }
         } else {
             changBlockList.clear()
-            foodPropertyFragments.forEach { it.BlockChangeState(this) }
+            foodPropertyFragments.forEach { it.blockChangeState(this) }
             if (changBlockList.size > 0) {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.ExportFields(food) }
+                    foodPropertyFragments.forEach { it.exportFields(food) }
                     processFood(food)
                 }
             }

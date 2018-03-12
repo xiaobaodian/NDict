@@ -53,7 +53,6 @@ class FoodListActivity : AppCompatActivity() {
 
         with (FoodToolbar){
             title = currentCategory.longTitle
-            //subtitle = "食材列表"
             setNavigationOnClickListener { onBackPressed() }
         }
 
@@ -102,17 +101,20 @@ class FoodListActivity : AppCompatActivity() {
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
                         progressBarFood.visibility = View.GONE
-                        if (currentCategory.foodTotal != foods!!.size) {
-                            updateCategoryFoodSize(foods.size, true)
+                        foods?.let {
+                            if (currentCategory.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
+                            foodList = it
+                            FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
+                            if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
                         }
-                        foodList = foods
-                        FoodRView.adapter = FoodListAdapter(foodList!!, this@FoodListActivity)
-                        if (foodList!!.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(foodList!!))
+
                     } else {
                         toast("${e.message}")
                     }
                 }
             })
+        } else{
+            progressBarFood.visibility = View.GONE
         }
     }
 
@@ -123,14 +125,19 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
-        val position = foodList?.indexOf(updateItem.Food)
-        when (updateItem.State){
-            EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position!!)
-            EditerState.FoodAppend -> {
-                foodList?.add(updateItem.Food)
-                val foodSize = foodList?.size!!
-                FoodRView?.adapter?.notifyItemInserted(foodSize)
-                updateCategoryFoodSize(foodSize)
+        foodList?.let {
+            val position = it.indexOf(updateItem.Food)
+            if (position >= 0) {
+                when (updateItem.State){
+                    EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position)
+                    EditerState.FoodAppend -> {
+                        it.add(updateItem.Food)
+                        val foodSize = it.size
+                        FoodRView?.adapter?.notifyItemInserted(foodSize)
+                        updateCategoryFoodSize(foodSize)
+                    }
+                    else -> toast("EditState Error !")
+                }
             }
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)
@@ -138,10 +145,14 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doDeleteFoodRecyclerItem(deleteItem: DeleteFoodRecyclerItem){
-        val position = foodList?.indexOf(BDM.ShareSet?.CurrentFood)
-        foodList?.removeAt(position!!)
-        FoodRView?.adapter?.notifyItemRemoved(position!!)
-        updateCategoryFoodSize(foodList!!.size)
+        foodList?.let {
+            val position = it.indexOf(shareSet.CurrentFood)
+            if (position >= 0) {
+                it.removeAt(position)
+                FoodRView?.adapter?.notifyItemRemoved(position)
+                updateCategoryFoodSize(it.size)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -191,7 +202,7 @@ class FoodListActivity : AppCompatActivity() {
             BmobBatch().insertBatch(vitamins).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
-                        toast("补增了${results?.size}个维生素记录")
+                        toast("补增了 ${results?.size} 个维生素记录")
                         results?.forEachIndexed { i, batchResult -> nullVitamins[i].vitamin?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullVitamins, "维生素"))
                     } else {
@@ -212,7 +223,7 @@ class FoodListActivity : AppCompatActivity() {
             BmobBatch().insertBatch(minerals).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
-                        toast("补增了${results?.size}个矿物质记录")
+                        toast("补增了 ${results?.size} 个矿物质记录")
                         results?.forEachIndexed { i, batchResult -> nullMinerals[i].mineral?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMinerals, "矿物资"))
                     } else {
@@ -233,7 +244,7 @@ class FoodListActivity : AppCompatActivity() {
             BmobBatch().insertBatch(mineralexts).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
-                        toast("补增了${results?.size}个矿物资扩展记录")
+                        toast("补增了 ${results?.size} 个矿物资扩展记录")
                         results?.forEachIndexed { i, batchResult -> nullMineralexts[i].mineralExt?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMineralexts, "矿物质扩展"))
                     } else {
@@ -251,7 +262,7 @@ class FoodListActivity : AppCompatActivity() {
         BmobBatch().updateBatch(batchFoods).doBatch(object: QueryListListener<BatchResult>(){
             override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                 if (e == null) {
-                    toast("更新了${results?.size}个对${updateItems.Title}记录的引用")
+                    toast("更新了 ${results?.size} 个对 ${updateItems.Title} 记录的引用")
                 } else {
                     toast("${e.message}")
                 }
@@ -267,7 +278,7 @@ class FoodListActivity : AppCompatActivity() {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))
                     if (showMessage) {
-                        toast("更新${currentCategory.longTitle}类的食材总数：$size ")
+                        toast("更新 ${currentCategory.longTitle} 类的食材总数：$size ")
                     }
                 } else {
                     toast("${e.message}")

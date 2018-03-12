@@ -11,9 +11,7 @@ import com.threecats.ndictdataset.Enum.ChangeBlock
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
-import kotlinx.android.synthetic.main.fragment_food_note.*
 import kotlinx.android.synthetic.main.fragment_food_nutrient.*
-import org.jetbrains.anko.toast
 
 
 /**
@@ -35,7 +33,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { ImportFields(it) }
+            shareSet.CurrentFood?.let { importFields(it) }
         }
     }
 
@@ -45,22 +43,22 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         //setFields(shareSet.CurrentFood!!)
     }
 
-    override fun BlockChangeState(parent: FoodEditerActivity) {
+    override fun blockChangeState(parent: FoodEditerActivity) {
         val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Food)
         }
     }
 
-    override fun ImportFields(food: BFood) {
+    override fun importFields(food: BFood) {
         getFields(food)
     }
 
-    override fun ExportFields(food: BFood) {
+    override fun exportFields(food: BFood) {
         setFields(food)
     }
 
-    override fun FirstEditTextFocus(){
+    override fun firstEditTextFocus(){
         with (CaloriesIEditText){
             isFocusable = true
             isFocusableInTouchMode = true

@@ -11,7 +11,6 @@ import com.threecats.ndictdataset.Bmob.BFoodVitamin
 import com.threecats.ndictdataset.Enum.ChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
-import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
 
 
@@ -27,41 +26,30 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         return inflater!!.inflate(R.layout.fragment_food_vitamin, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     override fun onResume() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { ImportFields(it) }
+            shareSet.CurrentFood?.let { importFields(it) }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        //setFields(shareSet.CurrentFood?.vitamin!!)
-    }
-
-    override fun BlockChangeState(parent: FoodEditerActivity) {
+    override fun blockChangeState(parent: FoodEditerActivity) {
         val changeNumber = foodEditTextHelper.ChangeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(ChangeBlock.Vitamin)
         }
     }
 
-    override fun ImportFields(food: BFood) {
+    override fun importFields(food: BFood) {
         getFields(food.vitamin!!)
     }
 
-    override fun ExportFields(food: BFood) {
+    override fun exportFields(food: BFood) {
         setFields(food.vitamin!!)
     }
 
-    override fun FirstEditTextFocus(){
+    override fun firstEditTextFocus(){
         with (VitaminAIEditText){
             isFocusable = true
             isFocusableInTouchMode = true
