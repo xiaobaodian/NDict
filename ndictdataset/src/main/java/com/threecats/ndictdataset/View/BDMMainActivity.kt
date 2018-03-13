@@ -20,6 +20,7 @@ class BDMMainActivity : AppCompatActivity() {
     private var foodEnergyFragment: FoodEnergyFragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
         when (item.itemId) {
             R.id.navigation_home -> {
                 MainToolbar.title = "食材"
