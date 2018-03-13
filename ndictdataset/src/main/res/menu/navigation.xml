@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_action_dining"
         android:title="食材" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="能量" />
+        android:icon="@drawable/ic_action_grain"
+        android:title="营养素" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="微量元素" />
+        android:icon="@drawable/ic_action_book"
+        android:title="文摘" />
 
 </menu>

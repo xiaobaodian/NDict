@@ -22,19 +22,19 @@ class BDMMainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                MainToolbar.title = "食材分类"
+                MainToolbar.title = "食材"
                 if (categoryFoodsFragment == null) categoryFoodsFragment = CategoryFoodsFragment()
                 loadFragment(categoryFoodsFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                MainToolbar.title = "食物能量"
+                MainToolbar.title = "能量与营养素"
                 if (traceElementFragment == null) traceElementFragment = TraceElementFragment()
                 loadFragment(traceElementFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                MainToolbar.title = "微量元素"
+                MainToolbar.title = "文摘"
                 if (foodEnergyFragment == null) foodEnergyFragment = FoodEnergyFragment()
                 loadFragment(foodEnergyFragment)
                 return@OnNavigationItemSelectedListener true
@@ -51,7 +51,7 @@ class BDMMainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (categoryFoodsFragment == null) {
-            MainToolbar.title = "食材分类"
+            MainToolbar.title = "食材"
             categoryFoodsFragment = CategoryFoodsFragment()
         }
         loadFragment(categoryFoodsFragment)
