@@ -20,6 +20,7 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.*
+import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 
 import kotlinx.android.synthetic.main.activity_food_list.*
@@ -109,7 +110,8 @@ class FoodListActivity : AppCompatActivity() {
                         }
 
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -206,7 +208,8 @@ class FoodListActivity : AppCompatActivity() {
                         results?.forEachIndexed { i, batchResult -> nullVitamins[i].vitamin?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullVitamins, "维生素"))
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -227,7 +230,8 @@ class FoodListActivity : AppCompatActivity() {
                         results?.forEachIndexed { i, batchResult -> nullMinerals[i].mineral?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMinerals, "矿物资"))
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -248,7 +252,8 @@ class FoodListActivity : AppCompatActivity() {
                         results?.forEachIndexed { i, batchResult -> nullMineralexts[i].mineralExt?.objectId = batchResult.objectId }
                         EventBus.getDefault().post(BatchUpdateFood(nullMineralexts, "矿物质扩展"))
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -264,7 +269,8 @@ class FoodListActivity : AppCompatActivity() {
                 if (e == null) {
                     toast("更新了 ${results?.size} 个对 ${updateItems.Title} 记录的引用")
                 } else {
-                    toast("${e.message}")
+                    //toast("${e.message}")
+                    ErrorMessage(this@FoodListActivity, e)
                 }
             }
         })
@@ -281,7 +287,8 @@ class FoodListActivity : AppCompatActivity() {
                         toast("更新 ${currentCategory.longTitle} 类的食材总数：$size ")
                     }
                 } else {
-                    toast("${e.message}")
+                    //toast("${e.message}")
+                    ErrorMessage(this@FoodListActivity, e)
                 }
             }
         })
@@ -323,7 +330,8 @@ class FoodListActivity : AppCompatActivity() {
                     if (e == null) {
                         toast("补增了${results?.size}个矿物资扩展记录")
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -334,7 +342,8 @@ class FoodListActivity : AppCompatActivity() {
                     if (e == null) {
                         toast("补增了${results?.size}个矿物质记录")
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
@@ -345,12 +354,11 @@ class FoodListActivity : AppCompatActivity() {
                     if (e == null) {
                         toast("补增了${results?.size}个矿物资扩展记录")
                     } else {
-                        toast("${e.message}")
+                        //toast("${e.message}")
+                        ErrorMessage(this@FoodListActivity, e)
                     }
                 }
             })
         }
-
     }
-
 }

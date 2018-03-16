@@ -19,6 +19,7 @@ import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
+import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
@@ -233,14 +234,15 @@ class FoodEditerActivity : AppCompatActivity() {
         food.mineral?.let { items.add(it) }
         food.mineralExt?.let { items.add(it) }
         BmobBatch().insertBatch(items).doBatch(object: QueryListListener<BatchResult>(){
-            override fun done(p0: MutableList<BatchResult>?, p1: BmobException?) {
-                if (p1 == null) {
+            override fun done(p0: MutableList<BatchResult>?, e: BmobException?) {
+                if (e == null) {
                     if (p0?.get(0)?.error == null) food.vitamin?.objectId = p0?.get(0)?.objectId
                     if (p0?.get(1)?.error == null) food.mineral?.objectId = p0?.get(1)?.objectId
                     if (p0?.get(2)?.error == null) food.mineralExt?.objectId = p0?.get(2)?.objectId
                     addFoodToBmob(food)
                 } else {
-                    longToast("添加食材扩展数据出现错误：${p1.message}")
+                    //longToast("添加食材扩展数据出现错误：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -254,7 +256,8 @@ class FoodEditerActivity : AppCompatActivity() {
                     if (BDM.ShowTips) toast("添加了食材，objectID：$objectID")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodAppend))  //Sticky
                 } else {
-                    longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
+                    //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -266,7 +269,8 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了矿物质数据")
                 } else {
-                    longToast("更新矿物质数据出现错误：${e.message}")
+                    //longToast("更新矿物质数据出现错误：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -278,7 +282,8 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了矿物质扩展数据")
                 } else {
-                    longToast("更新矿物质扩展数据出现错误：${e.message}")
+                    //longToast("更新矿物质扩展数据出现错误：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -290,7 +295,8 @@ class FoodEditerActivity : AppCompatActivity() {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了维生素数据")
                 } else {
-                    longToast("更新维生素数据出现错误：${e.message}")
+                    //longToast("更新维生素数据出现错误：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -303,7 +309,8 @@ class FoodEditerActivity : AppCompatActivity() {
                     if (BDM.ShowTips) toast("更新了食材数据")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodEdit))
                 } else {
-                    longToast("更新食材数据出现错误：${e.message}")
+                    //longToast("更新食材数据出现错误：${e.message}")
+                    ErrorMessage(this@FoodEditerActivity, e)
                 }
             }
         })
@@ -325,12 +332,13 @@ class FoodEditerActivity : AppCompatActivity() {
         food.mineralExt?.let { items.add(it) }
         items.add(food)
         BmobBatch().deleteBatch(items).doBatch(object: QueryListListener<BatchResult>() {
-            override fun done(p0: MutableList<BatchResult>?, p1: BmobException?) {
-                if (p1 == null) {
+            override fun done(p0: MutableList<BatchResult>?, e: BmobException?) {
+                if (e == null) {
                     toast("删除食材 ${food.name} 成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(food))
                 } else {
-                    toast("删除食材 ${food.name} 失败")
+                    ErrorMessage(this@FoodEditerActivity, e)
+                    //toast("删除食材 ${food.name} 失败")
                 }
             }
         })

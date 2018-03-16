@@ -18,6 +18,7 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
+import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
 import kotlinx.android.synthetic.main.fragment_category_foods.*
@@ -115,7 +116,8 @@ class CategoryFoodsFragment : Fragment() {
                 } else {
                     //message.text = e.message
                     if (view != null) {
-                        context.toast("${e.message}")
+                        //context.toast("${e.message}")
+                        ErrorMessage(context, e)
                     }
                 }
             }
