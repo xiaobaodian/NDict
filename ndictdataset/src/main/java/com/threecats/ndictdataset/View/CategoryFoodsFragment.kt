@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
@@ -16,7 +15,7 @@ import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.Helper.ErrorMessage
 
@@ -72,8 +71,8 @@ class CategoryFoodsFragment : Fragment() {
             val position = it.indexOf(updateItem.Category)
             if (position >= 0) {
                 when (updateItem.State){
-                    EditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
-                    EditerState.CategoryAppend -> {
+                    EEditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
+                    EEditerState.CategoryAppend -> {
                         val list = it
                         shareSet.CurrentCategory?.let {
                             list.add(it)

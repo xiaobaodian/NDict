@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodMineral
 import com.threecats.ndictdataset.Bmob.BFoodMineralExt
-import com.threecats.ndictdataset.Enum.ChangeBlock
+import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Helper.EditTextHelper
 
 import com.threecats.ndictdataset.R
@@ -41,10 +41,10 @@ class FoodMineralFragment : FoodPropertyFragment() {
         val changeNumber = foodEditTextHelper.ChangeNumber()
         val extChangeNumber = checkTextExtHelper.ChangeNumber()
         if (changeNumber > 0) {
-            parent.addChangeBlock(ChangeBlock.Mineral)
+            parent.addChangeBlock(EChangeBlock.Mineral)
         }
         if (extChangeNumber > 0) {
-            parent.addChangeBlock(ChangeBlock.MineralExt)
+            parent.addChangeBlock(EChangeBlock.MineralExt)
         }
     }
 

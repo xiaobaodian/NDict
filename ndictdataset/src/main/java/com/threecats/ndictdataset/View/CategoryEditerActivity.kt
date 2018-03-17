@@ -11,7 +11,7 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteCategoryRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.Helper.EditTextHelper
@@ -88,24 +88,24 @@ class CategoryEditerActivity : AppCompatActivity() {
 
         when (BDM.ShareSet?.ItemEditState){
 
-            EditerState.CategoryAppend -> {
+            EEditerState.CategoryAppend -> {
                 currentCategory.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
                             toast("添加了分类，objectID：$objectID")
-                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryAppend))  //Sticky
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryAppend))  //Sticky
                         } else {
                             toast("${e.message}")
                         }
                     }
                 })
             }
-            EditerState.CategoryEdit -> {
+            EEditerState.CategoryEdit -> {
                 currentCategory.update(object: UpdateListener(){
                     override fun done(e: BmobException?) {
                         if (e == null) {
                             toast("更新了分类数据")
-                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))  //Sticky
+                            EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryEdit))  //Sticky
                         } else {
                             toast("${e.message}")
                         }

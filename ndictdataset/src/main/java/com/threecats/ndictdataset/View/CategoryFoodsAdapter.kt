@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.R
 
 class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, val parentContext: Context) : RecyclerView.Adapter<CategoryFoodsAdapter.ViewHolder>() {
@@ -38,7 +38,7 @@ class CategoryFoodsAdapter(private val categorys: MutableList<BFoodCategory>, va
         holder.view.setOnLongClickListener {
             BDM.ShareSet?.CurrentCategory = category
             BDM.ShareSet?.CurrentCategoryPosition = position
-            BDM.ShareSet?.ItemEditState = EditerState.CategoryEdit
+            BDM.ShareSet?.ItemEditState = EEditerState.CategoryEdit
             val intent = Intent(parentContext, CategoryEditerActivity::class.java)
             parentContext.startActivity(intent)
             true

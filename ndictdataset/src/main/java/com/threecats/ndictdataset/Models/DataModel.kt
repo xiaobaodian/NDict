@@ -8,7 +8,7 @@ import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.*
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
@@ -26,7 +26,7 @@ class DataModel {
         category.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(category, EditerState.CategoryEdit))
+                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(category, EEditerState.CategoryEdit))
                 } else {
                     context.toast("${e.message}")
                 }

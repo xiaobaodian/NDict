@@ -18,7 +18,7 @@ import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.*
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
@@ -131,8 +131,8 @@ class FoodListActivity : AppCompatActivity() {
             val position = it.indexOf(updateItem.Food)
             if (position >= 0) {
                 when (updateItem.State){
-                    EditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position)
-                    EditerState.FoodAppend -> {
+                    EEditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position)
+                    EEditerState.FoodAppend -> {
                         it.add(updateItem.Food)
                         val foodSize = it.size
                         FoodRView?.adapter?.notifyItemInserted(foodSize)
@@ -282,7 +282,7 @@ class FoodListActivity : AppCompatActivity() {
         currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EditerState.CategoryEdit))
+                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryEdit))
                     if (showMessage) {
                         toast("更新 ${currentCategory.longTitle} 类的食材总数：$size ")
                     }

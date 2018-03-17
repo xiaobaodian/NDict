@@ -14,8 +14,8 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.ChangeBlock
-import com.threecats.ndictdataset.Enum.EditerState
+import com.threecats.ndictdataset.Enum.EChangeBlock
+import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
@@ -31,7 +31,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     private var currentFragment: FoodPropertyFragment? = null
-    private val changBlockList: MutableList<ChangeBlock> = arrayListOf()
+    private val changBlockList: MutableList<EChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,8 +78,8 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         when (shareSet.ItemEditState){
-            EditerState.FoodAppend -> {menu!!.findItem(R.id.SaveAddItem).isVisible = true}
-            EditerState.FoodEdit   -> {menu!!.findItem(R.id.SaveAddItem).isVisible = false}
+            EEditerState.FoodAppend -> {menu!!.findItem(R.id.SaveAddItem).isVisible = true}
+            EEditerState.FoodEdit   -> {menu!!.findItem(R.id.SaveAddItem).isVisible = false}
             else -> toast("EditState Error !")
         }
         return super.onPrepareOptionsMenu(menu)
@@ -109,7 +109,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (shareSet.ItemEditState == EditerState.FoodAppend) {
+        if (shareSet.ItemEditState == EEditerState.FoodAppend) {
             shareSet.CurrentFood?.let {
                 val food = it
                 foodPropertyFragments.forEach { it.exportFields(food) }
@@ -129,7 +129,7 @@ class FoodEditerActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    fun addChangeBlock(changeBlock: ChangeBlock){
+    fun addChangeBlock(changeBlock: EChangeBlock){
         val position = changBlockList.indexOf(changeBlock)
         if (position < 0) {
             changBlockList.add(changeBlock)
@@ -153,18 +153,18 @@ class FoodEditerActivity : AppCompatActivity() {
         if (food.name.length == 0) return
 
         when (shareSet.ItemEditState){
-            EditerState.FoodAppend -> {
+            EEditerState.FoodAppend -> {
                 // 加入数据需要在Bmob段建立关联，需要加入维生素、矿物质数据后获取返回的objectId，所以
                 // 采用链式调用
                 addBatchFoodExtToBmob(food)
             }
-            EditerState.FoodEdit -> {
+            EEditerState.FoodEdit -> {
                 changBlockList.forEach {
                     when (it) {
-                        ChangeBlock.Food -> updateFoodToBmob(food)
-                        ChangeBlock.Vitamin -> updateVitaminToBmob(food)
-                        ChangeBlock.Mineral -> updateMineralToBmob(food)
-                        ChangeBlock.MineralExt -> updateMineralExtToBmob(food)
+                        EChangeBlock.Food -> updateFoodToBmob(food)
+                        EChangeBlock.Vitamin -> updateVitaminToBmob(food)
+                        EChangeBlock.Mineral -> updateMineralToBmob(food)
+                        EChangeBlock.MineralExt -> updateMineralExtToBmob(food)
                         else -> toast("changBlockList Error !")
                     }
                 }
@@ -254,7 +254,7 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("添加了食材，objectID：$objectID")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodAppend))  //Sticky
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodAppend))  //Sticky
                 } else {
                     //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
@@ -307,7 +307,7 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了食材数据")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EditerState.FoodEdit))
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodEdit))
                 } else {
                     //longToast("更新食材数据出现错误：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
