@@ -1,4 +1,4 @@
-package com.threecats.ndictdataset.Shells
+package com.threecats.ndictdataset.Shells.TabViewShell
 
 import android.content.Context
 import android.support.design.widget.TabLayout
@@ -9,9 +9,15 @@ import android.support.v4.view.ViewPager
 /**
  * 由 zhang 于 2018/3/22 创建
  */
-class TabViewLayoutShell(context: Context) {
+class TabViewLayoutShell(context: Context){
+
     var tab: TabLayout? = null
     var viewPager: ViewPager? = null
+
+    var onTabSelectedListener: onShellTabSelectedListener? = null
+    var onTabUnselectedListener: onShellTabUnselectedListener? = null
+    var onTabReselectedListener: onShellTabReselectedListener? = null
+
     private lateinit var fragmentManager: FragmentManager
 
     init {
