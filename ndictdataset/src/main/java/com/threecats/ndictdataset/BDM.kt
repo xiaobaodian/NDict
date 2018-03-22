@@ -38,7 +38,7 @@ class BDM : Application() {
                 return field
             }
 
-        val ShowTips = false
+        val ShowTips = true
 
     }
 

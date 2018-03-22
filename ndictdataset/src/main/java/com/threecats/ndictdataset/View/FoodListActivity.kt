@@ -34,8 +34,8 @@ import org.jetbrains.anko.toast
 
 class FoodListActivity : AppCompatActivity() {
 
-    val shareSet = BDM.ShareSet!!
-    lateinit var currentCategory: BFoodCategory
+    private val shareSet = BDM.ShareSet!!
+    private lateinit var currentCategory: BFoodCategory
 
     init{
         if (shareSet.CurrentCategory == null) {
@@ -95,7 +95,7 @@ class FoodListActivity : AppCompatActivity() {
         super.onStart()
         if (foodList == null) {
             val query: BmobQuery<BFood> = BmobQuery()
-            query.addWhereEqualTo("nutrient", BmobPointer(currentCategory))
+            query.addWhereEqualTo("category", BmobPointer(currentCategory))
             query.include("vitamin,mineral,mineralExt,article")
             query.setLimit(300)
             query.findObjects(object: FindListener<BFood>(){
@@ -128,18 +128,22 @@ class FoodListActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
         foodList?.let {
-            val position = it.indexOf(updateItem.Food)
-            if (position >= 0) {
-                when (updateItem.State){
-                    EEditerState.FoodEdit -> FoodRView?.adapter?.notifyItemChanged(position)
-                    EEditerState.FoodAppend -> {
-                        it.add(updateItem.Food)
-                        val foodSize = it.size
-                        FoodRView?.adapter?.notifyItemInserted(foodSize)
-                        updateCategoryFoodSize(foodSize)
+            when (updateItem.State){
+                EEditerState.FoodEdit -> {
+                    val position = it.indexOf(updateItem.Food)
+                    if (position >= 0) {
+                        FoodRView?.adapter?.notifyItemChanged(position)
+                    } else {
+                        toast("没有找到需要更新的数据！！")
                     }
-                    else -> toast("EditState Error !")
                 }
+                EEditerState.FoodAppend -> {
+                    it.add(updateItem.Food)
+                    val foodSize = it.size
+                    FoodRView?.adapter?.notifyItemInserted(foodSize)
+                    updateCategoryFoodSize(foodSize)
+                }
+                else -> toast("EditState Error !")
             }
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)

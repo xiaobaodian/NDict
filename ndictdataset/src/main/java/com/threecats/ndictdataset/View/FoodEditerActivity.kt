@@ -253,7 +253,7 @@ class FoodEditerActivity : AppCompatActivity() {
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
-                    if (BDM.ShowTips) toast("添加了食材，objectID：$objectID")
+                    if (BDM.ShowTips) toast("添加了食材[${food.name}]，objectID：$objectID")
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodAppend))  //Sticky
                 } else {
                     //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
