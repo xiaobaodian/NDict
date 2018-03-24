@@ -45,17 +45,17 @@ class TabViewLayoutShell {
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
-
+                    onTabReselectedListener?.let { it.onTabReselected(tab) }
                 }
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-
+                    onTabSelectedListener?.let { it.onTabSelected(tab) }
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.let {
-
+                    onTabUnselectedListener?.let { it.onTabUnselected(tab) }
                 }
             }
         })
