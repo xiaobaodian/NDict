@@ -48,6 +48,8 @@ class FoodEditerActivity : AppCompatActivity() {
 
         currentFragment = foodPropertyFragments[0]
 
+        var ff = this.supportFragmentManager
+
         FoodEditerViewPage.offscreenPageLimit = foodPropertyFragments.size
         FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
         FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
