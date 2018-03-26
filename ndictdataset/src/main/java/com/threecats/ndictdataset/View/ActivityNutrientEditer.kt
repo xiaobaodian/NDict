@@ -19,7 +19,7 @@ class ActivityNutrientEditer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nutrient_editer)
-                viewPagerShell.parent(this)
+        viewPagerShell.parent(this)
                 .tab(NutrientPropertyTabs)
                 .viewPage(NutrientEditerViewPage)
                 .addFragment(NutrientFragment(), "描述")
