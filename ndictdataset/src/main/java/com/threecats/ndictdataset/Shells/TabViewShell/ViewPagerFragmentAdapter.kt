@@ -5,18 +5,15 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 //import android.support.v4.app.FragmentStatePagerAdapter
-import com.threecats.ndictdataset.BuildConfig
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
 /**
  * 由 zhang 于 2018/2/22 创建
  */
 class ViewPagerFragmentAdapter: FragmentPagerAdapter {
 
-    private var fragmentList: List<viewPagerFragment>
+    private var fragmentList: List<ViewPagerFragment>
 
-    constructor(fragmentManager: FragmentManager, fragmentList: List<viewPagerFragment>) : super(fragmentManager) {
+    constructor(fragmentManager: FragmentManager, fragmentList: List<ViewPagerFragment>) : super(fragmentManager) {
         this.fragmentList = fragmentList
     }
 

@@ -1,9 +1,7 @@
 package com.threecats.ndictdataset.Shells.TabViewShell
 
-import android.app.Activity
 //import android.app.Fragment
 //import android.app.FragmentManager
-import android.content.Context
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -24,7 +22,7 @@ class TabViewLayoutShell {
     var onTabReselectedListener: onShellTabReselectedListener? = null
 
     private lateinit var fragmentManager: FragmentManager
-    private val fragments = mutableListOf<viewPagerFragment>()
+    private val fragments = mutableListOf<ViewPagerFragment>()
 
     fun parent(activity: AppCompatActivity): TabViewLayoutShell {
         fragmentManager = activity.supportFragmentManager
@@ -63,12 +61,12 @@ class TabViewLayoutShell {
         return this
     }
 
-    fun addFragment(fragment: viewPagerFragment): TabViewLayoutShell {
+    fun addFragment(fragment: ViewPagerFragment): TabViewLayoutShell {
         fragments.add(fragment)
         return this
     }
 
-    fun addFragments(fragments: List<viewPagerFragment>): TabViewLayoutShell {
+    fun addFragments(fragments: List<ViewPagerFragment>): TabViewLayoutShell {
         this.fragments.addAll(fragments)
         return this
     }
