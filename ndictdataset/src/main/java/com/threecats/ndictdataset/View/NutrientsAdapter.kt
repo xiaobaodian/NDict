@@ -31,8 +31,8 @@ class NutrientsAdapter(private val nutrients: MutableList<BNutrient>, val parent
             //mListener?.onListFragmentInteraction(holder.food)
             //Toast.makeText(holder.context,"点击了：${nutrient.longTitle}", Toast.LENGTH_SHORT).show()
             BDM.ShareSet?.CurrentNutrient = nutrient
-            //val intent = Intent(parentContext, FoodListActivity::class.java)
-            //parentContext.startActivity(intent)
+            val intent = Intent(parentContext, ActivityNutrientEditer::class.java)
+            parentContext.startActivity(intent)
         }
 
         holder.view.setOnLongClickListener {

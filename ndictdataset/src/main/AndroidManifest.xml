@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View.FoodEditerActivity" />
         <activity android:name=".View.CategoryEditerActivity" />
+        <activity android:name=".View.ActivityNutrientEditer"></activity>
     </application>
 
 </manifest>

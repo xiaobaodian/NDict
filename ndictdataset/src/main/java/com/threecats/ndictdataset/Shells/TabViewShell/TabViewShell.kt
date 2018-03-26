@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 
 /**
  * 由 zhang 于 2018/3/22 创建
@@ -73,9 +74,16 @@ class TabViewLayoutShell {
     }
 
     fun link(){
-        if (tab!= null && viewPager != null) {
-            viewPager!!.adapter = ViewPagerFragmentAdapter(fragmentManager, fragments)
-            tab!!.setupWithViewPager(viewPager)
+        when (fragments.size){
+            0 -> return
+            1 -> tab?.visibility = View.GONE
+            else -> {
+                tab?.visibility = View.VISIBLE
+                if (tab!= null && viewPager != null) {
+                    viewPager!!.adapter = ViewPagerFragmentAdapter(fragmentManager, fragments)
+                    tab!!.setupWithViewPager(viewPager)
+                }
+            }
         }
     }
 }
