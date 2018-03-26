@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.Shells.TabViewShell
 
 //import android.app.Fragment
 //import android.app.FragmentManager
+import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -61,27 +62,25 @@ class TabViewLayoutShell {
         return this
     }
 
-    fun addFragment(fragment: ViewPagerFragment): TabViewLayoutShell {
+    fun addFragment(fragment: ViewPagerFragment, name: String): TabViewLayoutShell {
+        val bundle = Bundle()
+        bundle.putString("name", name)
+        fragment.setArguments(bundle)
         fragments.add(fragment)
         return this
     }
 
-    fun addFragments(fragments: List<ViewPagerFragment>): TabViewLayoutShell {
-        this.fragments.addAll(fragments)
-        return this
-    }
-
     fun link(){
-        when (fragments.size){
-            0 -> return
-            1 -> tab?.visibility = View.GONE
-            else -> {
-                tab?.visibility = View.VISIBLE
-                if (tab!= null && viewPager != null) {
-                    viewPager!!.adapter = ViewPagerFragmentAdapter(fragmentManager, fragments)
-                    tab!!.setupWithViewPager(viewPager)
-                }
-            }
+        val count = fragments.size
+        if (count == 0) return
+        if (count == 1) {
+            tab?.visibility = View.GONE
+        } else {
+            tab?.visibility = View.VISIBLE
+        }
+        if (tab!= null && viewPager != null) {
+            viewPager!!.adapter = ViewPagerFragmentAdapter(fragmentManager, fragments)
+            tab!!.setupWithViewPager(viewPager)
         }
     }
 }
