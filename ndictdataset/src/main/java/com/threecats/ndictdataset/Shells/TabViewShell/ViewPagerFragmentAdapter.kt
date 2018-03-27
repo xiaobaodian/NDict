@@ -11,27 +11,22 @@ import android.support.v4.app.FragmentPagerAdapter
  */
 class ViewPagerFragmentAdapter: FragmentPagerAdapter {
 
-    private var fragmentList: List<ViewPagerFragment>
+    private var fragments: List<ViewPagerFragment>
 
-    constructor(fragmentManager: FragmentManager, fragmentList: List<ViewPagerFragment>) : super(fragmentManager) {
-        this.fragmentList = fragmentList
+    constructor(fragmentManager: FragmentManager, fragments: List<ViewPagerFragment>) : super(fragmentManager) {
+        this.fragments = fragments
     }
 
     override fun getItem(position: Int): Fragment {
-        return fragmentList[position]
+        return fragments[position]
     }
 
     override fun getCount(): Int {
-        return fragmentList.size
+        return fragments.size
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        //var title: String = fragmentList[position].title
-        var title: String = fragmentList[position].arguments.getString("name", "没有数据")
-//        if (BuildConfig.DEBUG) {
-//            val logshow = AnkoLogger("NDIC")
-//            logshow.info { "适配器读取名称" }
-//        }
+        var title: String = fragments[position].arguments.getString("name", "没有数据")
         return title
     }
 }

@@ -17,6 +17,7 @@ class TabViewLayoutShell {
 
     var tab: TabLayout? = null
     var viewPager: ViewPager? = null
+    var currentFragment: ViewPagerFragment? = null
 
     private var tabSelectedListener: onShellTabSelectedListener? = null
     private var tabUnselectedListener: onShellTabUnselectedListener? = null
@@ -60,6 +61,7 @@ class TabViewLayoutShell {
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
+                    currentFragment = fragments[it.position]
                     tabSelectedListener?.let { it.onTabSelected(tab) }
                 }
             }
@@ -82,6 +84,7 @@ class TabViewLayoutShell {
 
     fun link(){
         val count = fragments.size
+        viewPager?.offscreenPageLimit = count
         if (count == 0) return
         if (count == 1) {
             tab?.visibility = View.GONE

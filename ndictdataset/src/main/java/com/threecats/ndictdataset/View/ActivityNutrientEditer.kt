@@ -17,7 +17,7 @@ import org.jetbrains.anko.toast
 
 class ActivityNutrientEditer : AppCompatActivity() {
 
-    val viewPagerShell = TabViewLayoutShell()
+    private val viewPagerShell = TabViewLayoutShell()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
