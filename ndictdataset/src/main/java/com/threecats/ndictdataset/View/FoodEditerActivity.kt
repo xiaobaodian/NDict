@@ -236,11 +236,11 @@ class FoodEditerActivity : AppCompatActivity() {
         food.mineral?.let { items.add(it) }
         food.mineralExt?.let { items.add(it) }
         BmobBatch().insertBatch(items).doBatch(object: QueryListListener<BatchResult>(){
-            override fun done(p0: MutableList<BatchResult>?, e: BmobException?) {
+            override fun done(result: MutableList<BatchResult>?, e: BmobException?) {
                 if (e == null) {
-                    if (p0?.get(0)?.error == null) food.vitamin?.objectId = p0?.get(0)?.objectId
-                    if (p0?.get(1)?.error == null) food.mineral?.objectId = p0?.get(1)?.objectId
-                    if (p0?.get(2)?.error == null) food.mineralExt?.objectId = p0?.get(2)?.objectId
+                    if (result?.get(0)?.error == null) food.vitamin?.objectId = result?.get(0)?.objectId
+                    if (result?.get(1)?.error == null) food.mineral?.objectId = result?.get(1)?.objectId
+                    if (result?.get(2)?.error == null) food.mineralExt?.objectId = result?.get(2)?.objectId
                     addFoodToBmob(food)
                 } else {
                     //longToast("添加食材扩展数据出现错误：${e.message}")

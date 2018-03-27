@@ -18,12 +18,16 @@ class TabViewLayoutShell {
     var tab: TabLayout? = null
     var viewPager: ViewPager? = null
 
-    var onTabSelectedListener: onShellTabSelectedListener? = null
-    var onTabUnselectedListener: onShellTabUnselectedListener? = null
-    var onTabReselectedListener: onShellTabReselectedListener? = null
+    private var tabSelectedListener: onShellTabSelectedListener? = null
+    private var tabUnselectedListener: onShellTabUnselectedListener? = null
+    private var tabReselectedListener: onShellTabReselectedListener? = null
 
     private lateinit var fragmentManager: FragmentManager
     private val fragments = mutableListOf<ViewPagerFragment>()
+
+    fun setOnTabSelectedListener(selectedListener: onShellTabSelectedListener){
+        tabSelectedListener = selectedListener
+    }
 
     fun parent(activity: AppCompatActivity): TabViewLayoutShell {
         fragmentManager = activity.supportFragmentManager
@@ -45,17 +49,17 @@ class TabViewLayoutShell {
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    onTabReselectedListener?.let { it.onTabReselected(tab) }
+                    tabReselectedListener?.let { it.onTabReselected(tab) }
                 }
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    onTabSelectedListener?.let { it.onTabSelected(tab) }
+                    tabSelectedListener?.let { it.onTabSelected(tab) }
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    onTabUnselectedListener?.let { it.onTabUnselected(tab) }
+                    tabUnselectedListener?.let { it.onTabUnselected(tab) }
                 }
             }
         })
