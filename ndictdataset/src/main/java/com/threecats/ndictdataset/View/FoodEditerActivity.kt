@@ -21,6 +21,7 @@ import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
@@ -31,6 +32,8 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
     private var currentFragment: FoodPropertyFragment? = null
+
+    private val viewPagerShell = TabViewLayoutShell()
     private val changBlockList: MutableList<EChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
