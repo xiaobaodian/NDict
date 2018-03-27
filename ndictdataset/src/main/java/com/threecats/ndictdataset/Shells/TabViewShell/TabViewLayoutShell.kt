@@ -28,6 +28,12 @@ class TabViewLayoutShell {
     fun setOnTabSelectedListener(selectedListener: onShellTabSelectedListener){
         tabSelectedListener = selectedListener
     }
+    fun setOnTabUnselectedListener(unselectedListener: onShellTabUnselectedListener){
+        tabUnselectedListener = unselectedListener
+    }
+    fun setOnTabReselectedListener(reselectedListener: onShellTabReselectedListener){
+        tabReselectedListener = reselectedListener
+    }
 
     fun parent(activity: AppCompatActivity): TabViewLayoutShell {
         fragmentManager = activity.supportFragmentManager
