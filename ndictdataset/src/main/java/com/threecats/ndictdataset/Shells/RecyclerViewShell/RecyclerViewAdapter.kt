@@ -99,7 +99,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val view: View
         when (viewType) {
-            0 -> {
+            ItemType.Item.ordinal -> {
                 view = LayoutInflater.from(parent.context).inflate(itemLayoutID, parent, false)
                 val itemViewHolder = ItemViewHolder(view)
                 itemViewHolder.currentItemView.setOnClickListener { v ->
@@ -126,7 +126,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
                 }
                 return itemViewHolder
             }
-            1 -> {
+            ItemType.Group.ordinal -> {
                 view = LayoutInflater.from(parent.context).inflate(groupLayoutID, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener { v ->
@@ -177,11 +177,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
 
     override fun getItemCount(): Int {
         val size = datas.recyclerItems.size
-        if (size == 0) {
-            OpenTips()
-        } else {
-            CloseTips()
-        }
+        shell.itemSizeChanged(size)
         return size
     }
 

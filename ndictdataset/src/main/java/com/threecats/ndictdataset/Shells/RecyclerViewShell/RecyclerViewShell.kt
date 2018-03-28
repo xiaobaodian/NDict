@@ -19,6 +19,7 @@ class RecyclerViewShell {
     private var longClickItemListener: onLongClickItemListener? = null
     private var displayGroupListener: onDisplayGroupListener? = null
     private var displayItemListener: onDisplayItemListener? = null
+    private var itemSizeChangedListener: onItemSizeChangedListener? = null
 
     fun recyclerView(r: RecyclerView): RecyclerViewShell {
         recyclerView = r
@@ -59,6 +60,10 @@ class RecyclerViewShell {
         displayItemListener = listener
     }
 
+    fun setItemSizeChangedListener(listener: onItemSizeChangedListener){
+        itemSizeChangedListener = listener
+    }
+
     internal fun displayGroup(group: RecyclerViewGroup, holder: RecyclerViewAdapter.GroupViewHolder){
         displayGroupListener?.onDisplayGroup(group, holder)
     }
@@ -81,6 +86,10 @@ class RecyclerViewShell {
 
     internal fun longClickItem(item: RecyclerViewItem, holder: RecyclerViewAdapter.ItemViewHolder){
         longClickItemListener?.onLongClickItem(item, holder)
+    }
+
+    internal fun itemSizeChanged(size: Int){
+        itemSizeChangedListener?.onItemSizeChanged(size)
     }
 
 }
