@@ -11,23 +11,13 @@ import com.threecats.ndictdataset.R
  * 由 zhang 于 2018/3/28 创建
  */
 
-abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private val shell: RecyclerViewShell) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     //private var groups: GroupListBase? = null
     //private var group: GroupBase? = null
     private var itemLayoutID: Int = 0
     private var groupLayoutID: Int = 0
     private var isChecked = false
-
-    private val onItemClickListener: AdapterView.OnItemClickListener? = null
-
-//    fun setGroups(groups: GroupListBase) {
-//        this.groups = groups
-//    }
-//
-//    fun setGroup(group: GroupBase) {
-//        this.group = group
-//    }
 
     fun itemLayout(itemLayoutID: Int): RecyclerViewAdapter {
         this.itemLayoutID = itemLayoutID
@@ -65,7 +55,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
 //            }
 //        }
 
-        fun setText(R: Int, text: String): ItemViewHolder {
+        fun displayText(R: Int, text: String): ItemViewHolder {
             val textView = currentItemView.findViewById<TextView>(R)
             if (text.length == 0) {
                 textView.visibility = View.GONE
@@ -76,7 +66,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
             return this@ItemViewHolder
         }
 
-        fun setImageResource(R: Int, imageResId: Int): ItemViewHolder {
+        fun displayImage(R: Int, imageResId: Int): ItemViewHolder {
             val imageView = currentItemView.findViewById<ImageView>(R)
             imageView.setImageResource(imageResId)
             return this@ItemViewHolder
@@ -87,22 +77,22 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
         val group: RecyclerViewGroup
             get() = datas.recyclerItems[adapterPosition] as RecyclerViewGroup
 
-        fun setText(R: Int, text: String): GroupViewHolder {
+        fun displayText(R: Int, text: String): GroupViewHolder {
             val textView = currentGroupView.findViewById<TextView>(R)
             textView.text = text
             return this@GroupViewHolder
         }
 
-        fun setImageResource(R: Int, imageResId: Int): GroupViewHolder {
+        fun displayImage(R: Int, imageResId: Int): GroupViewHolder {
             val imageView = currentGroupView.findViewById<ImageView>(R)
             imageView.setImageResource(imageResId)
             return this@GroupViewHolder
         }
     }
 
-    protected abstract fun OnBindItem(holder: ItemViewHolder, task: TaskItem, groupType: GroupType?)
-    protected abstract fun OnBindGroup(holder: GroupViewHolder, group: GroupBase)
-    protected abstract fun OnGroupClick(group: GroupBase)
+    //protected abstract fun OnBindItem(holder: ItemViewHolder, task: TaskItem, groupType: GroupType?)
+    //protected abstract fun OnBindGroup(holder: GroupViewHolder, group: GroupBase)
+    //protected abstract fun OnGroupClick(group: GroupBase)
     protected abstract fun OpenTips()
     protected abstract fun CloseTips()
 
@@ -114,6 +104,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
                 val itemViewHolder = ItemViewHolder(view)
                 itemViewHolder.currentItemView.setOnClickListener { v ->
                     val item = itemViewHolder.item
+                    shell.clickItem(item, itemViewHolder)
                     //App.self().getDataManger().setCurrentTask(task)
 //                    if (isChecked) {
 //                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
@@ -127,6 +118,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
                     val item = itemViewHolder.item
+                    shell.longClickItem(item, itemViewHolder)
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
@@ -137,7 +129,15 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
             1 -> {
                 view = LayoutInflater.from(parent.context).inflate(groupLayoutID, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
-                groupViewHolder.currentGroupView.setOnClickListener { v -> OnGroupClick(groupViewHolder.group) }
+                groupViewHolder.currentGroupView.setOnClickListener { v ->
+                    val group = groupViewHolder.group
+                    shell.clickGroup(group, groupViewHolder)
+                }
+                groupViewHolder.currentGroupView.setOnLongClickListener { v ->
+                    val group = groupViewHolder.group
+                    shell.longClickGroup(group, groupViewHolder)
+                    true
+                }
                 return groupViewHolder
             }
         }
@@ -158,12 +158,14 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : Recycl
 //                }
 //                itemViewHolder.checkBox!!.tag = item
                 //val groupType = item.getCurrentGroup(groups).getGroupType()
-                OnBindItem(itemViewHolder, item, groupType)
+                //OnBindItem(itemViewHolder, item, groupType)
+                shell.displayItem(item, itemViewHolder)
             }
             ItemType.Group -> {
                 val groupViewHolder = holder as GroupViewHolder
                 val group = recyclerItem as RecyclerViewGroup
-                OnBindGroup(groupViewHolder, group)
+                //OnBindGroup(groupViewHolder, group)
+                shell.displayGroup(group, groupViewHolder)
             }
         }
     }
