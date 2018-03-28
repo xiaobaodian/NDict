@@ -15,8 +15,8 @@ import android.view.View
  */
 class TabViewLayoutShell {
 
-    var tab: TabLayout? = null
-    var viewPager: ViewPager? = null
+    private var tab: TabLayout? = null
+    private var viewPager: ViewPager? = null
     var currentFragment: Fragment? = null
 
     private var tabSelectedListener: onShellTabSelectedListener? = null
