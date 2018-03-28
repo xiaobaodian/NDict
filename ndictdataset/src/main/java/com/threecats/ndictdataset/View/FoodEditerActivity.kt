@@ -31,10 +31,9 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private val shareSet = BDM.ShareSet!!
 
-    private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
-    private var currentFragment: FoodPropertyFragment? = null
+    //private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
 
-    private val viewPagerShell = TabViewLayoutShell()
+    private val nutrientFragments = TabViewLayoutShell()
     private val changBlockList: MutableList<EChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +42,7 @@ class FoodEditerActivity : AppCompatActivity() {
         setSupportActionBar(FoodEditerToolbar)
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodNutrientFragment
 
-        viewPagerShell.setOnTabSelectedListener(object: onShellTabSelectedListener{
+        nutrientFragments.setOnTabSelectedListener(object: onShellTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tab.position == 0) {
                     FoodEditerToolbar.title = "食材详情"
@@ -54,7 +53,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
-        viewPagerShell.parent(this)
+        nutrientFragments.parent(this)
                 .tab(FoodPropertyTabs)
                 .viewPage(FoodEditerViewPage)
                 .addFragment(FoodNameFragment(),"名称")
@@ -88,14 +87,14 @@ class FoodEditerActivity : AppCompatActivity() {
             R.id.SaveAddItem -> {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.exportFields(food) }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
                     processFood(food)
                 }
                 shareSet.createFood()
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.importFields(food) }
-                    foodPropertyFragments.forEach { it.firstEditTextFocus() }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).importFields(food) }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
                 }
                 FoodPropertyTabs.getTabAt(0)?.select()
             }
@@ -107,16 +106,16 @@ class FoodEditerActivity : AppCompatActivity() {
         if (shareSet.ItemEditState == EEditerState.FoodAppend) {
             shareSet.CurrentFood?.let {
                 val food = it
-                foodPropertyFragments.forEach { it.exportFields(food) }
+                nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
                 processFood(food)
             }
         } else {
             changBlockList.clear()
-            foodPropertyFragments.forEach { it.blockChangeState(this) }
+            nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).blockChangeState(this) }
             if (changBlockList.size > 0) {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    foodPropertyFragments.forEach { it.exportFields(food) }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
                     processFood(food)
                 }
             }

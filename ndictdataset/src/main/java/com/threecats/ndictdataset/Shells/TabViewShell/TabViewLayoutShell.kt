@@ -24,7 +24,7 @@ class TabViewLayoutShell {
     private var tabReselectedListener: onShellTabReselectedListener? = null
 
     private lateinit var fragmentManager: FragmentManager
-    private val fragments = mutableListOf<Fragment>()
+    val fragments = mutableListOf<Fragment>()
 
     fun setOnTabSelectedListener(selectedListener: onShellTabSelectedListener){
         tabSelectedListener = selectedListener
