@@ -31,6 +31,7 @@ class RecyclerViewData {
     fun addItem(item: RecyclerViewItem): Int{
         var position = -1
         if (groups.size == 0) {
+            item.itemType = ItemType.Item
             recyclerItems.add(item)
             position = recyclerItems.size
         }
