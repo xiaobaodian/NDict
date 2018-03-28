@@ -11,22 +11,23 @@ import com.threecats.ndictdataset.R
  * 由 zhang 于 2018/3/28 创建
  */
 
-abstract class RecyclerViewAdapter(private val items: List<RecyclerViewItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class RecyclerViewAdapter(private val datas: RecyclerViewData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var groups: GroupListBase? = null
-    private var group: GroupBase? = null
+    //private var groups: GroupListBase? = null
+    //private var group: GroupBase? = null
     private var itemLayoutID: Int = 0
     private var groupLayoutID: Int = 0
-    var isChecked = false
+    private var isChecked = false
+
     private val onItemClickListener: AdapterView.OnItemClickListener? = null
 
-    fun setGroups(groups: GroupListBase) {
-        this.groups = groups
-    }
-
-    fun setGroup(group: GroupBase) {
-        this.group = group
-    }
+//    fun setGroups(groups: GroupListBase) {
+//        this.groups = groups
+//    }
+//
+//    fun setGroup(group: GroupBase) {
+//        this.group = group
+//    }
 
     fun itemLayout(itemLayoutID: Int): RecyclerViewAdapter {
         this.itemLayoutID = itemLayoutID
@@ -39,30 +40,30 @@ abstract class RecyclerViewAdapter(private val items: List<RecyclerViewItem>) : 
     }
 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
-        internal var checkBox: CheckBox? = null
+        //internal var checkBox: CheckBox? = null
         val item: RecyclerViewItem
-            get() = items[adapterPosition] as TaskItem
+            get() = datas.recyclerItems[adapterPosition] as RecyclerViewItem
 
-        init {
-            checkBox = currentItemView.findViewById(R.id.checkBox)
-            checkBox?.let {
-                it.setOnClickListener { v ->
-                    if (checkBox == null) {
-                        Toast.makeText(v.context, "Check Box is NULL !!!", Toast.LENGTH_SHORT).show()
-                        return@checkBox.setOnClickListener
-                    }
-                    val task = checkBox!!.tag as Task
-                    if (checkBox!!.isChecked) {
-                        task.setChecked(true)
-                    } else {
-                        task.setChecked(false)
-                    }
-                    //这里可以加入抽象方法，实现用户定制的点击CheckBox动作
-                    //doClickCheckBox();
-                }
-
-            }
-        }
+//        init {
+//            checkBox = currentItemView.findViewById(R.id.checkBox)
+//            checkBox?.let {
+//                it.setOnClickListener { v ->
+//                    if (checkBox == null) {
+//                        Toast.makeText(v.context, "Check Box is NULL !!!", Toast.LENGTH_SHORT).show()
+//                        return@checkBox.setOnClickListener
+//                    }
+//                    val task = checkBox!!.tag as Task
+//                    if (checkBox!!.isChecked) {
+//                        task.setChecked(true)
+//                    } else {
+//                        task.setChecked(false)
+//                    }
+//                    //这里可以加入抽象方法，实现用户定制的点击CheckBox动作
+//                    //doClickCheckBox();
+//                }
+//
+//            }
+//        }
 
         fun setText(R: Int, text: String): ItemViewHolder {
             val textView = currentItemView.findViewById<TextView>(R)
@@ -83,8 +84,8 @@ abstract class RecyclerViewAdapter(private val items: List<RecyclerViewItem>) : 
     }
 
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
-        val group: GroupBase
-            get() = items[adapterPosition] as GroupBase
+        val group: RecyclerViewGroup
+            get() = datas.recyclerItems[adapterPosition] as RecyclerViewGroup
 
         fun setText(R: Int, text: String): GroupViewHolder {
             val textView = currentGroupView.findViewById<TextView>(R)
@@ -105,28 +106,28 @@ abstract class RecyclerViewAdapter(private val items: List<RecyclerViewItem>) : 
     protected abstract fun OpenTips()
     protected abstract fun CloseTips()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val view: View
         when (viewType) {
             0 -> {
                 view = LayoutInflater.from(parent.context).inflate(itemLayoutID, parent, false)
                 val itemViewHolder = ItemViewHolder(view)
                 itemViewHolder.currentItemView.setOnClickListener { v ->
-                    val task = itemViewHolder.task
-                    App.self().getDataManger().setCurrentTask(task)
-                    if (isChecked) {
-                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
-                        task.setChecked(itemViewHolder.checkBox!!.isChecked)
-                    } else {
-                        //Intent taskIntent = new Intent(App.getMainActivity(),TaskDetailsActivity.class);
-                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
-                        App.self().getMainActivity().startActivity(taskIntent)
-                    }
+                    val item = itemViewHolder.item
+                    //App.self().getDataManger().setCurrentTask(task)
+//                    if (isChecked) {
+//                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
+//                        task.setChecked(itemViewHolder.checkBox!!.isChecked)
+//                    } else {
+//                        //Intent taskIntent = new Intent(App.getMainActivity(),TaskDetailsActivity.class);
+//                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
+//                        App.self().getMainActivity().startActivity(taskIntent)
+//                    }
                 }
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
-                    if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
-                    val task = itemViewHolder.task
-                    App.self().getDataManger().setCurrentTask(task)
+                    //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
+                    val item = itemViewHolder.item
+                    //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
                     true
@@ -144,35 +145,36 @@ abstract class RecyclerViewAdapter(private val items: List<RecyclerViewItem>) : 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = items[position]
-        when (item.itemType) {
-            Item -> {
+        val recyclerItem = datas.recyclerItems[position]
+        when (recyclerItem.itemType) {
+            ItemType.Item -> {
                 val itemViewHolder = holder as ItemViewHolder
-                val task = item as TaskItem
-                if (isChecked) {
-                    itemViewHolder.checkBox!!.visibility = View.VISIBLE
-                    itemViewHolder.checkBox!!.isChecked = task.getChecked()
-                } else {
-                    itemViewHolder.checkBox!!.visibility = View.GONE
-                }
-                itemViewHolder.checkBox!!.tag = task
-                val groupType = task.getCurrentGroup(groups).getGroupType()
-                OnBindItem(itemViewHolder, task, groupType)
+                val item = recyclerItem as RecyclerViewItem
+//                if (isChecked) {
+//                    itemViewHolder.checkBox!!.visibility = View.VISIBLE
+//                    itemViewHolder.checkBox!!.isChecked = item.getChecked()
+//                } else {
+//                    itemViewHolder.checkBox!!.visibility = View.GONE
+//                }
+//                itemViewHolder.checkBox!!.tag = item
+                //val groupType = item.getCurrentGroup(groups).getGroupType()
+                OnBindItem(itemViewHolder, item, groupType)
             }
-            Group -> {
+            ItemType.Group -> {
                 val groupViewHolder = holder as GroupViewHolder
-                val group = item as GroupBase
+                val group = recyclerItem as RecyclerViewGroup
                 OnBindGroup(groupViewHolder, group)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].itemType.ordinal()
+        val item: RecyclerViewItem = datas.recyclerItems[position]
+        return item.itemType.ordinal //ordinal()
     }
 
     override fun getItemCount(): Int {
-        val size = items.size
+        val size = datas.recyclerItems.size
         if (size == 0) {
             OpenTips()
         } else {

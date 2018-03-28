@@ -8,7 +8,7 @@ import java.util.Collections
  * 由 zhang 于 2017/8/3 创建
  */
 
-abstract class RecyclerViewGroup: RecyclerViewItem() {
+class RecyclerViewGroup: RecyclerViewItem() {  //abstract
 
     var id: Long = 0
     var title: String = ""
