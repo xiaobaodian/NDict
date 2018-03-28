@@ -11,9 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter
  */
 class ViewPagerFragmentAdapter: FragmentPagerAdapter {
 
-    private var fragments: List<ViewPagerFragment>
+    //private var fragments: List<ViewPagerFragment>
+    private var fragments: List<out Fragment>
 
-    constructor(fragmentManager: FragmentManager, fragments: List<ViewPagerFragment>) : super(fragmentManager) {
+    constructor(fragmentManager: FragmentManager, fragments: List<out Fragment>) : super(fragmentManager) {
         this.fragments = fragments
     }
 
@@ -26,7 +27,11 @@ class ViewPagerFragmentAdapter: FragmentPagerAdapter {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        var title: String = fragments[position].arguments.getString("name", "没有数据")
+        val fragment = fragments[position]
+        var title = "没有Fragment标题数据"
+        fragment.arguments?.let {
+            title = it.getString("name")
+        }
         return title
     }
 }

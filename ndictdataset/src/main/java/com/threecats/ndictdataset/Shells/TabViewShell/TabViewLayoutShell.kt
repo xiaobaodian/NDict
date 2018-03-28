@@ -17,14 +17,14 @@ class TabViewLayoutShell {
 
     var tab: TabLayout? = null
     var viewPager: ViewPager? = null
-    var currentFragment: ViewPagerFragment? = null
+    var currentFragment: Fragment? = null
 
     private var tabSelectedListener: onShellTabSelectedListener? = null
     private var tabUnselectedListener: onShellTabUnselectedListener? = null
     private var tabReselectedListener: onShellTabReselectedListener? = null
 
     private lateinit var fragmentManager: FragmentManager
-    private val fragments = mutableListOf<ViewPagerFragment>()
+    private val fragments = mutableListOf<Fragment>()
 
     fun setOnTabSelectedListener(selectedListener: onShellTabSelectedListener){
         tabSelectedListener = selectedListener
@@ -74,7 +74,7 @@ class TabViewLayoutShell {
         return this
     }
 
-    fun addFragment(fragment: ViewPagerFragment, name: String): TabViewLayoutShell {
+    fun addFragment(fragment: Fragment, name: String): TabViewLayoutShell {
         val bundle = Bundle()
         bundle.putString("name", name)
         fragment.setArguments(bundle)

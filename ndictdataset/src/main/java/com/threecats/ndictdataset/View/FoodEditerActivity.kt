@@ -22,6 +22,7 @@ import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
+import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
@@ -42,36 +43,27 @@ class FoodEditerActivity : AppCompatActivity() {
         setSupportActionBar(FoodEditerToolbar)
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodNutrientFragment
 
-        addFragments(FoodNameFragment(),"名称")
-        addFragments(FoodNutrientFragment(),"营养素")
-        addFragments(FoodVitaminFragment(),"维生素")
-        addFragments(FoodMineralFragment(),"矿物质")
-        addFragments(FoodNoteFragment(),"描述")
-        //addFragments(FoodPictureFragment(),"图片")
-
-        currentFragment = foodPropertyFragments[0]
-
-        FoodEditerViewPage.offscreenPageLimit = foodPropertyFragments.size
-        FoodEditerViewPage.adapter = FoodEditerGroupAdapter(supportFragmentManager, foodPropertyFragments)
-        FoodPropertyTabs.setupWithViewPager(FoodEditerViewPage)
-        FoodPropertyTabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    currentFragment = foodPropertyFragments[it.position]
-                    if (it.position == 0) {
-                        FoodEditerToolbar.title = "食材详情"
-                        FoodEditerToolbar.subtitle = ""
-                    } else {
-                        FoodEditerToolbar.title = shareSet.CurrentFood?.name
-                        FoodEditerToolbar.subtitle = "每100克中的含量"
-                    }
+        viewPagerShell.setOnTabSelectedListener(object: onShellTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                if (tab.position == 0) {
+                    FoodEditerToolbar.title = "食材详情"
+                    FoodEditerToolbar.subtitle = ""
+                } else {
+                    FoodEditerToolbar.title = shareSet.CurrentFood?.name
+                    FoodEditerToolbar.subtitle = "每100克中的含量"
                 }
             }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
         })
+        viewPagerShell.parent(this)
+                .tab(FoodPropertyTabs)
+                .viewPage(FoodEditerViewPage)
+                .addFragment(FoodNameFragment(),"名称")
+                .addFragment(FoodNutrientFragment(),"营养素")
+                .addFragment(FoodVitaminFragment(),"维生素")
+                .addFragment(FoodMineralFragment(),"矿物质")
+                .addFragment(FoodNoteFragment(),"描述")
+                .link()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -137,18 +129,6 @@ class FoodEditerActivity : AppCompatActivity() {
         if (position < 0) {
             changBlockList.add(changeBlock)
         }
-    }
-
-    private fun addFragments(fragment: FoodPropertyFragment, name: String){
-        val bundle = Bundle()
-        bundle.putString("name", name)
-        fragment.setArguments(bundle)
-        foodPropertyFragments.add(fragment)
-
-//        if (BuildConfig.DEBUG) {
-//            val logshow = AnkoLogger("NDIC")
-//            logshow.info { "设置Fragment参数传递" }
-//        }
     }
 
     private fun processFood(food: BFood){

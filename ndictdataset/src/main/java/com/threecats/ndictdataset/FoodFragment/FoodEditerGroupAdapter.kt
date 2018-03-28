@@ -27,7 +27,7 @@ class FoodEditerGroupAdapter: FragmentPagerAdapter {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        var title: String = fragmentList[position].arguments.getString("name", "没有数据")
+        var title: String = fragmentList[position].arguments!!.getString("name", "没有数据")
         if (BuildConfig.DEBUG) {
             val logshow = AnkoLogger("NDIC")
             logshow.info { "适配器读取名称" }
