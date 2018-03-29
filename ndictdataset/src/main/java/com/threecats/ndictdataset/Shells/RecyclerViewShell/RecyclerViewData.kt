@@ -1,5 +1,6 @@
 package com.threecats.ndictdataset.Shells.RecyclerViewShell
 
+import org.jetbrains.anko.toast
 import java.util.ArrayList
 
 /**
@@ -19,7 +20,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         groups.add(group)
         group.parentData = this
         addGroupInRecyclerViewItems(group)
-        CalculatorTitleSite()
+        calculatorTitleSite()
     }
 
     fun getGroup(id: Long): RecyclerViewGroup? {
@@ -33,7 +34,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         return count
     }
 
-    private fun CalculatorTitleSite() {
+    private fun calculatorTitleSite() {
         var site = 0
         //parentGroups.takeWhile { it.State === DisplayState.Show }.forEach {
         groups.filter { it.State === DisplayState.Show }.forEach {
@@ -51,16 +52,16 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
     private fun hideGroup(group: RecyclerViewGroup) {
         if (group.items.size > 0) return
         if (group.groupSiteID > recyclerViewItems.size - 1) {
-            //UIHelper.Toast("Hide Group : group.groupSiteID > size()")
+            shell.view.context.toast("Hide Group : group.groupSiteID > size()")
             return
         }
         if (group === recyclerViewItems[group.groupSiteID]) {
             recyclerViewItems.removeAt(group.groupSiteID)
             shell.recyclerAdapter?.notifyItemRemoved(group.groupSiteID)
             group.State = DisplayState.Hide
-            CalculatorTitleSite()
+            calculatorTitleSite()
         } else {
-            //UIHelper.Toast("HideGroup出现错误")
+            shell.view.context.toast("HideGroup出现错误")
         }
     }
 
@@ -113,7 +114,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         }
         val site = group.addItem(item)
         addItemToRecyclerViewItems(group, site, item)
-        CalculatorTitleSite()
+        calculatorTitleSite()
     }
 
     fun addItem(item: RecyclerViewItem, groupID: Long) {
@@ -135,11 +136,11 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         item.parentGroups.remove(group)
         val site = group.removeItem(item)
         if (site >= 0) {
-            removeTaskFromRecyclerViewItems(group, site, item)
+            removeItemFromRecyclerViewItems(group, site, item)
             if (group.items.size == 0) {
                 hideGroup(group)
             }
-            CalculatorTitleSite()
+            calculatorTitleSite()
         }
     }
 
@@ -155,13 +156,13 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         shell.recyclerAdapter?.notifyItemInserted(site)
     }
 
-    private fun removeTaskFromRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
+    private fun removeItemFromRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
         val site = group.groupSiteID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
         if (recyclerViewItems[site] === item) {
             recyclerViewItems.removeAt(site)
             shell.recyclerAdapter?.notifyItemRemoved(site)
         } else {
-            //UIHelper.Toast(group.getParent().getParent().getTitle() + "Task与ListItems不符")
+            shell.view.context.toast("要删除的Item与列表中指定位置的记录不相符")
         }
     }
 

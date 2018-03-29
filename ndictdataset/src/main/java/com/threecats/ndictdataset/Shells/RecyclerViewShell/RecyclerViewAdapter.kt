@@ -12,26 +12,12 @@ import android.widget.*
 
 class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val shell: RecyclerViewShell) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    //private var parentGroups: GroupListBase? = null
-    //private var group: GroupBase? = null
-    private var itemLayoutID: Int = 0
-    private var groupLayoutID: Int = 0
     private var isChecked = false
-
-    fun itemLayout(itemLayoutID: Int): RecyclerViewAdapter {
-        this.itemLayoutID = itemLayoutID
-        return this
-    }
-
-    fun groupLayout(groupLayoutID: Int): RecyclerViewAdapter {
-        this.groupLayoutID = groupLayoutID
-        return this
-    }
 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
         val item: RecyclerViewItem
-            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewItem
+            get() = dataSet.recyclerViewItems[adapterPosition]
 
 //        init {
 //            checkBox = currentItemView.findViewById(R.id.checkBox)
@@ -89,15 +75,11 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
         }
     }
 
-    //protected abstract fun OnBindItem(holder: ItemViewHolder, task: TaskItem, groupType: GroupType?)
-    //protected abstract fun OnBindGroup(holder: GroupViewHolder, group: GroupBase)
-    //protected abstract fun OnGroupClick(group: GroupBase)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val view: View
         when (viewType) {
             ItemType.Item.ordinal -> {
-                view = LayoutInflater.from(parent.context).inflate(itemLayoutID, parent, false)
+                view = LayoutInflater.from(parent.context).inflate(shell.globalItemLayoutID, parent, false)
                 val itemViewHolder = ItemViewHolder(view)
                 itemViewHolder.currentItemView.setOnClickListener { v ->
                     val item = itemViewHolder.item
@@ -124,7 +106,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
                 return itemViewHolder
             }
             ItemType.Group.ordinal -> {
-                view = LayoutInflater.from(parent.context).inflate(groupLayoutID, parent, false)
+                view = LayoutInflater.from(parent.context).inflate(shell.globalGroupLayoutID, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener { v ->
                     val group = groupViewHolder.group

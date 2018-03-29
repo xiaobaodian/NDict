@@ -1,7 +1,9 @@
 package com.threecats.ndictdataset.Shells.RecyclerViewShell
 
+import android.view.View
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import org.jetbrains.anko.toast
 
 /**
  * 由 zhang 于 2018/3/28 创建
@@ -13,9 +15,12 @@ class RecyclerViewShell(val view: View) {
     var recyclerAdapter: RecyclerViewAdapter? = null
         get() = field
 
+    var globalItemLayoutID: Int = 0
+        get() = field
+    var globalGroupLayoutID: Int = 0
+        get() = field
+
     private var dataSet: RecyclerViewData
-    private var globalItemLayoutID: Int = 0
-    private var globalGroupLayoutID: Int = 0
 
     private var clickGroupListener: onClickGroupListener? = null
     private var clickItemListener: onClickItemListener? = null
@@ -36,9 +41,15 @@ class RecyclerViewShell(val view: View) {
     }
 
     fun link(){
+        if (globalItemLayoutID == 0 || globalGroupLayoutID == 0) {
+            view.context.toast("组头或条目的布局资源未设置")
+            return
+        }
         val layoutManager = LinearLayoutManager(view.getContext())
-        recyclerView?.setLayoutManager(layoutManager)
-        recyclerView?.setAdapter(recyclerAdapter)
+        recyclerView?.let {
+            it.setLayoutManager(layoutManager)
+            it.setAdapter(recyclerAdapter)
+        }
     }
 
     fun globalItemLayout(itemLayout: Int): RecyclerViewShell {
