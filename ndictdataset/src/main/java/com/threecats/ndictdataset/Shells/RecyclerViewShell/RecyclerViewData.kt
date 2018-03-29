@@ -136,7 +136,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         val site = group.removeItem(item)
         if (site >= 0) {
             removeTaskFromRecyclerViewItems(group, site, item)
-            if (group.items.size === 0) {
+            if (group.items.size == 0) {
                 hideGroup(group)
             }
             CalculatorTitleSite()
@@ -168,5 +168,10 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
     fun updateItemDisplay(item: RecyclerViewItem, group: RecyclerViewGroup) {
         val site = group.items.indexOf(item) + group.groupSiteID + 1
         shell.recyclerAdapter?.notifyItemChanged(site)
+    }
+
+    fun updateItemDisplay(item: RecyclerViewItem, groupID: Long){
+        val group = groups.find { it.id == groupID }
+        group?.let { updateItemDisplay(item, it) }
     }
 }

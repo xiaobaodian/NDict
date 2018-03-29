@@ -1,17 +1,19 @@
 package com.threecats.ndictdataset.Shells.RecyclerViewShell
 
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
 /**
  * 由 zhang 于 2018/3/28 创建
  */
-class RecyclerViewShell {
+class RecyclerViewShell(val view: View) {
 
     var recyclerView: RecyclerView? = null
-        get() = recyclerView
+        get() = field
     var recyclerAdapter: RecyclerViewAdapter? = null
-        get() = recyclerAdapter
+        get() = field
 
+    private var dataSet: RecyclerViewData
     private var globalItemLayoutID: Int = 0
     private var globalGroupLayoutID: Int = 0
 
@@ -23,9 +25,20 @@ class RecyclerViewShell {
     private var displayItemListener: onDisplayItemListener? = null
     private var itemSizeChangedListener: onItemSizeChangedListener? = null
 
-    fun recyclerView(rv: RecyclerView): RecyclerViewShell {
-        recyclerView = rv
+    init {
+        dataSet = RecyclerViewData(this)
+        recyclerAdapter = RecyclerViewAdapter(dataSet, this)
+    }
+
+    fun recyclerView(recyclerView: RecyclerView): RecyclerViewShell {
+        this.recyclerView = recyclerView
         return this
+    }
+
+    fun link(){
+        val layoutManager = LinearLayoutManager(view.getContext())
+        recyclerView?.setLayoutManager(layoutManager)
+        recyclerView?.setAdapter(recyclerAdapter)
     }
 
     fun globalItemLayout(itemLayout: Int): RecyclerViewShell {
