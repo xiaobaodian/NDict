@@ -100,7 +100,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
     fun addItem(item: RecyclerViewItem): Int{
         var position = -1
         if (groups.size == 0) {
-            item.itemType = ItemType.Item
+            item.viewType?.itemType = ItemType.Item
             recyclerViewItems.add(item)
             position = recyclerViewItems.size - 1
             shell.recyclerAdapter?.notifyItemInserted(position)

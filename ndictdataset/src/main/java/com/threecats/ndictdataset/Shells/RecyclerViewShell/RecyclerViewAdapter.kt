@@ -76,15 +76,17 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        val view: View
-        when (viewType) {
-            ItemType.Item.ordinal -> {
-                view = LayoutInflater.from(parent.context).inflate(shell.globalItemLayoutID, parent, false)
-                val itemViewHolder = ItemViewHolder(view)
-                itemViewHolder.currentItemView.setOnClickListener { v ->
-                    val item = itemViewHolder.item
-                    shell.clickItem(item, itemViewHolder)
-                    //App.self().getDataManger().setCurrentTask(task)
+        val type = shell.getViewType(viewType)
+        type?.let {
+            val view: View
+            when (it.itemType) {
+                ItemType.Item -> {
+                    view = LayoutInflater.from(parent.context).inflate(it.LayoutID!!, parent, false)
+                    val itemViewHolder = ItemViewHolder(view)
+                    itemViewHolder.currentItemView.setOnClickListener { v ->
+                        val item = itemViewHolder.item
+                        shell.clickItem(item, itemViewHolder)
+                        //App.self().getDataManger().setCurrentTask(task)
 //                    if (isChecked) {
 //                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
 //                        task.setChecked(itemViewHolder.checkBox!!.isChecked)
@@ -93,31 +95,32 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
+                    }
+                    itemViewHolder.currentItemView.setOnLongClickListener { v ->
+                        //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
+                        val item = itemViewHolder.item
+                        shell.longClickItem(item, itemViewHolder)
+                        //App.self().getDataManger().setCurrentTask(task)
+                        //暂时关闭长安多选功能
+                        //App.getDataManger().getCurrentGroupList().setItemChecked(true);
+                        true
+                    }
+                    return itemViewHolder
                 }
-                itemViewHolder.currentItemView.setOnLongClickListener { v ->
-                    //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
-                    val item = itemViewHolder.item
-                    shell.longClickItem(item, itemViewHolder)
-                    //App.self().getDataManger().setCurrentTask(task)
-                    //暂时关闭长安多选功能
-                    //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                    true
+                ItemType.Group -> {
+                    view = LayoutInflater.from(parent.context).inflate(it.LayoutID!!, parent, false)
+                    val groupViewHolder = GroupViewHolder(view)
+                    groupViewHolder.currentGroupView.setOnClickListener { v ->
+                        val group = groupViewHolder.group
+                        shell.clickGroup(group, groupViewHolder)
+                    }
+                    groupViewHolder.currentGroupView.setOnLongClickListener { v ->
+                        val group = groupViewHolder.group
+                        shell.longClickGroup(group, groupViewHolder)
+                        true
+                    }
+                    return groupViewHolder
                 }
-                return itemViewHolder
-            }
-            ItemType.Group.ordinal -> {
-                view = LayoutInflater.from(parent.context).inflate(shell.globalGroupLayoutID, parent, false)
-                val groupViewHolder = GroupViewHolder(view)
-                groupViewHolder.currentGroupView.setOnClickListener { v ->
-                    val group = groupViewHolder.group
-                    shell.clickGroup(group, groupViewHolder)
-                }
-                groupViewHolder.currentGroupView.setOnLongClickListener { v ->
-                    val group = groupViewHolder.group
-                    shell.longClickGroup(group, groupViewHolder)
-                    true
-                }
-                return groupViewHolder
             }
         }
         return null
@@ -125,7 +128,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val recyclerItem = dataSet.recyclerViewItems[position]
-        when (recyclerItem.itemType) {
+        when (recyclerItem.viewType?.itemType) {
             ItemType.Item -> {
                 val itemViewHolder = holder as ItemViewHolder
                 val item = recyclerItem as RecyclerViewItem
@@ -151,7 +154,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 
     override fun getItemViewType(position: Int): Int {
         val item: RecyclerViewItem = dataSet.recyclerViewItems[position]
-        return item.itemType.ordinal //ordinal()
+        return item.viewType!!.hashCode()
     }
 
     override fun getItemCount(): Int {

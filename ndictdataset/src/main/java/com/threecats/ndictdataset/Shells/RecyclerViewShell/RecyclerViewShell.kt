@@ -15,10 +15,7 @@ class RecyclerViewShell(val view: View) {
     var recyclerAdapter: RecyclerViewAdapter? = null
         get() = field
 
-    var globalItemLayoutID: Int = 0
-        get() = field
-    var globalGroupLayoutID: Int = 0
-        get() = field
+    internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
     private var dataSet: RecyclerViewData
 
@@ -41,7 +38,7 @@ class RecyclerViewShell(val view: View) {
     }
 
     fun link(){
-        if (globalItemLayoutID == 0 || globalGroupLayoutID == 0) {
+        if (viewTypes.size == 0) {
             view.context.toast("组头或条目的布局资源未设置")
             return
         }
@@ -52,14 +49,17 @@ class RecyclerViewShell(val view: View) {
         }
     }
 
-    fun globalItemLayout(itemLayout: Int): RecyclerViewShell {
-        globalItemLayoutID = itemLayout
+    fun addViewType(tag: String, type: ItemType, layout: Int): RecyclerViewShell{
+        viewTypes.add(RecyclerViewViewType(tag, type, layout))
         return this
     }
 
-    fun globalGroupLayout(groupLayout: Int): RecyclerViewShell {
-        globalGroupLayoutID = groupLayout
-        return this
+    fun getViewType(tag: String): RecyclerViewViewType? {
+        return viewTypes.find { it.tag === tag }
+    }
+
+    fun getViewType(hash: Int): RecyclerViewViewType? {
+        return viewTypes.find { it.hashCode() == hash }
     }
 
     fun setOnClickGroupListener(listener: onClickGroupListener){

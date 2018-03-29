@@ -7,11 +7,7 @@ import java.util.ArrayList
  */
 
 open class RecyclerViewItem {
-    var itemType: ItemType
+    var viewType: RecyclerViewViewType? = null
     var checked = false
     val parentGroups: MutableList<RecyclerViewGroup> = ArrayList()
-
-    init {
-        itemType = ItemType.Item
-    }
 }
