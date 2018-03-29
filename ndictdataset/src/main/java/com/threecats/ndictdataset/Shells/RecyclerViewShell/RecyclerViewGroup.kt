@@ -14,10 +14,12 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
     var title: String = ""
     var note: String = ""
     //var groupType: GroupType? = null
+
+    var parentData: RecyclerViewData? = null
     var previousGroup: RecyclerViewGroup? = null
     var nextGroup: RecyclerViewGroup? = null
 
-    var positionID: Int = -1
+    var groupSiteID: Int = -1
     var State: DisplayState = DisplayState.Hide
 
     var imageID: Int = 0
@@ -38,7 +40,7 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
     //        return items.size();      //返回加入的任务的位置序号，便于组列表处理（0位是组标题）
     //    }
     fun addItem(item: RecyclerViewItem): Int {
-        item.group = this
+        item.parentGroups.add(this)
         items.add(item)
         val position = items.size
 //        if (items.size == 0) {

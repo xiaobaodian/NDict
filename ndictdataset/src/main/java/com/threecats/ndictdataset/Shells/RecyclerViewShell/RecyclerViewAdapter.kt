@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.threecats.ndictdataset.R
 
 /**
  * 由 zhang 于 2018/3/28 创建
@@ -13,7 +12,7 @@ import com.threecats.ndictdataset.R
 
 abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private val shell: RecyclerViewShell) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    //private var groups: GroupListBase? = null
+    //private var parentGroups: GroupListBase? = null
     //private var group: GroupBase? = null
     private var itemLayoutID: Int = 0
     private var groupLayoutID: Int = 0
@@ -32,7 +31,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
         val item: RecyclerViewItem
-            get() = datas.recyclerItems[adapterPosition] as RecyclerViewItem
+            get() = datas.recyclerViewItems[adapterPosition] as RecyclerViewItem
 
 //        init {
 //            checkBox = currentItemView.findViewById(R.id.checkBox)
@@ -75,7 +74,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
 
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
         val group: RecyclerViewGroup
-            get() = datas.recyclerItems[adapterPosition] as RecyclerViewGroup
+            get() = datas.recyclerViewItems[adapterPosition] as RecyclerViewGroup
 
         fun displayText(R: Int, text: String): GroupViewHolder {
             val textView = currentGroupView.findViewById<TextView>(R)
@@ -145,7 +144,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val recyclerItem = datas.recyclerItems[position]
+        val recyclerItem = datas.recyclerViewItems[position]
         when (recyclerItem.itemType) {
             ItemType.Item -> {
                 val itemViewHolder = holder as ItemViewHolder
@@ -157,7 +156,7 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
 //                    itemViewHolder.checkBox!!.visibility = View.GONE
 //                }
 //                itemViewHolder.checkBox!!.tag = item
-                //val groupType = item.getCurrentGroup(groups).getGroupType()
+                //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
                 shell.displayItem(item, itemViewHolder)
             }
@@ -171,12 +170,12 @@ abstract class RecyclerViewAdapter(private val datas: RecyclerViewData, private 
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item: RecyclerViewItem = datas.recyclerItems[position]
+        val item: RecyclerViewItem = datas.recyclerViewItems[position]
         return item.itemType.ordinal //ordinal()
     }
 
     override fun getItemCount(): Int {
-        val size = datas.recyclerItems.size
+        val size = datas.recyclerViewItems.size
         shell.itemSizeChanged(size)
         return size
     }

@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView
  */
 class RecyclerViewShell {
 
-    private var recyclerView: RecyclerView? = null
-    private var recyclerAdapter: RecyclerViewAdapter? = null
+    var recyclerView: RecyclerView? = null
+        get() = recyclerView
+    var recyclerAdapter: RecyclerViewAdapter? = null
+        get() = recyclerAdapter
 
     private var globalItemLayoutID: Int = 0
     private var globalGroupLayoutID: Int = 0
@@ -21,8 +23,8 @@ class RecyclerViewShell {
     private var displayItemListener: onDisplayItemListener? = null
     private var itemSizeChangedListener: onItemSizeChangedListener? = null
 
-    fun recyclerView(r: RecyclerView): RecyclerViewShell {
-        recyclerView = r
+    fun recyclerView(rv: RecyclerView): RecyclerViewShell {
+        recyclerView = rv
         return this
     }
 
