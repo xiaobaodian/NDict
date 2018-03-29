@@ -15,6 +15,11 @@ class RecyclerViewShell(val view: View) {
     var recyclerAdapter: RecyclerViewAdapter? = null
         get() = field
 
+    var globalGroupLayoutID: Int = 0
+        get() = field
+    var globalItemLayoutID: Int = 0
+        get() = field
+
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
     private var dataSet: RecyclerViewData
@@ -49,17 +54,27 @@ class RecyclerViewShell(val view: View) {
         }
     }
 
-    fun addViewType(tag: String, type: ItemType, layout: Int): RecyclerViewShell{
-        viewTypes.add(RecyclerViewViewType(tag, type, layout))
+    fun globalGroupLayoutID(id: Int): RecyclerViewShell {
+        globalGroupLayoutID = id
         return this
     }
 
-    fun getViewType(tag: String): RecyclerViewViewType? {
-        return viewTypes.find { it.tag === tag }
+    fun globalItemLayoutID(id: Int): RecyclerViewShell {
+        globalItemLayoutID = id
+        return this
     }
 
-    fun getViewType(hash: Int): RecyclerViewViewType? {
-        return viewTypes.find { it.hashCode() == hash }
+    fun addViewType(title: String, type: ItemType, layout: Int): RecyclerViewShell{
+        viewTypes.add(RecyclerViewViewType(title, type, layout))
+        return this
+    }
+
+    fun getViewType(title: String): RecyclerViewViewType? {
+        return viewTypes.find { it.title === title }
+    }
+
+    fun getViewType(index: Int): RecyclerViewViewType {
+        return viewTypes[index]
     }
 
     fun setOnClickGroupListener(listener: onClickGroupListener){

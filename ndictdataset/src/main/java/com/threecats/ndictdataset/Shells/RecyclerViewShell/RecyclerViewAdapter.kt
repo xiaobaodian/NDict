@@ -27,7 +27,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                        Toast.makeText(v.context, "Check Box is NULL !!!", Toast.LENGTH_SHORT).show()
 //                        return@checkBox.setOnClickListener
 //                    }
-//                    val task = checkBox!!.tag as Task
+//                    val task = checkBox!!.title as Task
 //                    if (checkBox!!.isChecked) {
 //                        task.setChecked(true)
 //                    } else {
@@ -75,18 +75,17 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        val type = shell.getViewType(viewType)
-        type?.let {
-            val view: View
-            when (it.itemType) {
-                ItemType.Item -> {
-                    view = LayoutInflater.from(parent.context).inflate(it.LayoutID!!, parent, false)
-                    val itemViewHolder = ItemViewHolder(view)
-                    itemViewHolder.currentItemView.setOnClickListener { v ->
-                        val item = itemViewHolder.item
-                        shell.clickItem(item, itemViewHolder)
-                        //App.self().getDataManger().setCurrentTask(task)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val type = shell.viewTypes[viewType]  //这里viewType参数传递的是type在viewTypes中的下标
+        val view: View
+        when (type.itemType) {
+            ItemType.Item -> {
+                view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
+                val itemViewHolder = ItemViewHolder(view)
+                itemViewHolder.currentItemView.setOnClickListener { v ->
+                    val item = itemViewHolder.item
+                    shell.clickItem(item, itemViewHolder)
+                    //App.self().getDataManger().setCurrentTask(task)
 //                    if (isChecked) {
 //                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
 //                        task.setChecked(itemViewHolder.checkBox!!.isChecked)
@@ -95,35 +94,34 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
-                    }
-                    itemViewHolder.currentItemView.setOnLongClickListener { v ->
-                        //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
-                        val item = itemViewHolder.item
-                        shell.longClickItem(item, itemViewHolder)
-                        //App.self().getDataManger().setCurrentTask(task)
-                        //暂时关闭长安多选功能
-                        //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                        true
-                    }
-                    return itemViewHolder
                 }
-                ItemType.Group -> {
-                    view = LayoutInflater.from(parent.context).inflate(it.LayoutID!!, parent, false)
-                    val groupViewHolder = GroupViewHolder(view)
-                    groupViewHolder.currentGroupView.setOnClickListener { v ->
-                        val group = groupViewHolder.group
-                        shell.clickGroup(group, groupViewHolder)
-                    }
-                    groupViewHolder.currentGroupView.setOnLongClickListener { v ->
-                        val group = groupViewHolder.group
-                        shell.longClickGroup(group, groupViewHolder)
-                        true
-                    }
-                    return groupViewHolder
+                itemViewHolder.currentItemView.setOnLongClickListener { v ->
+                    //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
+                    val item = itemViewHolder.item
+                    shell.longClickItem(item, itemViewHolder)
+                    //App.self().getDataManger().setCurrentTask(task)
+                    //暂时关闭长安多选功能
+                    //App.getDataManger().getCurrentGroupList().setItemChecked(true);
+                    true
                 }
+                return itemViewHolder
+            }
+            ItemType.Group -> {
+                view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
+                val groupViewHolder = GroupViewHolder(view)
+                groupViewHolder.currentGroupView.setOnClickListener { v ->
+                    val group = groupViewHolder.group
+                    shell.clickGroup(group, groupViewHolder)
+                }
+                groupViewHolder.currentGroupView.setOnLongClickListener { v ->
+                    val group = groupViewHolder.group
+                    shell.longClickGroup(group, groupViewHolder)
+                    true
+                }
+                return groupViewHolder
             }
         }
-        return null
+        //return null
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -138,7 +136,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                } else {
 //                    itemViewHolder.checkBox!!.visibility = View.GONE
 //                }
-//                itemViewHolder.checkBox!!.tag = item
+//                itemViewHolder.checkBox!!.title = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
                 shell.displayItem(item, itemViewHolder)
@@ -154,7 +152,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 
     override fun getItemViewType(position: Int): Int {
         val item: RecyclerViewItem = dataSet.recyclerViewItems[position]
-        return item.viewType!!.hashCode()
+        return item.viewType!!.indexAt(shell.viewTypes)
     }
 
     override fun getItemCount(): Int {

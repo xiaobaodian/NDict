@@ -28,9 +28,6 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
 
     val items: MutableList<RecyclerViewItem> = ArrayList()
 
-    init {
-        itemType = ItemType.Group
-    }
 
     //以下是分组里面的条目管理
     //    public int addTask(Task item){
