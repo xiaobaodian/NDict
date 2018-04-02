@@ -45,39 +45,69 @@ class TraceElementFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         nutrientRView = NutrientRView
         //nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        if (nutrientList == null) {
-            queryAllNutrient()
-        } else {
-            bindNutrientList()
+//        if (nutrientList == null) {
+//            queryAllNutrient()
+//        } else {
+//            bindNutrientList()
+//        }
+        if (rvShell == null) {
+            rvShell = RecyclerViewShell(context)
+            queryAllNutrient(rvShell!!)
         }
-        rvShell = RecyclerViewShell(context)
-        rvShell!!.addViewType("item", ItemType.Item,R.layout.nutrient_recycleritem)
-        rvShell!!.recyclerView(NutrientRView)
-        rvShell!!.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
-            override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                val e = item.getObject() as BNutrient
-                holder.displayText(nutrientTitle, e.name)
-                //nutrientTitle.text = e.name
-            }
-        })
+        rvShell?.let {
+            it.addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
+            it.recyclerView(NutrientRView)
+            it.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
+                override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    val e = item.getObject() as BNutrient
+                    holder.displayText(nutrientTitle, e.name)
+                    //nutrientTitle.text = e.name
+                }
+            })
+            it.setOnClickItemListener(object : onClickItemListener<Any, BNutrient>{
+                override fun onClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    val e = item.getObject()
+                    e?.let {
+                        context.toast("点击了：${e.name}")
+                    }
+                }
+            })
+            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BNutrient>{
+                override fun onLongClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    val e = item.getObject()
+                    e?.let {
+                        context.toast("长按了：${e.name}")
+                    }
+                }
+            })
+
+        }
+
 
     }
 
-    private fun queryAllNutrient() {
+    private fun queryAllNutrient(shell: RecyclerViewShell<Any, BNutrient>) {
         val query = BmobQuery<BNutrient>()
         query.findObjects(object : FindListener<BNutrient>() {
             override fun done(nutrients: MutableList<BNutrient>?, e: BmobException?) {
                 if (e == null) {
                     progressBarNutrient.visibility = View.GONE
-                    nutrientList = nutrients
-                    if (nutrientRView == null) {
-                        context.toast("Nutrient is null ")
+                    nutrients?.let {
+                        shell.addItems(it)  //nutrientTitle  NutrientRView
+                        shell.link()
                     }
-                    if (nutrientList != null) {
-                        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
-                        rvShell!!.addItems(nutrientList!!)  //nutrientTitle  NutrientRView
-                        rvShell!!.link()
-                    }
+
+
+//                    nutrientList = nutrients
+//                    if (nutrientRView == null) {
+//                        context.toast("Nutrient is null ")
+//                    }
+//                    if (nutrientList != null) {
+//                        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
+//                        shell.addItems(nutrientList!!)  //nutrientTitle  NutrientRView
+//                        shell.link()
+//                    }
+
                 } else {
                     //message.text = e.message
                     if (view != null) {

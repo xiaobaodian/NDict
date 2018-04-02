@@ -8,11 +8,10 @@ import java.util.Collections
  * 由 zhang 于 2017/8/3 创建
  */
 
-class RecyclerViewGroup<G,I>: RecyclerViewBaseItem() {  //abstract
+class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
 
     var id: Long = 0
     var title: String = ""
-    var note: String = ""
     //var groupType: GroupType? = null
 
     var parentData: RecyclerViewData<G, I>? = null
@@ -22,8 +21,6 @@ class RecyclerViewGroup<G,I>: RecyclerViewBaseItem() {  //abstract
     var groupSiteID: Int = -1
     var State: DisplayState = DisplayState.Hide
 
-    var imageID: Int = 0
-    var layoutID: Int = 0
     var isEmpty = false
 
     private var data: G? = null
