@@ -13,6 +13,7 @@ import android.widget.*
 class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val shell: RecyclerViewShell) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isChecked = false
+    private var isNullData: Boolean? = null
 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
@@ -134,7 +135,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                    itemViewHolder.checkBox!!.visibility = View.VISIBLE
 //                    itemViewHolder.checkBox!!.isChecked = item.getChecked()
 //                } else {
-//                    itemViewHolder.checkBox!!.visibility = View.GONE
+//                    itemViewHolder.checkBox!!.visibility = View.GONE/
 //                }
 //                itemViewHolder.checkBox!!.title = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
@@ -157,7 +158,16 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 
     override fun getItemCount(): Int {
         val size = dataSet.recyclerViewItems.size
-        shell.itemSizeChanged(size)
+        val nullData = size == 0
+        if (isNullData == null) {
+            isNullData = nullData
+            shell.whenNullData(nullData)
+        } else {
+            if (isNullData != nullData) {
+                isNullData = nullData
+                shell.whenNullData(nullData)
+            } //只有当数据为空状态发生了改变时才回调，所以不能将whenNullData放到if外面
+        }
         return size
     }
 

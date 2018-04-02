@@ -27,6 +27,6 @@ interface onLongClickItemListener{
     fun onLongClickItem(item: RecyclerViewItem, holder: RecyclerViewAdapter.ItemViewHolder)
 }
 
-interface onItemSizeChangedListener{
-    fun onItemSizeChanged(size: Int)
+interface onNullDataListener{
+    fun onNullData(isNull: Boolean)
 }

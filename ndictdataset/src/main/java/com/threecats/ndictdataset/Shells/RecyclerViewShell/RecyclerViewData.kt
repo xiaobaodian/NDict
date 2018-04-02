@@ -34,7 +34,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         return count
     }
 
-    private fun calculatorTitleSite() {
+    fun calculatorTitleSite() {
         var site = 0
         //parentGroups.takeWhile { it.State === DisplayState.Show }.forEach {
         groups.filter { it.State === DisplayState.Show }.forEach {
@@ -49,7 +49,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         recyclerViewItems.addAll(group.items)
     }
 
-    private fun hideGroup(group: RecyclerViewGroup) {
+    fun hideGroup(group: RecyclerViewGroup) {
         if (group.items.size > 0) return
         if (group.groupSiteID > recyclerViewItems.size - 1) {
             shell.view.context.toast("Hide Group : group.groupSiteID > size()")
@@ -65,7 +65,7 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         }
     }
 
-    private fun activeGroup(group: RecyclerViewGroup) {
+    fun activeGroup(group: RecyclerViewGroup) {
         if (group.State === DisplayState.Show || group.State === DisplayState.Fold) return
         val nextGroupSite = nextGroupSite(group)
         if (nextGroupSite >= 0) {
@@ -133,7 +133,6 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
     }
 
     fun removeItem(item: RecyclerViewItem, group: RecyclerViewGroup) {
-        item.parentGroups.remove(group)
         val site = group.removeItem(item)
         if (site >= 0) {
             removeItemFromRecyclerViewItems(group, site, item)
@@ -149,14 +148,14 @@ class RecyclerViewData(val shell: RecyclerViewShell) {
         group?.let { removeItem(item, it) }
     }
 
-    private fun addItemToRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
+    fun addItemToRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置
         val site = group.groupSiteID + groupSite + 1
         recyclerViewItems.add(site, item)
         shell.recyclerAdapter?.notifyItemInserted(site)
     }
 
-    private fun removeItemFromRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
+    fun removeItemFromRecyclerViewItems(group: RecyclerViewGroup, groupSite: Int, item: RecyclerViewItem) {
         val site = group.groupSiteID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
         if (recyclerViewItems[site] === item) {
             recyclerViewItems.removeAt(site)

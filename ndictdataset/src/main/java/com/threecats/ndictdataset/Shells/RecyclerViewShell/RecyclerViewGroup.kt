@@ -56,12 +56,29 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
 //            items.add(site, item)
 //        }
 //        if (State === DisplayState.Hide) State = DisplayState.Show
+        parentData?.let {
+            if (State === DisplayState.Hide) {
+                it.activeGroup(this)
+            }
+            it.addItemToRecyclerViewItems(this, position, item)
+            it.calculatorTitleSite()
+        }
         return position
     }
 
     fun removeItem(item: RecyclerViewItem): Int {
         val position = items.indexOf(item)
-        if (position >= 0) items.removeAt(position)
+        if (position >= 0){
+            items.removeAt(position)
+            item.parentGroups.remove(this)
+            parentData?.let {
+                if (items.size == 0) {
+                    it.hideGroup(this)
+                }
+                it.removeItemFromRecyclerViewItems(this, position, item)
+                it.calculatorTitleSite()
+            }
+        }
         return position
     }
 

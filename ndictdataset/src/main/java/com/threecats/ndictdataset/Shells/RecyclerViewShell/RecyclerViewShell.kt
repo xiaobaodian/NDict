@@ -15,11 +15,6 @@ class RecyclerViewShell(val view: View) {
     var recyclerAdapter: RecyclerViewAdapter? = null
         get() = field
 
-    var globalGroupLayoutID: Int = 0
-        get() = field
-    var globalItemLayoutID: Int = 0
-        get() = field
-
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
     private var dataSet: RecyclerViewData
@@ -30,7 +25,7 @@ class RecyclerViewShell(val view: View) {
     private var longClickItemListener: onLongClickItemListener? = null
     private var displayGroupListener: onDisplayGroupListener? = null
     private var displayItemListener: onDisplayItemListener? = null
-    private var itemSizeChangedListener: onItemSizeChangedListener? = null
+    private var nullDataListener: onNullDataListener? = null
 
     init {
         dataSet = RecyclerViewData(this)
@@ -52,16 +47,6 @@ class RecyclerViewShell(val view: View) {
             it.setLayoutManager(layoutManager)
             it.setAdapter(recyclerAdapter)
         }
-    }
-
-    fun globalGroupLayoutID(id: Int): RecyclerViewShell {
-        globalGroupLayoutID = id
-        return this
-    }
-
-    fun globalItemLayoutID(id: Int): RecyclerViewShell {
-        globalItemLayoutID = id
-        return this
     }
 
     fun addViewType(title: String, type: ItemType, layout: Int): RecyclerViewShell{
@@ -101,8 +86,8 @@ class RecyclerViewShell(val view: View) {
         displayItemListener = listener
     }
 
-    fun setItemSizeChangedListener(listener: onItemSizeChangedListener){
-        itemSizeChangedListener = listener
+    fun setItemSizeChangedListener(listener: onNullDataListener){
+        nullDataListener = listener
     }
 
     internal fun displayGroup(group: RecyclerViewGroup, holder: RecyclerViewAdapter.GroupViewHolder){
@@ -129,8 +114,8 @@ class RecyclerViewShell(val view: View) {
         longClickItemListener?.onLongClickItem(item, holder)
     }
 
-    internal fun itemSizeChanged(size: Int){
-        itemSizeChangedListener?.onItemSizeChanged(size)
+    internal fun whenNullData(isNullData: Boolean){
+        nullDataListener?.onNullData(isNullData)
     }
 
 }
