@@ -17,6 +17,16 @@ class RecyclerViewViewType(itemType: ItemType) {
         this.layoutID = layoutId
     }
 
+    fun title(title: String): RecyclerViewViewType{
+        this.title = title
+        return this
+    }
+
+    fun layout(layout: Int): RecyclerViewViewType{
+        this.layoutID = layout
+        return this
+    }
+
     private var site: Int = -1
     fun indexAt(viewTypes: List<RecyclerViewViewType>): Int{
         if (site < 0) {

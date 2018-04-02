@@ -8,16 +8,16 @@ import java.util.Collections
  * 由 zhang 于 2017/8/3 创建
  */
 
-class RecyclerViewGroup: RecyclerViewItem() {  //abstract
+class RecyclerViewGroup<G,I>: RecyclerViewBaseItem() {  //abstract
 
     var id: Long = 0
     var title: String = ""
     var note: String = ""
     //var groupType: GroupType? = null
 
-    var parentData: RecyclerViewData? = null
-    var previousGroup: RecyclerViewGroup? = null
-    var nextGroup: RecyclerViewGroup? = null
+    var parentData: RecyclerViewData<G, I>? = null
+    var previousGroup: RecyclerViewGroup<G, I>? = null
+    var nextGroup: RecyclerViewGroup<G, I>? = null
 
     var groupSiteID: Int = -1
     var State: DisplayState = DisplayState.Hide
@@ -26,7 +26,16 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
     var layoutID: Int = 0
     var isEmpty = false
 
-    val items: MutableList<RecyclerViewItem> = ArrayList()
+    private var data: G? = null
+    val items: MutableList<RecyclerViewItem<G,I>> = ArrayList()
+
+    fun putObject(o: G){
+        data = o
+    }
+
+    fun getObject(): G?{
+        return data
+    }
 
 
     //以下是分组里面的条目管理
@@ -36,7 +45,7 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
     //        if (State == DisplayState.Hide) State = DisplayState.Show;
     //        return items.size();      //返回加入的任务的位置序号，便于组列表处理（0位是组标题）
     //    }
-    fun addItem(item: RecyclerViewItem): Int {
+    fun addItem(item: RecyclerViewItem<G, I>): Int {
         item.parentGroups.add(this)
         items.add(item)
         val position = items.size
@@ -66,7 +75,7 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
         return position
     }
 
-    fun removeItem(item: RecyclerViewItem): Int {
+    fun removeItem(item: RecyclerViewItem<G, I>): Int {
         val position = items.indexOf(item)
         if (position >= 0){
             items.removeAt(position)
@@ -82,7 +91,7 @@ class RecyclerViewGroup: RecyclerViewItem() {  //abstract
         return position
     }
 
-    fun needChangedPosition(item: RecyclerViewItem): Boolean {
+    fun needChangedPosition(item: RecyclerViewItem<G, I>): Boolean {
         val pose = items.indexOf(item)
         if (pose < 0) return false
         val prevTask = if (pose == 0) null else items[pose - 1]

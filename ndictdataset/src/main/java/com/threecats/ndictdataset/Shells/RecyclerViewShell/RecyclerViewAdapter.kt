@@ -10,16 +10,15 @@ import android.widget.*
  * 由 zhang 于 2018/3/28 创建
  */
 
-class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val shell: RecyclerViewShell) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, private val shell: RecyclerViewShell<G, I>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isChecked = false
     private var isNullData: Boolean? = null
 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
-        val item: RecyclerViewItem
-            get() = dataSet.recyclerViewItems[adapterPosition]
-
+        val item: RecyclerViewItem<G, I>
+            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewItem<G, I>
 //        init {
 //            checkBox = currentItemView.findViewById(R.id.checkBox)
 //            checkBox?.let {
@@ -60,8 +59,8 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
     }
 
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
-        val group: RecyclerViewGroup
-            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewGroup
+        val group: RecyclerViewGroup<G, I>
+            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewGroup<G, I>
 
         fun displayText(R: Int, text: String): GroupViewHolder {
             val textView = currentGroupView.findViewById<TextView>(R)
@@ -111,7 +110,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener { v ->
-                    val group = groupViewHolder.group
+                    val group = groupViewHolder.group as RecyclerViewGroup<G, I>
                     shell.clickGroup(group, groupViewHolder)
                 }
                 groupViewHolder.currentGroupView.setOnLongClickListener { v ->
@@ -127,10 +126,9 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val recyclerItem = dataSet.recyclerViewItems[position]
-        when (recyclerItem.viewType?.itemType) {
+        when (recyclerItem.viewType.itemType) {
             ItemType.Item -> {
-                val itemViewHolder = holder as ItemViewHolder
-                val item = recyclerItem as RecyclerViewItem
+                val itemViewHolder = holder as RecyclerViewAdapter<G, I>.ItemViewHolder
 //                if (isChecked) {
 //                    itemViewHolder.checkBox!!.visibility = View.VISIBLE
 //                    itemViewHolder.checkBox!!.isChecked = item.getChecked()
@@ -140,7 +138,7 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
 //                itemViewHolder.checkBox!!.title = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
-                shell.displayItem(item, itemViewHolder)
+                shell.displayItem(recyclerItem, itemViewHolder)
             }
             ItemType.Group -> {
                 val groupViewHolder = holder as GroupViewHolder
@@ -152,8 +150,16 @@ class RecyclerViewAdapter(private val dataSet: RecyclerViewData, private val she
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item: RecyclerViewItem = dataSet.recyclerViewItems[position]
-        return item.viewType!!.indexAt(shell.viewTypes)
+        val item: RecyclerViewBaseItem = dataSet.recyclerViewItems[position]
+        var index = item.viewType.indexAt(shell.viewTypes)
+        if (index < 0) {
+            if (item.viewType.itemType == ItemType.Item) {
+                index = shell.viewTypes.indexOfFirst { it.itemType == ItemType.Item }
+            } else {
+                index = shell.viewTypes.indexOfFirst { it.itemType == ItemType.Group }
+            }
+        }
+        return index
     }
 
     override fun getItemCount(): Int {

@@ -16,6 +16,8 @@ import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.R.id.nutrientTitle
+import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.fragment_trace_element.*
 import org.jetbrains.anko.toast
 
@@ -30,6 +32,8 @@ class TraceElementFragment : Fragment() {
     private var nutrientList: MutableList<BNutrient>? = null
     private var nutrientRView: RecyclerView? = null
 
+    private var rvShell: RecyclerViewShell<Any, BNutrient>? = null
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,12 +44,23 @@ class TraceElementFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nutrientRView = NutrientRView
-        nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         if (nutrientList == null) {
             queryAllNutrient()
         } else {
             bindNutrientList()
         }
+        rvShell = RecyclerViewShell(context)
+        rvShell!!.addViewType("item", ItemType.Item,R.layout.nutrient_recycleritem)
+        rvShell!!.recyclerView(NutrientRView)
+        rvShell!!.setDisplayItemListener(object : onDisplayItemListener<BNutrient>{
+            override fun onDisplayItem(item: RecyclerViewItem<BNutrient>, holder: RecyclerViewAdapter.ItemViewHolder) {
+                //val e = item.getObject() as BNutrient
+                holder.displayText(nutrientTitle, "kkkk")
+                //nutrientTitle.text = e.name
+            }
+        })
+
     }
 
     private fun queryAllNutrient() {
@@ -59,7 +74,9 @@ class TraceElementFragment : Fragment() {
                         context.toast("Nutrient is null ")
                     }
                     if (nutrientList != null) {
-                        nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
+                        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
+                        rvShell!!.addItems(nutrientList!!)  //nutrientTitle  NutrientRView
+                        rvShell!!.link()
                     }
                 } else {
                     //message.text = e.message
@@ -73,7 +90,7 @@ class TraceElementFragment : Fragment() {
     }
 
     private fun bindNutrientList(){
-        nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
+        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
         progressBarNutrient.visibility = View.GONE
     }
 
