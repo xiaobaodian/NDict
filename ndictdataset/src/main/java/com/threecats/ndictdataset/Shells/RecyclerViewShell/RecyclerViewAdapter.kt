@@ -138,11 +138,11 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                itemViewHolder.checkBox!!.title = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
-                shell.displayItem(recyclerItem, itemViewHolder)
+                shell.displayItem(recyclerItem as RecyclerViewItem<G, I>, itemViewHolder)
             }
             ItemType.Group -> {
-                val groupViewHolder = holder as GroupViewHolder
-                val group = recyclerItem as RecyclerViewGroup
+                val groupViewHolder = holder as RecyclerViewAdapter<G, I>.GroupViewHolder
+                val group = recyclerItem as RecyclerViewGroup<G, I>
                 //OnBindGroup(groupViewHolder, group)
                 shell.displayGroup(group, groupViewHolder)
             }

@@ -53,10 +53,10 @@ class TraceElementFragment : Fragment() {
         rvShell = RecyclerViewShell(context)
         rvShell!!.addViewType("item", ItemType.Item,R.layout.nutrient_recycleritem)
         rvShell!!.recyclerView(NutrientRView)
-        rvShell!!.setDisplayItemListener(object : onDisplayItemListener<BNutrient>{
-            override fun onDisplayItem(item: RecyclerViewItem<BNutrient>, holder: RecyclerViewAdapter.ItemViewHolder) {
-                //val e = item.getObject() as BNutrient
-                holder.displayText(nutrientTitle, "kkkk")
+        rvShell!!.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
+            override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                val e = item.getObject() as BNutrient
+                holder.displayText(nutrientTitle, e.name)
                 //nutrientTitle.text = e.name
             }
         })
