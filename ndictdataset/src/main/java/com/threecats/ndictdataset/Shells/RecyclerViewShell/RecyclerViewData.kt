@@ -8,7 +8,8 @@ import java.util.ArrayList
  */
 class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
 
-    val groups:  MutableList<RecyclerViewGroup<G,I>> = ArrayList()
+    var currentGroup: RecyclerViewGroup<G,I>? = null
+    val groups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
 
     fun addGroup(group: RecyclerViewGroup<G,I>){

@@ -19,6 +19,8 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
         //internal var checkBox: CheckBox? = null
         val item: RecyclerViewItem<G, I>
             get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewItem<G, I>
+
+
 //        init {
 //            checkBox = currentItemView.findViewById(R.id.checkBox)
 //            checkBox?.let {
@@ -94,6 +96,9 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
+                    if (dataSet.groups.size >0) {
+                        findCurrentGroup(itemViewHolder.adapterPosition)
+                    }
                 }
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
@@ -102,6 +107,9 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
+                    if (dataSet.groups.size >0) {
+                        findCurrentGroup(itemViewHolder.adapterPosition)
+                    }
                     true
                 }
                 return itemViewHolder
@@ -122,6 +130,19 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
             }
         }
         //return null
+    }
+
+    // 当前的item可能属于多个group（同dataSet的或是当前dataSet都有可能），所以不能通过item的parentGroups来判断
+    // 当前item的当前group，只有通过获取当前item的position，让后判断这个position处于当前dataSet中那个group的区
+    // 间来确定当前group是那一个
+    private fun findCurrentGroup(position: Int){
+        dataSet.currentGroup = null
+        for (group in dataSet.groups) {
+            if (position > group.groupSiteID && position <= (group.groupSiteID + group.items.size)) {
+                dataSet.currentGroup = group
+                break
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

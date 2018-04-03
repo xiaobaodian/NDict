@@ -44,7 +44,7 @@ class TraceElementFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nutrientRView = NutrientRView
-        //nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 //        if (nutrientList == null) {
 //            queryAllNutrient()
 //        } else {
@@ -53,6 +53,18 @@ class TraceElementFragment : Fragment() {
         if (rvShell == null) {
             rvShell = RecyclerViewShell(context)
             queryAllNutrient(rvShell!!)
+        } else {
+            if (rvShell!!.dataSet.recyclerViewItems.size == 0) {
+                queryAllNutrient(rvShell!!)
+            } else {
+                //rvShell!!.link()
+                val s = rvShell!!.dataSet.recyclerViewItems.size
+                context.toast("共有 $s 个记录")
+                progressBarNutrient.visibility = View.GONE
+                //rvShell!!.addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
+                rvShell!!.recyclerView(NutrientRView)
+                rvShell!!.link()
+            }
         }
         rvShell?.let {
             it.addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
@@ -80,6 +92,15 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             })
+            it.setOnNullDataListener((object : onNullDataListener{
+                override fun onNullData(isNull: Boolean) {
+                    if (isNull) {
+                        context.toast("当前没有数据")
+                    } else{
+                        context.toast("已经添加数据")
+                    }
+                }
+            }))
 
         }
 

@@ -19,7 +19,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
-    private var dataSet: RecyclerViewData<G, I>
+    var dataSet: RecyclerViewData<G, I>
 
     private var clickGroupListener: onClickGroupListener<G,I>? = null
     private var clickItemListener: onClickItemListener<G, I>? = null
@@ -90,7 +90,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
             recyclerItem.putObject(it)
             dataSet.addItem(recyclerItem)
         }
-        context.toast("加入了${dataSet.recyclerViewItems.size}个记录")
+        //context.toast("加入了${dataSet.recyclerViewItems.size}个记录")
     }
 
     //=================================================
@@ -119,7 +119,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
         displayItemListener = listener
     }
 
-    fun setItemSizeChangedListener(listener: onNullDataListener){
+    fun setOnNullDataListener(listener: onNullDataListener){
         nullDataListener = listener
     }
 
