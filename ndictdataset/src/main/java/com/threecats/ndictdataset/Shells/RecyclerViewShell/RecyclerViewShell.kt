@@ -23,7 +23,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
-    internal var dataSet: RecyclerViewData<G, I>
+    private var dataSet: RecyclerViewData<G, I> = RecyclerViewData(this)
 
     private var clickGroupListener: onClickGroupListener<G,I>? = null
     private var clickItemListener: onClickItemListener<G, I>? = null
@@ -36,7 +36,6 @@ class RecyclerViewShell<G,I>(val context: Context) {
     private var nullDataListener: onNullDataListener? = null
 
     init {
-        dataSet = RecyclerViewData(this)
         recyclerAdapter = RecyclerViewAdapter(dataSet, this)
     }
 
@@ -57,11 +56,11 @@ class RecyclerViewShell<G,I>(val context: Context) {
         }
         val layoutManager = LinearLayoutManager(context)
         recyclerView?.let {
-            it.setLayoutManager(layoutManager)
-            it.setAdapter(recyclerAdapter)
+            it.layoutManager = layoutManager
+            it.adapter = recyclerAdapter
         }
         if (isNullDateSet) {
-            queryDatas(this) // 在查询数据的监听器里面处理数据查询与导入，并调用completeQuery
+            queryData(this) // 在查询数据的监听器里面处理数据查询与导入，并调用completeQuery
         } else {
             completeQuery()
         }
@@ -135,7 +134,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
         displayItemListener = listener
     }
 
-    fun setQueryDatasListener(listener: onQueryDatasListener<G, I>){
+    fun setQueryDataListener(listener: onQueryDatasListener<G, I>){
         queryDatasListener = listener
     }
 
@@ -171,7 +170,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
         longClickItemListener?.onLongClickItem(item, holder)
     }
 
-    internal fun queryDatas(shell: RecyclerViewShell<G, I>){
+    private fun queryData(shell: RecyclerViewShell<G, I>){
         queryDatasListener?.let {
             progressBar?.visibility = View.VISIBLE
             it.onQueryDatas(shell)
@@ -180,9 +179,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     internal fun completeQuery(){
         progressBar?.visibility = View.GONE
-        completeQueryListener?.let {
-            it.onCompleteQuery()
-        }
+        completeQueryListener?.onCompleteQuery()
     }
 
     internal fun whenNullData(isNullData: Boolean){

@@ -71,7 +71,7 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             })
-            it.setQueryDatasListener(object : onQueryDatasListener<Any, BNutrient>{
+            it.setQueryDataListener(object : onQueryDatasListener<Any, BNutrient>{
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BNutrient>) {
                     val query = BmobQuery<BNutrient>()
                     query.findObjects(object : FindListener<BNutrient>() {
