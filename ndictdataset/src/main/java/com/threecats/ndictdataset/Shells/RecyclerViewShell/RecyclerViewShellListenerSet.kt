@@ -27,6 +27,14 @@ interface onLongClickItemListener<G, I>{
     fun onLongClickItem(item: RecyclerViewItem<G, I>, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
 }
 
+interface onQueryDatasListener<G, I>{
+    fun onQueryDatas(shell: RecyclerViewShell<G, I>)
+}
+
+interface onCompleteQueryListener{
+    fun onCompleteQuery()
+}
+
 interface onNullDataListener{
     fun onNullData(isNull: Boolean)
 }

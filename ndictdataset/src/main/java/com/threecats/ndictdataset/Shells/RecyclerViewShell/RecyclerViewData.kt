@@ -9,6 +9,7 @@ import java.util.ArrayList
 class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
 
     var currentGroup: RecyclerViewGroup<G,I>? = null
+    var currentItem: RecyclerViewItem<G, I>? = null
     val groups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
 

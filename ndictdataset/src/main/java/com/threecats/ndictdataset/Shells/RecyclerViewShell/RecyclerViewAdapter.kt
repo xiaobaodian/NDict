@@ -86,6 +86,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                 val itemViewHolder = ItemViewHolder(view)
                 itemViewHolder.currentItemView.setOnClickListener { v ->
                     val item = itemViewHolder.item
+                    dataSet.currentItem = item
                     shell.clickItem(item, itemViewHolder)
                     //App.self().getDataManger().setCurrentTask(task)
 //                    if (isChecked) {
@@ -103,6 +104,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
                     val item = itemViewHolder.item
+                    dataSet.currentItem = item
                     shell.longClickItem(item, itemViewHolder)
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能

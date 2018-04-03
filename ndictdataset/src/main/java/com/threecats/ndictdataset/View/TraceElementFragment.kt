@@ -3,7 +3,6 @@ package com.threecats.ndictdataset.View
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,6 @@ class TraceElementFragment : Fragment() {
 
     private var rvShell: RecyclerViewShell<Any, BNutrient>? = null
 
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -43,32 +41,13 @@ class TraceElementFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        nutrientRView = NutrientRView
-        nutrientRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        if (nutrientList == null) {
-//            queryAllNutrient()
-//        } else {
-//            bindNutrientList()
-//        }
+
         if (rvShell == null) {
             rvShell = RecyclerViewShell(context)
-            queryAllNutrient(rvShell!!)
-        } else {
-            if (rvShell!!.dataSet.recyclerViewItems.size == 0) {
-                queryAllNutrient(rvShell!!)
-            } else {
-                //rvShell!!.link()
-                val s = rvShell!!.dataSet.recyclerViewItems.size
-                context.toast("共有 $s 个记录")
-                progressBarNutrient.visibility = View.GONE
-                //rvShell!!.addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
-                rvShell!!.recyclerView(NutrientRView)
-                rvShell!!.link()
-            }
         }
+
         rvShell?.let {
-            it.addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
-            it.recyclerView(NutrientRView)
+            it.recyclerView(NutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
             it.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject() as BNutrient
@@ -92,6 +71,27 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             })
+            it.setQueryDatasListener(object : onQueryDatasListener<Any, BNutrient>{
+                override fun onQueryDatas(shell: RecyclerViewShell<Any, BNutrient>) {
+                    val query = BmobQuery<BNutrient>()
+                    query.findObjects(object : FindListener<BNutrient>() {
+                        override fun done(nutrients: MutableList<BNutrient>?, e: BmobException?) {
+                            if (e == null) {
+                                //progressBarNutrient.visibility = View.GONE
+                                nutrients?.let {
+                                    shell.addItems(it)
+                                    //shell.link()
+                                    shell.completeQuery()
+                                }
+                            } else {
+                                if (view != null) {
+                                    ErrorMessage(context, e)
+                                }
+                            }
+                        }
+                    })
+                }
+            })
             it.setOnNullDataListener((object : onNullDataListener{
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
@@ -101,48 +101,7 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             }))
-
+            it.link()
         }
-
-
     }
-
-    private fun queryAllNutrient(shell: RecyclerViewShell<Any, BNutrient>) {
-        val query = BmobQuery<BNutrient>()
-        query.findObjects(object : FindListener<BNutrient>() {
-            override fun done(nutrients: MutableList<BNutrient>?, e: BmobException?) {
-                if (e == null) {
-                    progressBarNutrient.visibility = View.GONE
-                    nutrients?.let {
-                        shell.addItems(it)  //nutrientTitle  NutrientRView
-                        shell.link()
-                    }
-
-
-//                    nutrientList = nutrients
-//                    if (nutrientRView == null) {
-//                        context.toast("Nutrient is null ")
-//                    }
-//                    if (nutrientList != null) {
-//                        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
-//                        shell.addItems(nutrientList!!)  //nutrientTitle  NutrientRView
-//                        shell.link()
-//                    }
-
-                } else {
-                    //message.text = e.message
-                    if (view != null) {
-                        //context.toast("${e.message}")
-                        ErrorMessage(context, e)
-                    }
-                }
-            }
-        })
-    }
-
-    private fun bindNutrientList(){
-        //nutrientRView?.adapter = NutrientsAdapter(nutrientList!!, context)
-        progressBarNutrient.visibility = View.GONE
-    }
-
 }// Required empty public constructor
