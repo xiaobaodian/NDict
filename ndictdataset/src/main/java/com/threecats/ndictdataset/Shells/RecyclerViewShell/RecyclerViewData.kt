@@ -175,9 +175,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
 
     fun updateItemDisplay(item: RecyclerViewItem<G, I>){
         currentRecyclerItemPosition?.let {
-            if (recyclerViewItems[it] == item) {
-                shell.recyclerAdapter?.notifyItemChanged(it)
-            }
+            shell.recyclerAdapter?.notifyItemChanged(it)
         }
     }
 

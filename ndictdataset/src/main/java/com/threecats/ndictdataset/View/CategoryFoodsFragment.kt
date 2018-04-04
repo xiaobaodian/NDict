@@ -52,13 +52,7 @@ class CategoryFoodsFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        categoryRView = CategoryRView
-//        categoryRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        if (categoryList == null) {
-//            queryAllFoodCategory()
-//        } else {
-//            bindCategoryList()
-//        }
+
         if (rvShell == null) {
             rvShell = RecyclerViewShell(context)
         }
@@ -109,9 +103,9 @@ class CategoryFoodsFragment : Fragment() {
             it.setOnNullDataListener((object : onNullDataListener {
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
-                        context.toast("当前没有数据")
+                        //context.toast("当前没有数据")
                     } else{
-                        context.toast("已经添加数据")
+                        //context.toast("已经添加数据")
                     }
                 }
             }))
@@ -133,23 +127,6 @@ class CategoryFoodsFragment : Fragment() {
             else -> context.toast("EditState Error !")
         }
 
-
-//        categoryList?.let {
-//            val position = it.indexOf(updateItem.Category)
-//            if (position >= 0) {
-//                when (updateItem.State){
-//                    EEditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
-//                    EEditerState.CategoryAppend -> {
-//                        val list = it
-//                        shareSet.CurrentCategory?.let {
-//                            list.add(it)
-//                            CategoryRView?.adapter?.notifyItemInserted(list.size)
-//                        }
-//                    }
-//                    else -> context.toast("EditState Error !")
-//                }
-//            }
-//        }
     }
 
     private fun queryOne(objectID: String){

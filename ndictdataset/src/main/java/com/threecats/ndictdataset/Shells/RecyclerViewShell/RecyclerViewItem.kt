@@ -9,14 +9,17 @@ import java.util.ArrayList
 class RecyclerViewItem<G,I>: RecyclerViewBaseItem() {
 
     val parentGroups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
+    val self: I
+        get() = data!!
     private var data: I? = null
 
     init {
         viewType = RecyclerViewViewType(ItemType.Item)
     }
 
-    fun putObject(o: I){
+    fun putObject(o: I): RecyclerViewItem<G,I> {
         data = o
+        return this
     }
 
     fun getObject(): I?{

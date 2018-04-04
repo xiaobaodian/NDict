@@ -100,9 +100,9 @@ class TraceElementFragment : Fragment() {
             it.setOnNullDataListener((object : onNullDataListener{
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
-                        context.toast("当前没有数据")
+                        //context.toast("当前没有数据")
                     } else{
-                        context.toast("已经添加数据")
+                        //context.toast("已经添加数据")
                     }
                 }
             }))

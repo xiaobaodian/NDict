@@ -48,7 +48,7 @@ class FoodListActivity : AppCompatActivity() {
         }
     }
 
-    private var foodList: MutableList<BFood>? = null
+    //private var foodList: MutableList<BFood>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,12 +75,13 @@ class FoodListActivity : AppCompatActivity() {
         }
 
         rvShell?.let {
-            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
+            it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
             it.setDisplayItemListener(object : onDisplayItemListener<Any, BFood> {
                 override fun onDisplayItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    val e = item.getObject() as BFood
+                    val e = item.self as BFood
+                    val updateTime = if (e.updatedAt == null) "" else e.updatedAt
                     holder.displayText(R.id.ItemName, if (e.alias.length == 0) e.name else "${e.name}、${e.alias}")
-                    holder.displayText(R.id.ItemAlias, e.updatedAt)
+                    holder.displayText(R.id.ItemAlias, updateTime)
                 }
             })
             it.setOnClickItemListener(object : onClickItemListener<Any, BFood> {
@@ -109,9 +110,9 @@ class FoodListActivity : AppCompatActivity() {
                                 foods?.let {
                                     shell.addItems(it)
                                     shell.completeQuery()
-                                    if (currentCategory.getObject()?.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
-                                    foodList = it
-                                    FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
+                                    if (currentCategory.self.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
+//                                    foodList = it
+//                                    FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
                                     if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
                                 }
 
@@ -134,7 +135,6 @@ class FoodListActivity : AppCompatActivity() {
             }))
             it.link()
         }
-
 
         EventBus.getDefault().register(this@FoodListActivity)
     }
@@ -161,35 +161,6 @@ class FoodListActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (foodList == null) {
-            val query: BmobQuery<BFood> = BmobQuery()
-            query.addWhereEqualTo("category", BmobPointer(currentCategory.getObject()))
-            query.include("vitamin,mineral,mineralExt,article")
-            query.setLimit(300)
-            query.findObjects(object: FindListener<BFood>(){
-                override fun done(foods: MutableList<BFood>?, e: BmobException?) {
-                    if (e == null) {
-                        progressBarFood.visibility = View.GONE
-                        foods?.let {
-                            if (currentCategory.getObject()?.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
-                            foodList = it
-                            FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
-                            if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
-                        }
-
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        } else{
-            progressBarFood.visibility = View.GONE
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this@FoodListActivity)
@@ -197,24 +168,15 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
-        foodList?.let {
-            when (updateItem.State){
-                EEditerState.FoodEdit -> {
-                    val position = it.indexOf(updateItem.Food)
-                    if (position >= 0) {
-                        FoodRView?.adapter?.notifyItemChanged(position)
-                    } else {
-                        toast("没有找到需要更新的数据！！")
-                    }
-                }
-                EEditerState.FoodAppend -> {
-                    it.add(updateItem.Food)
-                    val foodSize = it.size
-                    FoodRView?.adapter?.notifyItemInserted(foodSize)
-                    updateCategoryFoodSize(foodSize)
-                }
-                else -> toast("EditState Error !")
+        when (updateItem.State){
+            EEditerState.FoodEdit -> {
+                rvShell?.updateItem(updateItem.Food)
             }
+            EEditerState.FoodAppend -> {
+                rvShell?.addItem(updateItem.Food.self)
+                updateCategoryFoodSize(rvShell?.itemsSize()!!)
+            }
+            else -> toast("EditState Error !")
         }
         //EventBus.getDefault().removeStickyEvent(updateItem)
     }
@@ -348,8 +310,8 @@ class FoodListActivity : AppCompatActivity() {
 
     // 已建立DataModel代码
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
-        currentCategory.getObject()?.foodTotal = size
-        currentCategory.getObject()?.update(object: UpdateListener(){
+        currentCategory.self.foodTotal = size
+        currentCategory.self.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryEdit))
@@ -373,24 +335,24 @@ class FoodListActivity : AppCompatActivity() {
         val Minerals: MutableList<BmobObject> = arrayListOf()
         val Mineralexts: MutableList<BmobObject> = arrayListOf()
 
-        foodList?.forEach {
-            val vitamin: BFoodVitamin = it.vitamin!!
-            val mineral: BFoodMineral = it.mineral!!
-            val mineralExt: BFoodMineralExt = it.mineralExt!!
+        rvShell?.items?.forEach {
+            val vitamin: BFoodVitamin = it.self.vitamin!!
+            val mineral: BFoodMineral = it.self.mineral!!
+            val mineralExt: BFoodMineralExt = it.self.mineralExt!!
             if (vitamin.foodID == null) {
-                vitamin.foodID = it.objectId
+                vitamin.foodID = it.self.objectId
                 Vitamins.add(vitamin)
-                logshow.info { "${it.name} vitamin: ${vitamin.objectId} -> ${vitamin.foodID}" }
+                logshow.info { "${it.self.name} vitamin: ${vitamin.objectId} -> ${vitamin.foodID}" }
             }
             if (mineral.foodID == null) {
-                mineral.foodID = it.objectId
+                mineral.foodID = it.self.objectId
                 Minerals.add(mineral)
-                logshow.info { "${it.name} mineral: ${mineral.objectId} -> ${mineral.foodID}" }
+                logshow.info { "${it.self.name} mineral: ${mineral.objectId} -> ${mineral.foodID}" }
             }
             if (mineralExt.foodID == null) {
-                mineralExt.foodID = it.objectId
+                mineralExt.foodID = it.self.objectId
                 Mineralexts.add(mineralExt)
-                logshow.info { "${it.name} mineralExt: ${mineralExt.objectId} -> ${mineralExt.foodID}" }
+                logshow.info { "${it.self.name} mineralExt: ${mineralExt.objectId} -> ${mineralExt.foodID}" }
             }
         }
         toast("${Vitamins.size} / ${Minerals.size} / ${Mineralexts.size}")

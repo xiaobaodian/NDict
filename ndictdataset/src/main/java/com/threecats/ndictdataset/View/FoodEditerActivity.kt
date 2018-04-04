@@ -21,6 +21,7 @@ import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragment.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewItem
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_food_editer.*
@@ -48,7 +49,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     FoodEditerToolbar.title = "食材详情"
                     FoodEditerToolbar.subtitle = ""
                 } else {
-                    FoodEditerToolbar.title = shareSet.CurrentFood?.name
+                    FoodEditerToolbar.title = shareSet.CurrentFood?.getObject()!!.name
                     FoodEditerToolbar.subtitle = "每100克中的含量"
                 }
             }
@@ -87,13 +88,13 @@ class FoodEditerActivity : AppCompatActivity() {
             R.id.SaveAddItem -> {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-                    processFood(food)
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
+                    processFood(food.self)
                 }
                 shareSet.createFood()
                 shareSet.CurrentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).importFields(food) }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).importFields(food.self) }
                     nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
                 }
                 FoodPropertyTabs.getTabAt(0)?.select()
@@ -106,8 +107,8 @@ class FoodEditerActivity : AppCompatActivity() {
         if (shareSet.ItemEditState == EEditerState.FoodAppend) {
             shareSet.CurrentFood?.let {
                 val food = it
-                nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-                processFood(food)
+                nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
+                processFood(food.self)
             }
         } else {
             changBlockList.clear()
@@ -115,8 +116,8 @@ class FoodEditerActivity : AppCompatActivity() {
             if (changBlockList.size > 0) {
                 shareSet.CurrentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-                    processFood(food)
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
+                    processFood(food.self)
                 }
             }
         }
@@ -132,7 +133,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private fun processFood(food: BFood){
 
-        if (food.name.length == 0) return
+        if (food.name.isEmpty()) return
 
         when (shareSet.ItemEditState){
             EEditerState.FoodAppend -> {
@@ -236,7 +237,8 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("添加了食材[${food.name}]，objectID：$objectID")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodAppend))  //Sticky
+                    val f = RecyclerViewItem<Any, BFood>().putObject(food)
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(f, EEditerState.FoodAppend))  //Sticky
                 } else {
                     //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
@@ -289,7 +291,8 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了食材数据")
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodEdit))
+                    val f = RecyclerViewItem<Any, BFood>().putObject(food)
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(f, EEditerState.FoodEdit))
                 } else {
                     //longToast("更新食材数据出现错误：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
@@ -298,25 +301,25 @@ class FoodEditerActivity : AppCompatActivity() {
         })
     }
 
-    private fun alertDeleteFood(food: BFood){
+    private fun alertDeleteFood(food: RecyclerViewItem<Any, BFood>){
 
-        alert("确实要删除食材 ${shareSet.CurrentFood?.name} 吗？", "删除食材") {
+        alert("确实要删除食材 ${food.getObject()?.name} 吗？", "删除食材") {
             positiveButton("确定") { deleteFoodFromBmob(food) }
             negativeButton("取消") {  }
         }.show()
 
     }
 
-    private fun deleteFoodFromBmob(food: BFood){
+    private fun deleteFoodFromBmob(food: RecyclerViewItem<Any, BFood>){
         val items: MutableList<BmobObject> = arrayListOf()
-        food.vitamin?.let { items.add(it) }
-        food.mineral?.let { items.add(it) }
-        food.mineralExt?.let { items.add(it) }
-        items.add(food)
+        food.getObject()?.vitamin?.let { items.add(it) }
+        food.getObject()?.mineral?.let { items.add(it) }
+        food.getObject()?.mineralExt?.let { items.add(it) }
+        items.add(food.getObject()!!)
         BmobBatch().deleteBatch(items).doBatch(object: QueryListListener<BatchResult>() {
             override fun done(p0: MutableList<BatchResult>?, e: BmobException?) {
                 if (e == null) {
-                    toast("删除食材 ${food.name} 成功")
+                    toast("删除食材 ${food.getObject()?.name} 成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(food))
                 } else {
                     ErrorMessage(this@FoodEditerActivity, e)
