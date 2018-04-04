@@ -108,6 +108,10 @@ class RecyclerViewShell<G,I>(val context: Context) {
         //context.toast("加入了${dataSet.recyclerViewItems.size}个记录")
     }
 
+    fun removeItem(item: RecyclerViewItem<G, I>){
+        dataSet.removeItem(item)
+    }
+
     //=================================================
 
     fun setOnClickGroupListener(listener: onClickGroupListener<G, I>){

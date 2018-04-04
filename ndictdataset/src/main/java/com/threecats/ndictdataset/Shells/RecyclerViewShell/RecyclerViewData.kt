@@ -125,12 +125,15 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
     }
 
     fun removeItem(item: RecyclerViewItem<G,I>) {
-        if (groups.size == 0) {
+        if (item.parentGroups.size == 0) {
             val site = recyclerViewItems.indexOf(item)
             if (site >= 0) {
                 recyclerViewItems.removeAt(site)
                 shell.recyclerAdapter?.notifyItemRemoved(site)
             }
+        } else {
+            val tempGroups = item.parentGroups.toList()
+            tempGroups.forEach { removeItem(item, it) }
         }
     }
 

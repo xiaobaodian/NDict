@@ -59,7 +59,12 @@ class TraceElementFragment : Fragment() {
                 override fun onClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject()
                     e?.let {
-                        context.toast("点击了：${e.name}")
+                        if (e.name == "水"){
+                            //context.toast("可以测试addItem功能了")
+                            val n = BNutrient()
+                            n.name = "测试项"
+                            rvShell!!.addItem(n)
+                        }
                     }
                 }
             })
@@ -67,7 +72,7 @@ class TraceElementFragment : Fragment() {
                 override fun onLongClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject()
                     e?.let {
-                        context.toast("长按了：${e.name}")
+                        rvShell!!.removeItem(item)
                     }
                 }
             })
