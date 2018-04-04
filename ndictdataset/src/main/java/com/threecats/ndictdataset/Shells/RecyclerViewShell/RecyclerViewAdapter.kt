@@ -87,7 +87,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                 itemViewHolder.currentItemView.setOnClickListener { v ->
                     val item = itemViewHolder.item
                     dataSet.currentItem = item
-                    shell.clickItem(item, itemViewHolder)
+                    dataSet.currentRecyclerItemPosition = itemViewHolder.adapterPosition
                     //App.self().getDataManger().setCurrentTask(task)
 //                    if (isChecked) {
 //                        itemViewHolder.checkBox!!.isChecked = !task.getChecked()
@@ -100,18 +100,20 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     if (dataSet.groups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
+                    shell.clickItem(item, itemViewHolder)
                 }
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
                     val item = itemViewHolder.item
                     dataSet.currentItem = item
-                    shell.longClickItem(item, itemViewHolder)
+                    dataSet.currentRecyclerItemPosition = itemViewHolder.adapterPosition
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
                     if (dataSet.groups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
+                    shell.longClickItem(item, itemViewHolder)
                     true
                 }
                 return itemViewHolder

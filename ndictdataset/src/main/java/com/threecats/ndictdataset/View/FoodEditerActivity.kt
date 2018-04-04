@@ -231,7 +231,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun addFoodToBmob(food: BFood){
-        food.category = shareSet.CurrentCategory
+        food.category = shareSet.CurrentCategory?.getObject()!!
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {

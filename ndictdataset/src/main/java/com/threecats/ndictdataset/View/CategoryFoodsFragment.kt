@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.View
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -15,12 +16,15 @@ import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.fragment_category_foods.*
+import kotlinx.android.synthetic.main.fragment_trace_element.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -38,6 +42,8 @@ class CategoryFoodsFragment : Fragment() {
     private var categoryList: MutableList<BFoodCategory>? = null
     private var categoryRView: RecyclerView? = null
 
+    private var rvShell: RecyclerViewShell<Any, BFoodCategory>? = null
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
@@ -46,12 +52,70 @@ class CategoryFoodsFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoryRView = CategoryRView
-        categoryRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        if (categoryList == null) {
-            queryAllFoodCategory()
-        } else {
-            bindCategoryList()
+//        categoryRView = CategoryRView
+//        categoryRView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        if (categoryList == null) {
+//            queryAllFoodCategory()
+//        } else {
+//            bindCategoryList()
+//        }
+        if (rvShell == null) {
+            rvShell = RecyclerViewShell(context)
+        }
+
+        rvShell?.let {
+            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.category_recycleritem)
+            it.setDisplayItemListener(object : onDisplayItemListener<Any, BFoodCategory> {
+                override fun onDisplayItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    val e = item.getObject() as BFoodCategory
+                    holder.displayText(R.id.categoryTitle, e.longTitle!!)
+                    holder.displayText(R.id.subTotal, e.foodTotal.toString())
+                }
+            })
+            it.setOnClickItemListener(object : onClickItemListener<Any, BFoodCategory> {
+                override fun onClickItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    val e = item.getObject()
+                    BDM.ShareSet?.CurrentCategory = item
+                    val intent = Intent(context, FoodListActivity::class.java)
+                    context.startActivity(intent)
+                }
+            })
+            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFoodCategory> {
+                override fun onLongClickItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    BDM.ShareSet?.CurrentCategory = it.currentItem
+                    val intent = Intent(context, FoodListActivity::class.java)
+                    context.startActivity(intent)
+                }
+            })
+            it.setQueryDataListener(object : onQueryDatasListener<Any, BFoodCategory> {
+                override fun onQueryDatas(shell: RecyclerViewShell<Any, BFoodCategory>) {
+                    val query = BmobQuery<BFoodCategory>()
+                    query.findObjects(object : FindListener<BFoodCategory>() {
+                        override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
+                            if (e == null) {
+                                categorys?.let {
+                                    shell.addItems(it)
+                                    shell.completeQuery()
+                                }
+                            } else {
+                                if (view != null) {
+                                    ErrorMessage(context, e)
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+            it.setOnNullDataListener((object : onNullDataListener {
+                override fun onNullData(isNull: Boolean) {
+                    if (isNull) {
+                        context.toast("当前没有数据")
+                    } else{
+                        context.toast("已经添加数据")
+                    }
+                }
+            }))
+            it.link()
         }
     }
 
@@ -60,29 +124,32 @@ class CategoryFoodsFragment : Fragment() {
         EventBus.getDefault().unregister(this)
     }
 
-    private fun bindCategoryList(){
-        categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
-        progressBarCategory.visibility = View.GONE
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem){
-        categoryList?.let {
-            val position = it.indexOf(updateItem.Category)
-            if (position >= 0) {
-                when (updateItem.State){
-                    EEditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
-                    EEditerState.CategoryAppend -> {
-                        val list = it
-                        shareSet.CurrentCategory?.let {
-                            list.add(it)
-                            CategoryRView?.adapter?.notifyItemInserted(list.size)
-                        }
-                    }
-                    else -> context.toast("EditState Error !")
-                }
+    fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem<Any, BFoodCategory>){
+        when (updateItem.State){
+            EEditerState.CategoryEdit -> rvShell!!.updateItem(updateItem.Category)
+            EEditerState.CategoryAppend -> {rvShell!!.addItem(updateItem.Category.getObject()!!)
             }
+            else -> context.toast("EditState Error !")
         }
+
+
+//        categoryList?.let {
+//            val position = it.indexOf(updateItem.Category)
+//            if (position >= 0) {
+//                when (updateItem.State){
+//                    EEditerState.CategoryEdit -> CategoryRView?.adapter?.notifyItemChanged(position)
+//                    EEditerState.CategoryAppend -> {
+//                        val list = it
+//                        shareSet.CurrentCategory?.let {
+//                            list.add(it)
+//                            CategoryRView?.adapter?.notifyItemInserted(list.size)
+//                        }
+//                    }
+//                    else -> context.toast("EditState Error !")
+//                }
+//            }
+//        }
     }
 
     private fun queryOne(objectID: String){
@@ -93,31 +160,6 @@ class CategoryFoodsFragment : Fragment() {
                     //message.text = food!!.longTitle
                 } else {
                     //message.text = e.message
-                }
-            }
-        })
-    }
-
-    private fun queryAllFoodCategory() {
-        val query = BmobQuery<BFoodCategory>()
-        query.findObjects(object : FindListener<BFoodCategory>() {
-            override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
-                if (e == null) {
-                    progressBarCategory.visibility = View.GONE
-                    categoryList = categorys
-                    if (categoryRView == null) {
-                        context.toast("Recycler is null ")
-                    }
-                    if (categoryList != null) {
-                        categoryRView?.adapter = CategoryFoodsAdapter(categoryList!!, context)
-                    }
-                    //bindCategoryList()
-                } else {
-                    //message.text = e.message
-                    if (view != null) {
-                        //context.toast("${e.message}")
-                        ErrorMessage(context, e)
-                    }
                 }
             }
         })

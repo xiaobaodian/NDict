@@ -10,6 +10,9 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
 
     var currentGroup: RecyclerViewGroup<G,I>? = null
     var currentItem: RecyclerViewItem<G, I>? = null
+    var currentGroupPosition: Int? = null
+    var currentRecyclerItemPosition: Int? = null
+
     val groups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
 
@@ -153,14 +156,14 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
         group?.let { removeItem(item, it) }
     }
 
-    fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G,I>, groupSite: Int, item: RecyclerViewItem<G,I>) {
+    fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置
         val site = group.groupSiteID + groupSite + 1
         recyclerViewItems.add(site, item)
         shell.recyclerAdapter?.notifyItemInserted(site)
     }
 
-    fun removeItemFromRecyclerViewItems(group: RecyclerViewGroup<G,I>, groupSite: Int, item: RecyclerViewItem<G,I>) {
+    fun removeItemFromRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
         val site = group.groupSiteID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
         if (recyclerViewItems[site] === item) {
             recyclerViewItems.removeAt(site)
@@ -170,12 +173,20 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
         }
     }
 
-    fun updateItemDisplay(item: RecyclerViewItem<G,I>, group: RecyclerViewGroup<G,I>) {
+    fun updateItemDisplay(item: RecyclerViewItem<G, I>){
+        currentRecyclerItemPosition?.let {
+            if (recyclerViewItems[it] == item) {
+                shell.recyclerAdapter?.notifyItemChanged(it)
+            }
+        }
+    }
+
+    fun updateItemDisplay(item: RecyclerViewItem<G, I>, group: RecyclerViewGroup<G, I>) {
         val site = group.items.indexOf(item) + group.groupSiteID + 1
         shell.recyclerAdapter?.notifyItemChanged(site)
     }
 
-    fun updateItemDisplay(item: RecyclerViewItem<G,I>, groupID: Long){
+    fun updateItemDisplay(item: RecyclerViewItem<G, I>, groupID: Long){
         val group = groups.find { it.id == groupID }
         group?.let { updateItemDisplay(item, it) }
     }

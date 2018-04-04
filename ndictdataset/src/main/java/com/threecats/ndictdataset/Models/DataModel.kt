@@ -26,7 +26,7 @@ class DataModel {
         category.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    EventBus.getDefault().post(UpdateCategoryRecyclerItem(category, EEditerState.CategoryEdit))
+                    //EventBus.getDefault().post(UpdateCategoryRecyclerItem(category, EEditerState.CategoryEdit))
                 } else {
                     context.toast("${e.message}")
                 }

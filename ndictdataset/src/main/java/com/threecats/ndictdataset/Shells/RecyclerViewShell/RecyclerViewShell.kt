@@ -20,6 +20,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     val isNullDateSet: Boolean
         get() = dataSet.recyclerViewItems.size == 0
+    val currentItem: RecyclerViewItem<G, I>
+        get() = dataSet.currentItem!!
 
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
@@ -108,8 +110,16 @@ class RecyclerViewShell<G,I>(val context: Context) {
         //context.toast("加入了${dataSet.recyclerViewItems.size}个记录")
     }
 
+    fun updateItem(item: RecyclerViewItem<G, I>){
+        dataSet.updateItemDisplay(item)
+    }
+
     fun removeItem(item: RecyclerViewItem<G, I>){
         dataSet.removeItem(item)
+    }
+
+    fun itemsSize(): Int {
+        return dataSet.recyclerViewItems.size
     }
 
     //=================================================

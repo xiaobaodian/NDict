@@ -22,9 +22,11 @@ import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 
 import kotlinx.android.synthetic.main.activity_food_list.*
 import kotlinx.android.synthetic.main.content_food_list.*
+import kotlinx.android.synthetic.main.fragment_category_foods.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -35,7 +37,8 @@ import org.jetbrains.anko.toast
 class FoodListActivity : AppCompatActivity() {
 
     private val shareSet = BDM.ShareSet!!
-    private lateinit var currentCategory: BFoodCategory
+    private lateinit var currentCategory: RecyclerViewItem<Any, BFoodCategory>
+    private var rvShell: RecyclerViewShell<Any, BFood>? = null
 
     init{
         if (shareSet.CurrentCategory == null) {
@@ -53,7 +56,7 @@ class FoodListActivity : AppCompatActivity() {
         setSupportActionBar(FoodToolbar)
 
         with (FoodToolbar){
-            title = currentCategory.longTitle
+            title = currentCategory.getObject()?.longTitle
             setNavigationOnClickListener { onBackPressed() }
         }
 
@@ -66,6 +69,73 @@ class FoodListActivity : AppCompatActivity() {
         }
 
         FoodRView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        if (rvShell == null) {
+            rvShell = RecyclerViewShell(this)
+        }
+
+        rvShell?.let {
+            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
+            it.setDisplayItemListener(object : onDisplayItemListener<Any, BFood> {
+                override fun onDisplayItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+                    val e = item.getObject() as BFood
+                    holder.displayText(R.id.ItemName, if (e.alias.length == 0) e.name else "${e.name}、${e.alias}")
+                    holder.displayText(R.id.ItemAlias, e.updatedAt)
+                }
+            })
+            it.setOnClickItemListener(object : onClickItemListener<Any, BFood> {
+                override fun onClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+                    BDM.ShareSet?.editFood(item)
+                    val intent = Intent(it.context, FoodEditerActivity::class.java)
+                    startActivity(intent)
+                }
+            })
+            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFood> {
+                override fun onLongClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+                    BDM.ShareSet?.editFood(item)
+                    val intent = Intent(it.context, FoodEditerActivity::class.java)
+                    startActivity(intent)
+                }
+            })
+            it.setQueryDataListener(object : onQueryDatasListener<Any, BFood> {
+                override fun onQueryDatas(shell: RecyclerViewShell<Any, BFood>) {
+                    val query: BmobQuery<BFood> = BmobQuery()
+                    query.addWhereEqualTo("category", BmobPointer(currentCategory.getObject()))
+                    query.include("vitamin,mineral,mineralExt,article")
+                    query.setLimit(300)
+                    query.findObjects(object: FindListener<BFood>(){
+                        override fun done(foods: MutableList<BFood>?, e: BmobException?) {
+                            if (e == null) {
+                                foods?.let {
+                                    shell.addItems(it)
+                                    shell.completeQuery()
+                                    if (currentCategory.getObject()?.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
+                                    foodList = it
+                                    FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
+                                    if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
+                                }
+
+                            } else {
+                                //toast("${e.message}")
+                                ErrorMessage(this@FoodListActivity, e)
+                            }
+                        }
+                    })
+                }
+            })
+            it.setOnNullDataListener((object : onNullDataListener {
+                override fun onNullData(isNull: Boolean) {
+                    if (isNull) {
+                        toast("当前没有数据")
+                    } else{
+                        toast("已经添加数据")
+                    }
+                }
+            }))
+            it.link()
+        }
+
+
         EventBus.getDefault().register(this@FoodListActivity)
     }
 
@@ -95,7 +165,7 @@ class FoodListActivity : AppCompatActivity() {
         super.onStart()
         if (foodList == null) {
             val query: BmobQuery<BFood> = BmobQuery()
-            query.addWhereEqualTo("category", BmobPointer(currentCategory))
+            query.addWhereEqualTo("category", BmobPointer(currentCategory.getObject()))
             query.include("vitamin,mineral,mineralExt,article")
             query.setLimit(300)
             query.findObjects(object: FindListener<BFood>(){
@@ -103,7 +173,7 @@ class FoodListActivity : AppCompatActivity() {
                     if (e == null) {
                         progressBarFood.visibility = View.GONE
                         foods?.let {
-                            if (currentCategory.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
+                            if (currentCategory.getObject()?.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
                             foodList = it
                             FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
                             if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
@@ -151,13 +221,9 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doDeleteFoodRecyclerItem(deleteItem: DeleteFoodRecyclerItem){
-        foodList?.let {
-            val position = it.indexOf(shareSet.CurrentFood)
-            if (position >= 0) {
-                it.removeAt(position)
-                FoodRView?.adapter?.notifyItemRemoved(position)
-                updateCategoryFoodSize(it.size)
-            }
+        rvShell?.let {
+            it.removeItem(deleteItem.Food)
+            updateCategoryFoodSize(it.itemsSize())
         }
     }
 
@@ -282,13 +348,13 @@ class FoodListActivity : AppCompatActivity() {
 
     // 已建立DataModel代码
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
-        currentCategory.foodTotal = size
-        currentCategory.update(object: UpdateListener(){
+        currentCategory.getObject()?.foodTotal = size
+        currentCategory.getObject()?.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryEdit))
                     if (showMessage) {
-                        toast("更新 ${currentCategory.longTitle} 类的食材总数：$size ")
+                        toast("更新 ${currentCategory.getObject()?.longTitle} 类的食材总数：$size ")
                     }
                 } else {
                     //toast("${e.message}")

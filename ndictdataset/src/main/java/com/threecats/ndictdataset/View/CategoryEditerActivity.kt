@@ -32,7 +32,7 @@ class CategoryEditerActivity : AppCompatActivity() {
         setSupportActionBar(CategoryEditerToolbar)
         CategoryEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
-        checkTextHelper.addEditBox(LongTitleIEditText, currentCategory.longTitle.toString())
+        checkTextHelper.addEditBox(LongTitleIEditText, currentCategory.getObject()?.longTitle.toString())
         with (LongTitleIEditText) {
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -44,7 +44,7 @@ class CategoryEditerActivity : AppCompatActivity() {
             })
         }
 
-        checkTextHelper.addEditBox(ShortTitleIEditText, currentCategory.shortTitle.toString())
+        checkTextHelper.addEditBox(ShortTitleIEditText, currentCategory.getObject()?.shortTitle.toString())
         with (ShortTitleIEditText) {
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -83,13 +83,13 @@ class CategoryEditerActivity : AppCompatActivity() {
     }
 
     private fun updateCategory(){
-        currentCategory.longTitle = LongTitleIEditText.text.toString()
-        currentCategory.shortTitle = ShortTitleIEditText.text.toString()
+        currentCategory.getObject()?.longTitle = LongTitleIEditText.text.toString()
+        currentCategory.getObject()?.shortTitle = ShortTitleIEditText.text.toString()
 
         when (BDM.ShareSet?.ItemEditState){
 
             EEditerState.CategoryAppend -> {
-                currentCategory.save(object: SaveListener<String>() {
+                currentCategory.getObject()?.save(object: SaveListener<String>() {
                     override fun done(objectID: String?, e: BmobException?) {
                         if (e == null) {
                             toast("添加了分类，objectID：$objectID")
@@ -101,7 +101,7 @@ class CategoryEditerActivity : AppCompatActivity() {
                 })
             }
             EEditerState.CategoryEdit -> {
-                currentCategory.update(object: UpdateListener(){
+                currentCategory.getObject()?.update(object: UpdateListener(){
                     override fun done(e: BmobException?) {
                         if (e == null) {
                             toast("更新了分类数据")
@@ -117,8 +117,8 @@ class CategoryEditerActivity : AppCompatActivity() {
 
     private fun alertDeleteCategory(){
 
-        alert("确实要删除分类 ${currentCategory.longTitle} 吗？", "删除分类") {
-            positiveButton("确定") { deleteCategoryFromBmob(currentCategory) }
+        alert("确实要删除分类 ${currentCategory.getObject()?.longTitle} 吗？", "删除分类") {
+            positiveButton("确定") { deleteCategoryFromBmob(currentCategory.getObject()!!) }
             negativeButton("取消") {  }
         }.show()
 
