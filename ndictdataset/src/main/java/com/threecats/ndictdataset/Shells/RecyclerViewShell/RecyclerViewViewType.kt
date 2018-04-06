@@ -4,7 +4,7 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
  * 由 zhang 于 2018/3/29 创建
  */
 class RecyclerViewViewType(itemType: ItemType) {
-    var title: String = ""
+    var ID: String = ""
     var itemType: ItemType
     var layoutID: Int? = null
 
@@ -13,12 +13,12 @@ class RecyclerViewViewType(itemType: ItemType) {
     }
 
     constructor(title: String, itemType: ItemType, layoutId: Int): this(itemType){
-        this.title = title
+        this.ID = title
         this.layoutID = layoutId
     }
 
     fun title(title: String): RecyclerViewViewType{
-        this.title = title
+        this.ID = title
         return this
     }
 

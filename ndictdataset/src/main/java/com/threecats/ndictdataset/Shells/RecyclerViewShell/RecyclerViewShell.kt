@@ -18,7 +18,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
         get() = field
 
-    val isNullDateSet: Boolean
+    val isNullItems: Boolean
         get() = dataSet.recyclerViewItems.size == 0
     val currentItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
@@ -63,7 +63,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
             it.layoutManager = layoutManager
             it.adapter = recyclerAdapter
         }
-        if (isNullDateSet) {
+        if (isNullItems) {
             queryData(this) // 在查询数据的监听器里面处理数据查询与导入，并调用completeQuery
         } else {
             completeQuery()
@@ -75,8 +75,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
         return this
     }
 
-    fun getViewType(title: String): RecyclerViewViewType? {
-        return viewTypes.find { it.title === title }
+    fun getViewType(id: String): RecyclerViewViewType? {
+        return viewTypes.find { it.ID === id }
     }
 
     fun getViewType(index: Int): RecyclerViewViewType {

@@ -29,7 +29,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                        Toast.makeText(v.context, "Check Box is NULL !!!", Toast.LENGTH_SHORT).show()
 //                        return@checkBox.setOnClickListener
 //                    }
-//                    val task = checkBox!!.title as Task
+//                    val task = checkBox!!.ID as Task
 //                    if (checkBox!!.isChecked) {
 //                        task.setChecked(true)
 //                    } else {
@@ -160,7 +160,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                } else {
 //                    itemViewHolder.checkBox!!.visibility = View.GONE/
 //                }
-//                itemViewHolder.checkBox!!.title = item
+//                itemViewHolder.checkBox!!.ID = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
                 shell.displayItem(recyclerItem as RecyclerViewItem<G, I>, itemViewHolder)
