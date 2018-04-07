@@ -5,6 +5,5 @@ package com.threecats.ndictdataset.Enum
  */
 enum class EFoodBase(val base: Int) {
     PlantBased(0),
-    AnimalBased(1),
-    Base(2)
+    AnimalBased(1)
 }
