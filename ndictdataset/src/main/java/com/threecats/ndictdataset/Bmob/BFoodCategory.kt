@@ -13,7 +13,7 @@ class BFoodCategory() : BmobObject() {
     var longTitle: String? = null
     var shortTitle: String? = null
     var foodTotal: Int = 0
-    var foodBase: EFoodBase = EFoodBase.PlantBased  // 食物属性（植物性，动物性）
+    var foodBased: Int = 0  // 食物属性（植物性，动物性）
     var foodupdateAt: BmobDate = BmobDate(Date())
 
     constructor(categoryId: Int, longTitle: String, shortTitle: String): this(){
