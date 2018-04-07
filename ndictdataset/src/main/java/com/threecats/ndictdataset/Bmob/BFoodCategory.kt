@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.datatype.BmobDate
+import com.threecats.ndictdataset.Enum.EFoodBase
 import java.util.*
 
 /**
@@ -12,6 +13,7 @@ class BFoodCategory() : BmobObject() {
     var longTitle: String? = null
     var shortTitle: String? = null
     var foodTotal: Int = 0
+    var foodBase: EFoodBase = EFoodBase.PlantBased  // 食物属性（植物性，动物性）
     var foodupdateAt: BmobDate = BmobDate(Date())
 
     constructor(categoryId: Int, longTitle: String, shortTitle: String): this(){

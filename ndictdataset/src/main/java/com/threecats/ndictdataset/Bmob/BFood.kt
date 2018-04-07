@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.datatype.BmobPointer
+import com.threecats.ndictdataset.Enum.EFoodBase
 
 /**
  * 由 zhang 于 2018/2/17 创建
@@ -10,6 +11,7 @@ class BFood: BmobObject() {
 
     var name: String = ""                           // 食材名称
     var alias: String = ""                          // 食材别名
+    var foodBase: EFoodBase = EFoodBase.PlantBased  // 食物属性（植物性，动物性）
     var protein: Float = 0f                         // 蛋白质含量
     //var picture: Int = 0                            // 食材的图片
     var foodFiber: Float = 0f                       // 食物纤维含量
