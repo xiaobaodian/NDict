@@ -12,6 +12,7 @@ import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -19,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_food_vitamin.*
  */
 
 class FoodVitaminFragment : FoodPropertyFragment() {
+
+    private var isREMode = false
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -28,6 +31,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun onResume() {
         super.onResume()
+        setREOrOther(isREMode)
         if (initFieldsFlag) {
             initFieldsFlag = false
             shareSet.CurrentFood?.let { importFields(it.self) }
@@ -50,10 +54,23 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     }
 
     override fun firstEditTextFocus(){
-        with (VitaminAIEditText){
+        with (REIEditText){
             isFocusable = true
             isFocusableInTouchMode = true
             requestFocus()
+        }
+    }
+
+    fun setREOrOther(isRE: Boolean){
+        if (isRE) {
+            REIEditText.hint = "视黄醇当量（毫克）"
+        } else {
+            val food = shareSet.CurrentFood!!.self
+            if (food.foodBased == 0) {
+                REIEditText.hint = "aaa维生素A（毫克）"
+            } else {
+                REIEditText.hint = "bbb胡萝卜（毫克）"
+            }
         }
     }
 
@@ -61,8 +78,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
         with (foodEditTextHelper) {
             textBoxs.clear()
-            addEditBox(VitaminAIEditText, vit.vitaminA.toString())
-            addEditBox(CaroteneIEditText, vit.carotene.toString())
+            addEditBox(REIEditText, vit.RE.toString())
             addEditBox(VitaminB1IEditText, vit.vitaminB1.toString())
             addEditBox(VitaminB2IEditText, vit.vitaminB2.toString())
             addEditBox(NiacinIEditText, vit.niacin.toString())
@@ -90,8 +106,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
 
-                VitaminAIEditText -> vit.vitaminA = it.editBox.text.toString().toFloat()
-                CaroteneIEditText -> vit.carotene = it.editBox.text.toString().toFloat()
+                REIEditText -> vit.RE = it.editBox.text.toString().toFloat()
                 VitaminB1IEditText -> vit.vitaminB1 = it.editBox.text.toString().toFloat()
                 VitaminB2IEditText -> vit.vitaminB2 = it.editBox.text.toString().toFloat()
                 NiacinIEditText -> vit.niacin = it.editBox.text.toString().toFloat()

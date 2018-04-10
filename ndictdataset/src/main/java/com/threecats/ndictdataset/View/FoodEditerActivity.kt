@@ -14,6 +14,7 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
+import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
@@ -35,6 +36,7 @@ class FoodEditerActivity : AppCompatActivity() {
     //private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
 
     private val nutrientFragments = TabViewLayoutShell()
+    private var currentTabPosition = 0
     private val changBlockList: MutableList<EChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
         nutrientFragments.setOnTabSelectedListener(object: onShellTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab) {
+                currentTabPosition = tab.position
                 if (tab.position == 0) {
                     FoodEditerToolbar.title = "食材详情"
                     FoodEditerToolbar.subtitle = ""
@@ -63,7 +66,12 @@ class FoodEditerActivity : AppCompatActivity() {
                 .addFragment(FoodMineralFragment(),"矿物质")
                 .addFragment(FoodNoteFragment(),"描述")
                 .link()
-
+        val food: BFood = shareSet.CurrentFood!!.self
+        val category: BFoodCategory = shareSet.CurrentCategory!!.self
+        if (food.foodBased != category.foodBased) {
+            food.foodBased = category.foodBased
+            updateVitaminToBmob(food)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -76,6 +84,19 @@ class FoodEditerActivity : AppCompatActivity() {
             EEditerState.FoodAppend -> {menu!!.findItem(R.id.SaveAddItem).isVisible = true}
             EEditerState.FoodEdit   -> {menu!!.findItem(R.id.SaveAddItem).isVisible = false}
             else -> toast("EditState Error !")
+        }
+        val menuItem = menu!!.findItem((R.id.REChange))
+        if (currentTabPosition == 2) {
+            menuItem.isVisible = true
+            shareSet.CurrentFood?.let {
+                if (it.self.foodBased == 0) {
+                    menuItem.title = "视黄醇/维生素A"
+                } else {
+                    menuItem.title = "视黄醇/维生素A"
+                }
+            }
+        } else {
+            menuItem.isVisible = false
         }
         return super.onPrepareOptionsMenu(menu)
     }
@@ -98,6 +119,9 @@ class FoodEditerActivity : AppCompatActivity() {
                     nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
                 }
                 FoodPropertyTabs.getTabAt(0)?.select()
+            }
+            R.id.REChange -> {
+
             }
         }
         return true
