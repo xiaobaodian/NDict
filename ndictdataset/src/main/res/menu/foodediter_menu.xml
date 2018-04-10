@@ -18,5 +18,7 @@
         android:title="放弃编辑" />
     <item
         android:id="@+id/REChange"
-        android:title="视黄醇当量" />
+        android:icon="@drawable/ic_action_retype"
+        android:title="视黄醇当量"
+        app:showAsAction="always" />
 </menu>

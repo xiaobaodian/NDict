@@ -31,7 +31,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
     override fun onResume() {
         super.onResume()
-        setREOrOther(isREMode)
+        //setREOrOther()
         if (initFieldsFlag) {
             initFieldsFlag = false
             shareSet.CurrentFood?.let { importFields(it.self) }
@@ -61,15 +61,20 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         }
     }
 
-    fun setREOrOther(isRE: Boolean){
-        if (isRE) {
-            REIEditText.hint = "视黄醇当量（毫克）"
+    fun REMode(){
+        isREMode = !isREMode
+        setREOrOther()
+    }
+
+    fun setREOrOther(){
+        if (isREMode) {
+            REILayout.hint = "视黄醇当量（毫克）"
         } else {
             val food = shareSet.CurrentFood!!.self
             if (food.foodBased == 0) {
-                REIEditText.hint = "aaa维生素A（毫克）"
+                REILayout.hint = "胡萝卜（毫克）"
             } else {
-                REIEditText.hint = "bbb胡萝卜（毫克）"
+                REILayout.hint = "维生素A（毫克）"
             }
         }
     }

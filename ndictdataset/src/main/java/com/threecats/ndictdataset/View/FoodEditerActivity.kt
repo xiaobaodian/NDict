@@ -3,6 +3,7 @@ package com.threecats.ndictdataset.View
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
 import cn.bmob.v3.BmobBatch
@@ -46,7 +47,7 @@ class FoodEditerActivity : AppCompatActivity() {
         FoodEditerToolbar.setNavigationOnClickListener { onBackPressed() }  //FoodNutrientFragment
 
         nutrientFragments.setOnTabSelectedListener(object: onShellTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab) {
+            override fun onTabSelected(tab: TabLayout.Tab, fragment: Fragment) {
                 currentTabPosition = tab.position
                 if (tab.position == 0) {
                     FoodEditerToolbar.title = "食材详情"
@@ -54,6 +55,13 @@ class FoodEditerActivity : AppCompatActivity() {
                 } else {
                     FoodEditerToolbar.title = shareSet.CurrentFood?.getObject()!!.name
                     FoodEditerToolbar.subtitle = "每100克中的含量"
+                }
+                if (currentTabPosition == 2) {
+                    //val vitaminFragment = fragment as FoodVitaminFragment
+                    //vitaminFragment.setREOrOther()
+                    if (fragment is FoodVitaminFragment) {
+                        fragment.setREOrOther()
+                    }
                 }
             }
         })
@@ -86,17 +94,12 @@ class FoodEditerActivity : AppCompatActivity() {
             else -> toast("EditState Error !")
         }
         val menuItem = menu!!.findItem((R.id.REChange))
-        if (currentTabPosition == 2) {
-            menuItem.isVisible = true
-            shareSet.CurrentFood?.let {
-                if (it.self.foodBased == 0) {
-                    menuItem.title = "视黄醇/维生素A"
-                } else {
-                    menuItem.title = "视黄醇/维生素A"
-                }
+        shareSet.CurrentFood?.let {
+            if (it.self.foodBased == 0) {
+                menuItem.title = "视黄醇/胡萝卜素"
+            } else {
+                menuItem.title = "视黄醇/维生素A"
             }
-        } else {
-            menuItem.isVisible = false
         }
         return super.onPrepareOptionsMenu(menu)
     }
@@ -121,7 +124,10 @@ class FoodEditerActivity : AppCompatActivity() {
                 FoodPropertyTabs.getTabAt(0)?.select()
             }
             R.id.REChange -> {
-
+                val fragment = nutrientFragments.fragments[2]
+                if (fragment is FoodVitaminFragment) {
+                    fragment.REMode()
+                }
             }
         }
         return true

@@ -56,18 +56,21 @@ class TabViewLayoutShell {
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    tabReselectedListener?.let { it.onTabReselected(tab) }
+                    currentFragment = fragments[it.position]
+                    val fragment = fragments[it.position]
+                    tabReselectedListener?.let { it.onTabReselected(tab, fragment) }
                 }
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    currentFragment = fragments[it.position]
-                    tabSelectedListener?.let { it.onTabSelected(tab) }
+                    val fragment = fragments[it.position]
+                    tabSelectedListener?.let { it.onTabSelected(tab, fragment) }
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    tabUnselectedListener?.let { it.onTabUnselected(tab) }
+                    val fragment = fragments[it.position]
+                    tabUnselectedListener?.let { it.onTabUnselected(tab, fragment) }
                 }
             }
         })
