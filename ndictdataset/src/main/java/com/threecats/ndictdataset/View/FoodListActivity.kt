@@ -78,9 +78,9 @@ class FoodListActivity : AppCompatActivity() {
             it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
             it.setDisplayItemListener(object : onDisplayItemListener<Any, BFood> {
                 override fun onDisplayItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    val e = item.self as BFood
+                    val e = item.self
                     val updateTime = if (e.updatedAt == null) "" else e.updatedAt
-                    holder.displayText(R.id.ItemName, if (e.alias.length == 0) e.name else "${e.name}、${e.alias}")
+                    holder.displayText(R.id.ItemName, if (e.alias.isEmpty()) e.name else "${e.name}、${e.alias}")
                     holder.displayText(R.id.ItemAlias, updateTime)
                 }
             })
