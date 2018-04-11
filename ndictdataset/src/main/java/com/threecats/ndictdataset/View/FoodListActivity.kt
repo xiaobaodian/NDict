@@ -127,9 +127,9 @@ class FoodListActivity : AppCompatActivity() {
             it.setOnNullDataListener((object : onNullDataListener {
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
-                        toast("当前没有数据")
+                        //toast("当前没有数据")
                     } else{
-                        toast("已经添加数据")
+                        //toast("已经添加数据")
                     }
                 }
             }))

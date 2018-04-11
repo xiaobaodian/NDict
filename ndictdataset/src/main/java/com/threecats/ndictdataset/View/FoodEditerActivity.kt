@@ -56,13 +56,6 @@ class FoodEditerActivity : AppCompatActivity() {
                     FoodEditerToolbar.title = shareSet.CurrentFood?.getObject()!!.name
                     FoodEditerToolbar.subtitle = "每100克中的含量"
                 }
-                if (currentTabPosition == 2) {
-                    //val vitaminFragment = fragment as FoodVitaminFragment
-                    //vitaminFragment.setREOrOther()
-                    if (fragment is FoodVitaminFragment) {
-                        fragment.setREOrOther()
-                    }
-                }
             }
         })
         nutrientFragments.parent(this)
@@ -126,7 +119,7 @@ class FoodEditerActivity : AppCompatActivity() {
             R.id.REChange -> {
                 val fragment = nutrientFragments.fragments[2]
                 if (fragment is FoodVitaminFragment) {
-                    fragment.REMode()
+                    fragment.switchREMode()
                 }
             }
         }

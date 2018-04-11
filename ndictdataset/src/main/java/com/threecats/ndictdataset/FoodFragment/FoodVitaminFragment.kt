@@ -21,7 +21,7 @@ import org.jetbrains.anko.toast
 
 class FoodVitaminFragment : FoodPropertyFragment() {
 
-    private var isREMode = false
+    private var isREMode = true
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -61,18 +61,32 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         }
     }
 
-    fun REMode(){
-        isREMode = !isREMode
+    fun switchREMode(){
+        isREMode = !isREMode!!
         setREOrOther()
     }
 
     fun setREOrOther(){
-        if (isREMode) {
-            REILayout.hint = "视黄醇当量（毫克）"
-        } else {
-            val food = shareSet.CurrentFood!!.self
-            if (food.foodBased == 0) {
+        val food = shareSet.CurrentFood!!.self
+        if (food.foodBased == 0) {
+            if (isREMode) {
+                REILayout.hint = "视黄醇当量（毫克）"
+                val value = REIEditText.text.toString().toFloat()
+                if (value > 0) {
+                    REIEditText.text.clear()
+                    REIEditText.text.append((value/6).toString())
+                }
+            } else {
                 REILayout.hint = "胡萝卜（毫克）"
+                val value = REIEditText.text.toString().toFloat()
+                if (value > 0) {
+                    REIEditText.text.clear()
+                    REIEditText.text.append((value*6).toString())
+                }
+            }
+        } else {
+            if (isREMode) {
+                REILayout.hint = "视黄醇当量（毫克）"
             } else {
                 REILayout.hint = "维生素A（毫克）"
             }
@@ -83,7 +97,11 @@ class FoodVitaminFragment : FoodPropertyFragment() {
 
         with (foodEditTextHelper) {
             textBoxs.clear()
-            addEditBox(REIEditText, vit.RE.toString())
+            if (!isREMode && shareSet.CurrentFood!!.self.foodBased == 0) {
+                addEditBox(REIEditText, (vit.RE*6).toString())
+            } else {
+                addEditBox(REIEditText, vit.RE.toString())
+            }
             addEditBox(VitaminB1IEditText, vit.vitaminB1.toString())
             addEditBox(VitaminB2IEditText, vit.vitaminB2.toString())
             addEditBox(NiacinIEditText, vit.niacin.toString())
@@ -111,7 +129,13 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
 
-                REIEditText -> vit.RE = it.editBox.text.toString().toFloat()
+                REIEditText ->{
+                    if (!isREMode && shareSet.CurrentFood!!.self.foodBased == 0) {
+                        vit.RE = it.editBox.text.toString().toFloat()/6
+                    } else {
+                        vit.RE = it.editBox.text.toString().toFloat()
+                    }
+                }
                 VitaminB1IEditText -> vit.vitaminB1 = it.editBox.text.toString().toFloat()
                 VitaminB2IEditText -> vit.vitaminB2 = it.editBox.text.toString().toFloat()
                 NiacinIEditText -> vit.niacin = it.editBox.text.toString().toFloat()
