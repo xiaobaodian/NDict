@@ -58,14 +58,7 @@ class TraceElementFragment : Fragment() {
             it.setOnClickItemListener(object : onClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject()
-                    e?.let {
-                        if (e.name == "水"){
-                            //context.toast("可以测试addItem功能了")
-                            val n = BNutrient()
-                            n.name = "测试项"
-                            rvShell!!.addItem(n)
-                        }
-                    }
+
                 }
             })
             it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BNutrient>{
