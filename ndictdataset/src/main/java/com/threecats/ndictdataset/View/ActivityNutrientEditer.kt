@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.View
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -22,8 +23,8 @@ class ActivityNutrientEditer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nutrient_editer)
-        viewPagerShell.setOnTabSelectedListener(object : onShellTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
+        viewPagerShell.setOnTabSelectedListener(object : onShellTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab, fragment: android.support.v4.app.Fragment) {
                 toast("${tab.text}")
             }
         })

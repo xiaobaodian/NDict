@@ -18,7 +18,6 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.R.id.nutrientTitle
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.fragment_trace_element.*
-import org.jetbrains.anko.toast
 
 
 /**
@@ -29,7 +28,7 @@ class TraceElementFragment : Fragment() {
     private val shareSet = BDM.ShareSet!!
 
     private var nutrientList: MutableList<BNutrient>? = null
-    private var nutrientRView: RecyclerView? = null
+    //private var nutrientRView: RecyclerView? = null
 
     private var rvShell: RecyclerViewShell<Any, BNutrient>? = null
 
@@ -47,7 +46,7 @@ class TraceElementFragment : Fragment() {
         }
 
         rvShell?.let {
-            it.recyclerView(NutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
+            it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
             it.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject() as BNutrient
