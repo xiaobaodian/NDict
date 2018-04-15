@@ -23,7 +23,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     val currentItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
     val items: MutableList<RecyclerViewItem<G, I>>?
-        get() = if (dataSet.groups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
+        get() = if (dataSet.recyclerGroups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
 
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
@@ -90,7 +90,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     }
 
     fun addItem(item: I, group: G){
-        val recyclerGroup = dataSet.groups.find { it.getObject() === group }
+        val recyclerGroup = dataSet.recyclerGroups.find { it.getObject() === group }
         val recyclerItem = RecyclerViewItem<G, I>()
         recyclerItem.putObject(item)
         dataSet.addItem(recyclerItem, recyclerGroup!!)

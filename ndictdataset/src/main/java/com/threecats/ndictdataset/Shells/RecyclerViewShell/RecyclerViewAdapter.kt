@@ -97,7 +97,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
-                    if (dataSet.groups.size >0) {
+                    if (dataSet.recyclerGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.clickItem(item, itemViewHolder)
@@ -110,7 +110,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                    if (dataSet.groups.size >0) {
+                    if (dataSet.recyclerGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.longClickItem(item, itemViewHolder)
@@ -141,8 +141,8 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
     // 间来确定当前group是那一个
     private fun findCurrentGroup(position: Int){
         dataSet.currentGroup = null
-        for (group in dataSet.groups) {
-            if (position > group.groupSiteID && position <= (group.groupSiteID + group.items.size)) {
+        for (group in dataSet.recyclerGroups) {
+            if (position > group.groupSiteID && position <= (group.groupSiteID + group.recyclerViewItems.size)) {
                 dataSet.currentGroup = group
                 break
             }

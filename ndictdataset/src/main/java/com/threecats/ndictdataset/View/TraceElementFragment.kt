@@ -3,7 +3,6 @@ package com.threecats.ndictdataset.View
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,7 @@ class TraceElementFragment : Fragment() {
     private var nutrientList: MutableList<BNutrient>? = null
     //private var nutrientRView: RecyclerView? = null
 
-    private var rvShell: RecyclerViewShell<Any, BNutrient>? = null
+    private var teShell: RecyclerViewShell<Any, BNutrient>? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,11 +40,11 @@ class TraceElementFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (rvShell == null) {
-            rvShell = RecyclerViewShell(context)
+        if (teShell == null) {
+            teShell = RecyclerViewShell(context)
         }
 
-        rvShell?.let {
+        teShell?.let {
             it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
             it.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
@@ -64,7 +63,7 @@ class TraceElementFragment : Fragment() {
                 override fun onLongClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     val e = item.getObject()
                     e?.let {
-                        rvShell!!.removeItem(item)
+                        teShell!!.removeItem(item)
                     }
                 }
             })
@@ -77,7 +76,6 @@ class TraceElementFragment : Fragment() {
                                 //progressBarNutrient.visibility = View.GONE
                                 nutrients?.let {
                                     shell.addItems(it)
-                                    //shell.link()
                                     shell.completeQuery()
                                 }
                             } else {

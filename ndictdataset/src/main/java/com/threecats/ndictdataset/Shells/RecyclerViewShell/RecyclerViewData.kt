@@ -6,56 +6,59 @@ import java.util.ArrayList
 /**
  * 由 zhang 于 2018/3/28 创建
  */
-class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
+class RecyclerViewData<G, I>(val shell: RecyclerViewShell<G, I>) {
 
-    var currentGroup: RecyclerViewGroup<G,I>? = null
+    var currentGroup: RecyclerViewGroup<G, I>? = null
     var currentItem: RecyclerViewItem<G, I>? = null
     var currentGroupPosition: Int? = null
     var currentRecyclerItemPosition: Int? = null
 
-    val groups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
+    val recyclerGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
 
-    fun addGroup(group: RecyclerViewGroup<G,I>){
-        if (groups.size > 0) {
-            val lastGroup = groups[groups.size - 1]
+    val groups: MutableList<G> = ArrayList()
+    val items: MutableList<I> = ArrayList()
+
+    fun addGroup(group: RecyclerViewGroup<G, I>){
+        if (recyclerGroups.size > 0) {
+            val lastGroup = recyclerGroups[recyclerGroups.size - 1]
             lastGroup.nextGroup = group
             group.previousGroup = lastGroup
         }
-        groups.add(group)
+        recyclerGroups.add(group)
         group.parentData = this
         addGroupInRecyclerViewItems(group)
         calculatorTitleSite()
     }
 
     fun getGroup(id: Long): RecyclerViewGroup<G,I>? {
-        val group = groups.find { it.id == id }
+        val group = recyclerGroups.find { it.id == id }
         return group
     }
 
     fun getItemsCount(): Int {
         var count = 0
-        groups.forEach { count += it.items.size }
+        recyclerGroups.forEach { count += it.recyclerViewItems.size }
         return count
     }
 
     fun calculatorTitleSite() {
         var site = 0
         //parentGroups.takeWhile { it.State === DisplayState.Show }.forEach {
-        groups.filter { it.State === DisplayState.Show }.forEach {
+        recyclerGroups.filter { it.State === DisplayState.Show }.forEach {
             it.groupSiteID = site
-            site += it.items.size + 1
+            site += it.recyclerViewItems.size + 1
         }
     }
 
     private fun addGroupInRecyclerViewItems(group: RecyclerViewGroup<G,I>) {
         if (group.State === DisplayState.Hide) return
         recyclerViewItems.add(group)
-        recyclerViewItems.addAll(group.items)
+        recyclerViewItems.addAll(group.recyclerViewItems)
     }
 
     fun hideGroup(group: RecyclerViewGroup<G,I>) {
-        if (group.items.size > 0) return
+        if (group.recyclerViewItems.size > 0) return
         if (group.groupSiteID > recyclerViewItems.size - 1) {
             shell.context.toast("Hide Group : group.groupSiteID > size()")
             return
@@ -89,7 +92,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
     private fun nextGroupSite(group: RecyclerViewGroup<G,I>): Int {
         var nextGroupSite = -1
         var hasBeforeGroup = true
-        for (currentGroup in groups) {
+        for (currentGroup in recyclerGroups) {
             if (hasBeforeGroup) {
                 if (currentGroup === group) hasBeforeGroup = false
                 continue
@@ -102,9 +105,10 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
         return nextGroupSite
     }
 
-    fun addItem(item: RecyclerViewItem<G,I>): Int{
+    fun addItem(item: RecyclerViewItem<G, I>): Int{
         var position = -1
-        if (groups.size == 0) {
+        if (recyclerGroups.size == 0) {
+            items.add(item.self)  // 建立I类的实例对象的映射列表
             item.viewType.itemType = ItemType.Item
             recyclerViewItems.add(item)
             position = recyclerViewItems.size - 1
@@ -113,7 +117,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
         return position
     }
 
-    fun addItem(item: RecyclerViewItem<G,I>, group: RecyclerViewGroup<G,I>) {
+    fun addItem(item: RecyclerViewItem<G, I>, group: RecyclerViewGroup<G,I>) {
         if (group.State === DisplayState.Hide) {
             activeGroup(group)
         }
@@ -123,7 +127,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
     }
 
     fun addItem(item: RecyclerViewItem<G,I>, groupID: Long) {
-        val group = groups.find { it.id == groupID }
+        val group = recyclerGroups.find { it.id == groupID }
         group?.let { addItem(item, it) }
     }
 
@@ -144,7 +148,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
         val site = group.removeItem(item)
         if (site >= 0) {
             removeItemFromRecyclerViewItems(group, site, item)
-            if (group.items.size == 0) {
+            if (group.recyclerViewItems.size == 0) {
                 hideGroup(group)
             }
             calculatorTitleSite()
@@ -152,7 +156,7 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
     }
 
     fun removeItem(item: RecyclerViewItem<G,I>, groupID: Long){
-        val group = groups.find { it.id == groupID }
+        val group = recyclerGroups.find { it.id == groupID }
         group?.let { removeItem(item, it) }
     }
 
@@ -180,12 +184,12 @@ class RecyclerViewData<G,I>(val shell: RecyclerViewShell<G,I>) {
     }
 
     fun updateItemDisplay(item: RecyclerViewItem<G, I>, group: RecyclerViewGroup<G, I>) {
-        val site = group.items.indexOf(item) + group.groupSiteID + 1
+        val site = group.recyclerViewItems.indexOf(item) + group.groupSiteID + 1
         shell.recyclerAdapter?.notifyItemChanged(site)
     }
 
     fun updateItemDisplay(item: RecyclerViewItem<G, I>, groupID: Long){
-        val group = groups.find { it.id == groupID }
+        val group = recyclerGroups.find { it.id == groupID }
         group?.let { updateItemDisplay(item, it) }
     }
 }
