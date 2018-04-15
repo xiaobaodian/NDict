@@ -9,5 +9,5 @@ class BNutrient: BmobObject() {
     var nutrientID: Int = 0
     var name = ""
     var context: _Article? = null
-    var testArray: List<Int>? = null
+    var testArray: List<String>? = null
 }

@@ -131,12 +131,16 @@ class RecyclerViewData<G, I>(val shell: RecyclerViewShell<G, I>) {
         group?.let { addItem(item, it) }
     }
 
-    fun removeItem(item: RecyclerViewItem<G,I>) {
+    fun removeItem(item: RecyclerViewItem<G, I>) {
         if (item.parentGroups.size == 0) {
-            val site = recyclerViewItems.indexOf(item)
-            if (site >= 0) {
-                recyclerViewItems.removeAt(site)
-                shell.recyclerAdapter?.notifyItemRemoved(site)
+            var position = items.indexOf(item.self)
+            if (position >= 0){
+                items.removeAt(position)
+            }
+            position = recyclerViewItems.indexOf(item)
+            if (position >= 0) {
+                recyclerViewItems.removeAt(position)
+                shell.recyclerAdapter?.notifyItemRemoved(position)
             }
         } else {
             val tempGroups = item.parentGroups.toList()
@@ -144,7 +148,10 @@ class RecyclerViewData<G, I>(val shell: RecyclerViewShell<G, I>) {
         }
     }
 
-    fun removeItem(item: RecyclerViewItem<G,I>, group: RecyclerViewGroup<G,I>) {
+    fun removeItem(
+            item: RecyclerViewItem<G,I>,
+            group: RecyclerViewGroup<G,I>
+    ) {
         val site = group.removeItem(item)
         if (site >= 0) {
             removeItemFromRecyclerViewItems(group, site, item)

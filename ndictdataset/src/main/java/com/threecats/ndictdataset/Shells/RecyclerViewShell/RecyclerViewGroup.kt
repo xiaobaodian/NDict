@@ -75,7 +75,7 @@ class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
 
     fun removeItem(item: RecyclerViewItem<G, I>): Int {
         var position = items.indexOf(item.self)
-        if (position > 0) {
+        if (position >= 0) {
             items.removeAt(position)
         }
         position = recyclerViewItems.indexOf(item)

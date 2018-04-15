@@ -22,8 +22,10 @@ class RecyclerViewShell<G,I>(val context: Context) {
         get() = dataSet.recyclerViewItems.size == 0
     val currentItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
-    val items: MutableList<RecyclerViewItem<G, I>>?
+    val recyclerViewItems: MutableList<RecyclerViewItem<G, I>>?
         get() = if (dataSet.recyclerGroups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
+    val items: MutableList<I>?
+        get() = if (dataSet.recyclerGroups.size > 0) null else dataSet.items
 
     internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
 
