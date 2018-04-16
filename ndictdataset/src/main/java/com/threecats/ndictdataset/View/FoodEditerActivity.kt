@@ -16,6 +16,7 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.Bmob.ElementContent
 import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
@@ -71,7 +72,7 @@ class FoodEditerActivity : AppCompatActivity() {
         val category: BFoodCategory = shareSet.CurrentCategory!!.self
         if (food.foodBased != category.foodBased) {
             food.foodBased = category.foodBased
-            updateVitaminToBmob(food)
+            updateFoodToBmob(food)
         }
     }
 
@@ -160,102 +161,17 @@ class FoodEditerActivity : AppCompatActivity() {
 
         when (shareSet.ItemEditState){
             EEditerState.FoodAppend -> {
-                // 加入数据需要在Bmob段建立关联，需要加入维生素、矿物质数据后获取返回的objectId，所以
-                // 采用链式调用
-                addBatchFoodExtToBmob(food)
+                addFoodToBmob(food)
             }
             EEditerState.FoodEdit -> {
-                changBlockList.forEach {
-                    when (it) {
-                        EChangeBlock.Food -> updateFoodToBmob(food)
-                        EChangeBlock.Vitamin -> updateVitaminToBmob(food)
-                        EChangeBlock.Mineral -> updateMineralToBmob(food)
-                        EChangeBlock.MineralExt -> updateMineralExtToBmob(food)
-                        else -> toast("changBlockList Error !")
-                    }
-                }
+                updateFoodToBmob(food)
             }
             else -> toast("EditState Error !")
         }
     }
 
-//    private fun addVitaminItem(food: BFood){
-//        val v = food.vitamin!!
-//        v.save(object: SaveListener<String>() {
-//            override fun done(objectID: String?, e: BmobException?) {
-//                if (e == null) {
-//                    if (BDM.ShowTips) toast("添加了维生素，objectID：$objectID")
-//                    v.objectId = objectID
-//                    addMineral(food)
-//                } else {
-//                    longToast("添加食材${food.name}维生素出现错误。错误信息：${e.message} -- ${e.errorCode}")
-//                }
-//            }
-//        })
-//    }
-//    private fun addMineralExt(food: BFood){
-//        val mext = food.mineralExt!!
-//        mext.save(object: SaveListener<String>() {
-//            override fun done(objectID: String?, e: BmobException?) {
-//                if (e == null) {
-//                    if (BDM.ShowTips) toast("添加了矿物质扩展，objectID：$objectID")
-//                    mext.objectId = objectID
-//                    addFoodItem(food)
-//                } else {
-//                    longToast("添加食材${food.name}矿物质扩展出现错误，回滚资料。错误信息：${e.message}")
-//                    food.mineral?.delete(object: UpdateListener(){
-//                        override fun done(p0: BmobException?) {
-//                        }
-//                    })
-//                    food.vitamin?.delete(object: UpdateListener(){
-//                        override fun done(p0: BmobException?) {
-//                        }
-//                    })
-//                }
-//            }
-//        })
-//    }
-//    private fun addMineral(food: BFood){
-//        val m = food.mineral!!
-//        m.save(object: SaveListener<String>() {
-//            override fun done(objectID: String?, e: BmobException?) {
-//                if (e == null) {
-//                    if (BDM.ShowTips) toast("添加了矿物质，objectID：$objectID")
-//                    m.objectId = objectID
-//                    addMineralExt(food)
-//                } else {
-//                    longToast("添加食材${food.name}矿物质出现错误，回滚资料。错误信息：${e.message}")
-//                    food.vitamin?.delete(object: UpdateListener(){
-//                        override fun done(p0: BmobException?) {
-//                        }
-//                    })
-//                }
-//            }
-//        })
-//    }
-
-    private fun addBatchFoodExtToBmob(food: BFood){
-        val items: MutableList<BmobObject> = arrayListOf()
-        food.vitamin?.let { items.add(it) }
-        food.mineral?.let { items.add(it) }
-        food.mineralExt?.let { items.add(it) }
-        BmobBatch().insertBatch(items).doBatch(object: QueryListListener<BatchResult>(){
-            override fun done(result: MutableList<BatchResult>?, e: BmobException?) {
-                if (e == null) {
-                    if (result?.get(0)?.error == null) food.vitamin?.objectId = result?.get(0)?.objectId
-                    if (result?.get(1)?.error == null) food.mineral?.objectId = result?.get(1)?.objectId
-                    if (result?.get(2)?.error == null) food.mineralExt?.objectId = result?.get(2)?.objectId
-                    addFoodToBmob(food)
-                } else {
-                    //longToast("添加食材扩展数据出现错误：${e.message}")
-                    ErrorMessage(this@FoodEditerActivity, e)
-                }
-            }
-        })
-    }
-
     private fun addFoodToBmob(food: BFood){
-        food.category = shareSet.CurrentCategory?.getObject()!!
+        food.category = shareSet.CurrentCategory?.self
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
@@ -264,45 +180,6 @@ class FoodEditerActivity : AppCompatActivity() {
                     EventBus.getDefault().post(UpdateFoodRecyclerItem(f, EEditerState.FoodAppend))  //Sticky
                 } else {
                     //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
-                    ErrorMessage(this@FoodEditerActivity, e)
-                }
-            }
-        })
-    }
-
-    private fun updateMineralToBmob(food: BFood){
-        food.mineral?.update(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("更新了矿物质数据")
-                } else {
-                    //longToast("更新矿物质数据出现错误：${e.message}")
-                    ErrorMessage(this@FoodEditerActivity, e)
-                }
-            }
-        })
-    }
-
-    private fun updateMineralExtToBmob(food: BFood){
-        food.mineralExt?.update(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("更新了矿物质扩展数据")
-                } else {
-                    //longToast("更新矿物质扩展数据出现错误：${e.message}")
-                    ErrorMessage(this@FoodEditerActivity, e)
-                }
-            }
-        })
-    }
-
-    private fun updateVitaminToBmob(food: BFood){
-        food.vitamin?.update(object: UpdateListener(){
-            override fun done(e: BmobException?) {
-                if (e == null) {
-                    if (BDM.ShowTips) toast("更新了维生素数据")
-                } else {
-                    //longToast("更新维生素数据出现错误：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
                 }
             }

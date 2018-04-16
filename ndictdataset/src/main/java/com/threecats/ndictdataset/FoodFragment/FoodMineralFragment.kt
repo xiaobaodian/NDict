@@ -49,11 +49,11 @@ class FoodMineralFragment : FoodPropertyFragment() {
     }
 
     override fun importFields(food: BFood) {
-        getFields(food.mineral!!, food.mineralExt!!)
+        getFields(food)
     }
 
     override fun exportFields(food: BFood) {
-        setFields(food.mineral!!, food.mineralExt!!)
+        setFields(food)
     }
 
     override fun firstEditTextFocus(){
@@ -65,7 +65,68 @@ class FoodMineralFragment : FoodPropertyFragment() {
         }
     }
 
-    private fun getFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
+    private fun getFields(food: BFood){
+
+        with (foodEditTextHelper) {
+            textBoxs.clear()
+            addEditBox(KIEditText, food.minerals[0].content.toString())
+            addEditBox(NIEditText, food.minerals[1].content.toString())
+            addEditBox(CaIEditText, food.minerals[2].content.toString())
+            addEditBox(MgIEditText, food.minerals[3].content.toString())
+            addEditBox(FeIEditText, food.minerals[4].content.toString())
+            addEditBox(MnIEditText, food.minerals[5].content.toString())
+            addEditBox(ZnIEditText, food.minerals[6].content.toString())
+            addEditBox(CuIEditText, food.minerals[7].content.toString())
+            addEditBox(SeIEditText, food.minerals[8].content.toString())
+            addEditBox(PIEditText, food.minerals[9].content.toString())
+            addEditBox(IIEditText, food.minerals[10].content.toString())
+            addEditBox(MoIEditText, food.minerals[11].content.toString())
+            addEditBox(CrIEditText, food.minerals[12].content.toString())
+            addEditBox(CeIEditText, food.minerals[13].content.toString())
+            addEditBox(CoIEditText, food.minerals[14].content.toString())
+            addEditBox(SnIEditText, food.minerals[15].content.toString())
+            addEditBox(NiIEditText, food.minerals[16].content.toString())
+            addEditBox(VIEditText, food.minerals[17].content.toString())
+            addEditBox(SiIEditText, food.minerals[18].content.toString())
+            addEditBox(CiIEditText, food.minerals[19].content.toString())
+            addEditBox(SIEditText, food.minerals[20].content.toString())
+            initHash()
+        }
+
+    }
+
+    private fun setFields(food: BFood){
+
+        foodEditTextHelper.CheckNull("0.0")
+        foodEditTextHelper.textBoxs.forEach {
+            when (it.editBox){
+                KIEditText    ->  food.minerals[0].content  = it.editBox.text.toString().toFloat()
+                NIEditText    ->  food.minerals[1].content  = it.editBox.text.toString().toFloat()
+                CaIEditText   ->  food.minerals[2].content = it.editBox.text.toString().toFloat()
+                MgIEditText   ->  food.minerals[3].content = it.editBox.text.toString().toFloat()
+                FeIEditText   ->  food.minerals[4].content = it.editBox.text.toString().toFloat()
+                MnIEditText   ->  food.minerals[5].content = it.editBox.text.toString().toFloat()
+                ZnIEditText   ->  food.minerals[6].content = it.editBox.text.toString().toFloat()
+                CuIEditText   ->  food.minerals[7].content = it.editBox.text.toString().toFloat()
+                SeIEditText   ->  food.minerals[8].content = it.editBox.text.toString().toFloat()
+                PIEditText    ->  food.minerals[9].content  = it.editBox.text.toString().toFloat()
+                IIEditText    ->  food.minerals[10].content  = it.editBox.text.toString().toFloat()
+                MoIEditText   ->  food.minerals[11].content = it.editBox.text.toString().toFloat()
+                CrIEditText   ->  food.minerals[12].content = it.editBox.text.toString().toFloat()
+                CeIEditText   ->  food.minerals[13].content = it.editBox.text.toString().toFloat()
+                CoIEditText   ->  food.minerals[14].content = it.editBox.text.toString().toFloat()
+                SnIEditText   ->  food.minerals[15].content = it.editBox.text.toString().toFloat()
+                NiIEditText   ->  food.minerals[16].content = it.editBox.text.toString().toFloat()
+                VIEditText    ->  food.minerals[17].content  = it.editBox.text.toString().toFloat()
+                SiIEditText   ->  food.minerals[18].content = it.editBox.text.toString().toFloat()
+                CiIEditText   ->  food.minerals[19].content = it.editBox.text.toString().toFloat()
+                SIEditText    ->  food.minerals[20].content = it.editBox.text.toString().toFloat()
+            }
+        }
+
+    }
+
+    private fun getFieldsOld(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         with (foodEditTextHelper) {
             textBoxs.clear()
@@ -99,7 +160,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     }
 
-    private fun setFields(mineral: BFoodMineral, mineralext: BFoodMineralExt){
+    private fun setFieldsOld(mineral: BFoodMineral, mineralext: BFoodMineralExt){
 
         foodEditTextHelper.CheckNull("0.0")
         foodEditTextHelper.textBoxs.forEach {

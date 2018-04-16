@@ -84,14 +84,14 @@ class FoodListActivity : AppCompatActivity() {
             })
             it.setOnClickItemListener(object : onClickItemListener<Any, BFood> {
                 override fun onClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    BDM.ShareSet?.editFood(item)
+                    shareSet.editFood(item)
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
                     startActivity(intent)
                 }
             })
             it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFood> {
                 override fun onLongClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    BDM.ShareSet?.editFood(item)
+                    shareSet.editFood(item)
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
                     startActivity(intent)
                 }
@@ -100,7 +100,7 @@ class FoodListActivity : AppCompatActivity() {
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BFood>) {
                     val query: BmobQuery<BFood> = BmobQuery()
                     query.addWhereEqualTo("category", BmobPointer(currentCategory.getObject()))
-                    query.include("vitamin,mineral,mineralExt,article")
+                    //query.include("vitamin,mineral,mineralExt,article")
                     query.setLimit(300)
                     query.findObjects(object: FindListener<BFood>(){
                         override fun done(foods: MutableList<BFood>?, e: BmobException?) {
@@ -111,7 +111,6 @@ class FoodListActivity : AppCompatActivity() {
                                     if (currentCategory.self.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
 //                                    foodList = it
 //                                    FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
-                                    if (it.size > 0) EventBus.getDefault().post(CheckFoodTraceElement(it))
                                 }
 
                             } else {
@@ -150,7 +149,7 @@ class FoodListActivity : AppCompatActivity() {
         when (item?.itemId){
             R.id.CheckFoodElement -> {
                 toast("检查元素关联")
-                checkFoodRelevant()
+                //checkFoodRelevant()
             }
             R.id.SaveAddItem -> {
 
@@ -188,109 +187,6 @@ class FoodListActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun doCheckFoodTraceElement(checkElement: CheckFoodTraceElement){
-
-        val nullVitamins: MutableList<BFood> = arrayListOf()
-        val nullMinerals: MutableList<BFood> = arrayListOf()
-        val nullMineralexts: MutableList<BFood> = arrayListOf()
-
-        checkElement.Foods.forEach {
-
-            if (it.vitamin == null) {
-                nullVitamins.add(it)
-            } else {
-                if (it.vitamin!!.objectId == ""){
-                    it.vitamin = null
-                    nullVitamins.add(it)
-                }
-            }
-
-            if (it.mineral == null) {
-                nullMinerals.add(it)
-            } else {
-                if (it.mineral!!.objectId == ""){
-                    it.mineral = null
-                    nullMinerals.add(it)
-                }
-            }
-
-            if (it.mineralExt == null) {
-                nullMineralexts.add(it)
-            } else {
-                if (it.mineralExt!!.objectId == ""){
-                    it.mineralExt = null
-                    nullMineralexts.add(it)
-                }
-            }
-        }
-
-        if (nullVitamins.size > 0) {
-            val vitamins: MutableList<BmobObject> = arrayListOf()
-
-            nullVitamins.forEach {
-                it.vitamin = BFoodVitamin()
-                vitamins.add(it.vitamin!!)
-            }
-            BmobBatch().insertBatch(vitamins).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了 ${results?.size} 个维生素记录")
-                        results?.forEachIndexed { i, batchResult -> nullVitamins[i].vitamin?.objectId = batchResult.objectId }
-                        EventBus.getDefault().post(BatchUpdateFood(nullVitamins, "维生素"))
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
-
-        if (nullMinerals.size > 0) {
-            val minerals: MutableList<BmobObject> = arrayListOf()
-
-            nullMinerals.forEach {
-                it.mineral = BFoodMineral()
-                minerals.add(it.mineral!!)
-            }
-
-            BmobBatch().insertBatch(minerals).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了 ${results?.size} 个矿物质记录")
-                        results?.forEachIndexed { i, batchResult -> nullMinerals[i].mineral?.objectId = batchResult.objectId }
-                        EventBus.getDefault().post(BatchUpdateFood(nullMinerals, "矿物资"))
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
-
-        if (nullMineralexts.size > 0) {
-            val mineralexts: MutableList<BmobObject> = arrayListOf()
-
-            nullMineralexts.forEach {
-                it.mineralExt = BFoodMineralExt()
-                mineralexts.add(it.mineralExt!!)
-            }
-
-            BmobBatch().insertBatch(mineralexts).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了 ${results?.size} 个矿物资扩展记录")
-                        results?.forEachIndexed { i, batchResult -> nullMineralexts[i].mineralExt?.objectId = batchResult.objectId }
-                        EventBus.getDefault().post(BatchUpdateFood(nullMineralexts, "矿物质扩展"))
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun doBatchUpdateFood(updateItems: BatchUpdateFood){
         val batchFoods: MutableList<BmobObject> = arrayListOf()
         updateItems.Foods.forEach { batchFoods.add(it) }
@@ -322,73 +218,5 @@ class FoodListActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    // 已建立DataModel代码
-    private fun checkFoodRelevant(){
-
-        val logShow = AnkoLogger("NDIC")
-
-        val vitamins: MutableList<BmobObject> = arrayListOf()
-        val minerals: MutableList<BmobObject> = arrayListOf()
-        val mineralexts: MutableList<BmobObject> = arrayListOf()
-
-        foodListShell?.recyclerViewItems?.forEach {
-            val vitamin: BFoodVitamin = it.self.vitamin!!
-            val mineral: BFoodMineral = it.self.mineral!!
-            val mineralExt: BFoodMineralExt = it.self.mineralExt!!
-            if (vitamin.foodID == null) {
-                vitamin.foodID = it.self.objectId
-                vitamins.add(vitamin)
-                logShow.info { "${it.self.name} vitamin: ${vitamin.objectId} -> ${vitamin.foodID}" }
-            }
-            if (mineral.foodID == null) {
-                mineral.foodID = it.self.objectId
-                minerals.add(mineral)
-                logShow.info { "${it.self.name} mineral: ${mineral.objectId} -> ${mineral.foodID}" }
-            }
-            if (mineralExt.foodID == null) {
-                mineralExt.foodID = it.self.objectId
-                mineralexts.add(mineralExt)
-                logShow.info { "${it.self.name} mineralExt: ${mineralExt.objectId} -> ${mineralExt.foodID}" }
-            }
-        }
-        toast("${vitamins.size} / ${minerals.size} / ${mineralexts.size}")
-        if (vitamins.size > 0) {
-            BmobBatch().updateBatch(vitamins).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了${results?.size}个矿物资扩展记录")
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
-        if (minerals.size > 0) {
-            BmobBatch().updateBatch(minerals).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了${results?.size}个矿物质记录")
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
-        if (mineralexts.size > 0) {
-            BmobBatch().updateBatch(mineralexts).doBatch(object: QueryListListener<BatchResult>(){
-                override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
-                    if (e == null) {
-                        toast("补增了${results?.size}个矿物资扩展记录")
-                    } else {
-                        //toast("${e.message}")
-                        ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-        }
     }
 }
