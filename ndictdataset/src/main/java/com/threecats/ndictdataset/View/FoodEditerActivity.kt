@@ -16,7 +16,6 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Bmob.ElementContent
 import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
@@ -211,24 +210,18 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun deleteFoodFromBmob(food: RecyclerViewItem<Any, BFood>){
-        val items: MutableList<BmobObject> = arrayListOf()
-        food.getObject()?.vitamin?.let { items.add(it) }
-        food.getObject()?.mineral?.let { items.add(it) }
-        food.getObject()?.mineralExt?.let { items.add(it) }
-        items.add(food.getObject()!!)
-        BmobBatch().deleteBatch(items).doBatch(object: QueryListListener<BatchResult>() {
-            override fun done(p0: MutableList<BatchResult>?, e: BmobException?) {
+
+        food.self.delete(object: UpdateListener(){
+            override fun done(e: BmobException?) {
                 if (e == null) {
                     toast("删除食材 ${food.getObject()?.name} 成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(food))
                 } else {
                     ErrorMessage(this@FoodEditerActivity, e)
-                    //toast("删除食材 ${food.name} 失败")
                 }
             }
         })
         onBackPressed()
     }
-
 
 }

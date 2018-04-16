@@ -22,9 +22,6 @@ class BFood: BmobObject() {
     var cholesterol: Float = 0f                     // 胆固醇含量
 
     var category: BFoodCategory? = null             // 食材的分类
-    var vitamin: BFoodVitamin? = null
-    var mineral: BFoodMineral? = null
-    var mineralExt: BFoodMineralExt? = null
     var article: _Article? = null
 
     var vitamins: MutableList<ElementContent> = ArrayList()

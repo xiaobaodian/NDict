@@ -20,10 +20,7 @@ class PublicSet(val AppContext: Context) {
     fun createFood(){
         ItemEditState = EEditerState.FoodAppend
         val food = BFood().apply {
-            category = CurrentCategory?.getObject()
-            vitamin = BFoodVitamin()
-            mineral = BFoodMineral()
-            mineralExt = BFoodMineralExt()
+            category = CurrentCategory?.self
         }
         CurrentFood = RecyclerViewItem<Any, BFood>().apply{
             putObject(food)
