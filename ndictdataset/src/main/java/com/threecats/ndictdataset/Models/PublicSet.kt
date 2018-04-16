@@ -15,6 +15,7 @@ class PublicSet(val AppContext: Context) {
     var CurrentCategory: RecyclerViewItem<Any, BFoodCategory>? = null
     var CurrentCategoryPosition: Int = 0
     var CurrentFood: RecyclerViewItem<Any, BFood>? = null
+    var currentFood: BFood? = null
     var CurrentNutrient: BNutrient? = null
 
     fun createFood(){
@@ -31,6 +32,7 @@ class PublicSet(val AppContext: Context) {
     fun editFood(food: RecyclerViewItem<Any, BFood>){
         ItemEditState = EEditerState.FoodEdit
         CurrentFood = food
+        currentFood = food.self
     }
 
 }

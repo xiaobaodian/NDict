@@ -6,7 +6,7 @@ import java.util.ArrayList
 /**
  * 由 zhang 于 2018/3/28 创建
  */
-class RecyclerViewData<G, I>(val shell: RecyclerViewShell<G, I>) {
+class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     var currentGroup: RecyclerViewGroup<G, I>? = null
     var currentItem: RecyclerViewItem<G, I>? = null

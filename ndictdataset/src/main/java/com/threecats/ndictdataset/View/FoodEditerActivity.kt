@@ -53,7 +53,7 @@ class FoodEditerActivity : AppCompatActivity() {
                     FoodEditerToolbar.title = "食材详情"
                     FoodEditerToolbar.subtitle = ""
                 } else {
-                    FoodEditerToolbar.title = shareSet.CurrentFood?.getObject()!!.name
+                    FoodEditerToolbar.title = shareSet.currentFood!!.name
                     FoodEditerToolbar.subtitle = "每100克中的含量"
                 }
             }
@@ -67,7 +67,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 .addFragment(FoodMineralFragment(),"矿物质")
                 .addFragment(FoodNoteFragment(),"描述")
                 .link()
-        val food: BFood = shareSet.CurrentFood!!.self
+        val food: BFood = shareSet.currentFood!!
         val category: BFoodCategory = shareSet.CurrentCategory!!.self
         if (food.foodBased != category.foodBased) {
             food.foodBased = category.foodBased
@@ -87,8 +87,8 @@ class FoodEditerActivity : AppCompatActivity() {
             else -> toast("EditState Error !")
         }
         val menuItem = menu!!.findItem((R.id.REChange))
-        shareSet.CurrentFood?.let {
-            if (it.self.foodBased == 0) {
+        shareSet.currentFood?.let {
+            if (it.foodBased == 0) {
                 menuItem.title = "视黄醇/胡萝卜素"
             } else {
                 menuItem.title = "视黄醇/维生素A"
@@ -100,18 +100,18 @@ class FoodEditerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId){
             R.id.DeleteFood -> {
-                shareSet.CurrentFood?.let { alertDeleteFood(it) }
+                shareSet.currentFood?.let { alertDeleteFood(it) }
             }
             R.id.SaveAddItem -> {
-                shareSet.CurrentFood?.let {
+                shareSet.currentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
-                    processFood(food.self)
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
+                    processFood(food)
                 }
                 shareSet.createFood()
-                shareSet.CurrentFood?.let {
+                shareSet.currentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).importFields(food.self) }
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).importFields(food) }
                     nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
                 }
                 FoodPropertyTabs.getTabAt(0)?.select()
@@ -128,19 +128,19 @@ class FoodEditerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (shareSet.ItemEditState == EEditerState.FoodAppend) {
-            shareSet.CurrentFood?.let {
+            shareSet.currentFood?.let {
                 val food = it
-                nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
-                processFood(food.self)
+                nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
+                processFood(food)
             }
         } else {
             changBlockList.clear()
             nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).blockChangeState(this) }
             if (changBlockList.size > 0) {
-                shareSet.CurrentFood?.let {
+                shareSet.currentFood?.let {
                     val food = it
-                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food.self) }
-                    processFood(food.self)
+                    nutrientFragments.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
+                    processFood(food)
                 }
             }
         }
@@ -200,21 +200,21 @@ class FoodEditerActivity : AppCompatActivity() {
         })
     }
 
-    private fun alertDeleteFood(food: RecyclerViewItem<Any, BFood>){
+    private fun alertDeleteFood(food: BFood){
 
-        alert("确实要删除食材 ${food.getObject()?.name} 吗？", "删除食材") {
+        alert("确实要删除食材 ${food.name} 吗？", "删除食材") {
             positiveButton("确定") { deleteFoodFromBmob(food) }
             negativeButton("取消") {  }
         }.show()
 
     }
 
-    private fun deleteFoodFromBmob(food: RecyclerViewItem<Any, BFood>){
+    private fun deleteFoodFromBmob(food: BFood){
 
-        food.self.delete(object: UpdateListener(){
+        food.delete(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
-                    toast("删除食材 ${food.getObject()?.name} 成功")
+                    toast("删除食材 ${food.name} 成功")
                     EventBus.getDefault().post(DeleteFoodRecyclerItem(food))
                 } else {
                     ErrorMessage(this@FoodEditerActivity, e)

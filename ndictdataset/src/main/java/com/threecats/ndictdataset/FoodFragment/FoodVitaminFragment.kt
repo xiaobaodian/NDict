@@ -1,6 +1,5 @@
 package com.threecats.ndictdataset.FoodFragment
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
-
 
 /**
  * A simple [Fragment] subclass.
@@ -32,7 +30,8 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         //setREOrOther()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { importFields(it.self) }
+            //shareSet.CurrentFood?.let { importFields(it.self) }
+            shareSet.currentFood?.let { importFields(it) }
         }
     }
 
@@ -60,7 +59,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     }
 
     fun switchREMode(){
-        isREMode = !isREMode!!
+        isREMode = !isREMode
         setREOrOther()
     }
 
@@ -127,7 +126,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
             when (it.editBox){
 
                 REIEditText ->{
-                    if (!isREMode && shareSet.CurrentFood!!.self.foodBased == 0) {
+                    if (!isREMode && shareSet.currentFood!!.foodBased == 0) {
                         food.vitamins[0].content = it.editBox.text.toString().toFloat()/6
                     } else {
                         food.vitamins[0].content = it.editBox.text.toString().toFloat()

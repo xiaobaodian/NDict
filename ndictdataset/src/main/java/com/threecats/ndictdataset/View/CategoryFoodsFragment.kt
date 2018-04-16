@@ -4,7 +4,6 @@ package com.threecats.ndictdataset.View
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
-import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
 import com.threecats.ndictdataset.Helper.ErrorMessage
@@ -24,7 +22,6 @@ import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.fragment_category_foods.*
-import kotlinx.android.synthetic.main.fragment_trace_element.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -76,7 +73,7 @@ class CategoryFoodsFragment : Fragment() {
             })
             it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFoodCategory> {
                 override fun onLongClickItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
-                    BDM.ShareSet?.CurrentCategory = it.currentItem
+                    BDM.ShareSet?.CurrentCategory = it.currentRecyclerViewItem
                     val intent = Intent(context, FoodListActivity::class.java)
                     context.startActivity(intent)
                 }

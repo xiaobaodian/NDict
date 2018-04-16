@@ -20,7 +20,9 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     val isNullItems: Boolean
         get() = dataSet.recyclerViewItems.size == 0
-    val currentItem: RecyclerViewItem<G, I>
+    val currentItem: I
+        get() = dataSet.currentItem!!.self
+    val currentRecyclerViewItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
     val recyclerViewItems: MutableList<RecyclerViewItem<G, I>>?
         get() = if (dataSet.recyclerGroups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
@@ -120,6 +122,12 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     fun removeItem(item: RecyclerViewItem<G, I>){
         dataSet.removeItem(item)
+    }
+
+    fun removeCurrentItem(item: I){
+        if (currentRecyclerViewItem.self === item) {
+            removeItem(currentRecyclerViewItem)
+        }
     }
 
     fun itemsSize(): Int {

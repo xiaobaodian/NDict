@@ -6,6 +6,4 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewItem
 /**
  * 由 zhang 创建于 2018/2/19.
  */
-class DeleteFoodRecyclerItem(food: RecyclerViewItem<Any, BFood>) {
-    val Food = food
-}
+class DeleteFoodRecyclerItem(val food: BFood) {}

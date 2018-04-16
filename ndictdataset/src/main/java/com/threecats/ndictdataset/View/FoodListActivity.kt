@@ -28,8 +28,6 @@ import kotlinx.android.synthetic.main.content_food_list.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 
 class FoodListActivity : AppCompatActivity() {
@@ -91,6 +89,8 @@ class FoodListActivity : AppCompatActivity() {
             })
             it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFood> {
                 override fun onLongClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+                    val i = foodListShell?.currentItem
+                    foodListShell?.currentItem
                     shareSet.editFood(item)
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
                     startActivity(intent)
@@ -181,7 +181,7 @@ class FoodListActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doDeleteFoodRecyclerItem(deleteItem: DeleteFoodRecyclerItem){
         foodListShell?.let {
-            it.removeItem(deleteItem.Food)
+            it.removeCurrentItem(deleteItem.food)
             updateCategoryFoodSize(it.itemsSize())
         }
     }
