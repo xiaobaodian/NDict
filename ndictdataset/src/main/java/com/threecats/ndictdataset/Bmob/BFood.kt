@@ -27,4 +27,49 @@ class BFood: BmobObject() {
     var mineralExt: BFoodMineralExt? = null
     var article: _Article? = null
 
+    var vitamins: MutableList<ElementContent> = ArrayList()
+    var minerals: MutableList<ElementContent> = ArrayList()
+
+    init {
+        vitamins.add(ElementContent("RE"))
+        vitamins.add(ElementContent("VitaminB1"))
+        vitamins.add(ElementContent("VitaminB2"))
+        vitamins.add(ElementContent("Niacin"))
+        vitamins.add(ElementContent("VitaminB6"))
+        vitamins.add(ElementContent("PantothenicAcid"))
+        vitamins.add(ElementContent("VitaminH"))
+        vitamins.add(ElementContent("FolicAcid"))
+        vitamins.add(ElementContent("VitaminB12"))
+        vitamins.add(ElementContent("Choline"))
+        vitamins.add(ElementContent("VitaminC"))
+        vitamins.add(ElementContent("VitaminD"))
+        vitamins.add(ElementContent("VitaminE"))
+        vitamins.add(ElementContent("VitaminK"))
+        vitamins.add(ElementContent("VitaminP"))
+        vitamins.add(ElementContent("Inositol"))
+        vitamins.add(ElementContent("PABA"))
+
+        minerals.add(ElementContent("K"))
+        minerals.add(ElementContent("N"))
+        minerals.add(ElementContent("Ca"))
+        minerals.add(ElementContent("Mg"))
+        minerals.add(ElementContent("Fe"))
+        minerals.add(ElementContent("Mn"))
+        minerals.add(ElementContent("Zn"))
+        minerals.add(ElementContent("Cu"))
+        minerals.add(ElementContent("Se"))
+        minerals.add(ElementContent("p"))
+        minerals.add(ElementContent("I"))
+        minerals.add(ElementContent("Mo"))
+        minerals.add(ElementContent("Cr"))
+        minerals.add(ElementContent("Ce"))
+        minerals.add(ElementContent("Co"))
+        minerals.add(ElementContent("Sn"))
+        minerals.add(ElementContent("Ni"))
+        minerals.add(ElementContent("V"))
+        minerals.add(ElementContent("Si"))
+        minerals.add(ElementContent("Ci"))
+        minerals.add(ElementContent("S"))
+    }
+
 }
