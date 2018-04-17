@@ -29,9 +29,6 @@ class TraceElementFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
 
-    private var nutrientList: MutableList<BNutrient>? = null
-    //private var nutrientRView: RecyclerView? = null
-
     private var teShell: RecyclerViewShell<Any, BNutrient>? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -57,32 +54,12 @@ class TraceElementFragment : Fragment() {
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    item.let {
-                        it.update(object : UpdateListener(){
-                            override fun done(p0: BmobException?) {
-                                if (p0 == null) {
-                                    context.toast("加入数组成功")
-                                } else {
-                                    context.toast("加入数组没有成功")
-                                }
-                            }
-                        })
-                    }
+
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BNutrient>{
                 override fun onLongClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    item.let {
-                        it.update(object : UpdateListener() {
-                            override fun done(p0: BmobException?) {
-                                if (p0 == null) {
-                                    context.toast("删除数组成功")
-                                } else {
-                                    context.toast("删除数组没有成功")
-                                }
-                            }
-                        })
-                    }
+
                 }
             })
             it.setQueryDataListener(object : QueryDatasListener<Any, BNutrient>{

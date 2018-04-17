@@ -10,7 +10,10 @@ import android.widget.*
  * 由 zhang 于 2018/3/28 创建
  */
 
-class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, private val shell: RecyclerViewShell<G, I>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecyclerViewAdapter<G, I>(
+        private val dataSet: RecyclerViewData<G,I>,
+        private val shell: RecyclerViewShell<G, I>
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isChecked = false
     private var isNullData: Boolean? = null
@@ -61,6 +64,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
     }
 
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
+
         val group: RecyclerViewGroup<G, I>
             get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewGroup<G, I>
 
@@ -78,13 +82,16 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
         val type = shell.viewTypes[viewType]  //这里viewType参数传递的是type在viewTypes中的下标
         val view: View
+
         when (type.itemType) {
+
             ItemType.Item -> {
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val itemViewHolder = ItemViewHolder(view)
-                itemViewHolder.currentItemView.setOnClickListener { v ->
+                itemViewHolder.currentItemView.setOnClickListener {
                     val item = itemViewHolder.item
                     dataSet.currentItem = item
                     dataSet.currentRecyclerItemPosition = itemViewHolder.adapterPosition
@@ -102,7 +109,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     }
                     shell.clickItem(item.self, itemViewHolder)
                 }
-                itemViewHolder.currentItemView.setOnLongClickListener { v ->
+                itemViewHolder.currentItemView.setOnLongClickListener {
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
                     val item = itemViewHolder.item
                     dataSet.currentItem = item
@@ -118,6 +125,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                 }
                 return itemViewHolder
             }
+
             ItemType.Group -> {
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
