@@ -6,23 +6,20 @@ import java.util.ArrayList
  * Created by zhang on 2017/8/7.
  */
 
-class RecyclerViewItem<G,I>: RecyclerViewBaseItem() {
+class RecyclerViewItem<G,I>(item: I): RecyclerViewBaseItem() {
 
     val parentGroups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
+
+    private var data: I
     val self: I
-        get() = data!!
-    private var data: I? = null
+        get() = data
 
     init {
         viewType = RecyclerViewViewType(ItemType.Item)
+        data = item
     }
 
-    fun putObject(o: I): RecyclerViewItem<G,I> {
-        data = o
-        return this
-    }
-
-    fun getObject(): I?{
+    fun getObject(): I{
         return data
     }
 

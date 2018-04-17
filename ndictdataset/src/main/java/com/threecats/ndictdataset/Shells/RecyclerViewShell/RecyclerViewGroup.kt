@@ -7,10 +7,14 @@ import java.util.ArrayList
  * 由 zhang 于 2017/8/3 创建
  */
 
-class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
+class RecyclerViewGroup<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
 
     var id: Long = 0
     var title: String = ""
+
+    private var data: G = group
+    val self: G
+        get() = data
     //var groupType: GroupType? = null
 
     var parentData: RecyclerViewData<G, I>? = null
@@ -18,19 +22,14 @@ class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
     var nextGroup: RecyclerViewGroup<G, I>? = null
 
     var groupSiteID: Int = -1
-    var State: DisplayState = DisplayState.Hide
+    var state: DisplayState = DisplayState.Hide
 
     var isEmpty = false
 
-    private var data: G? = null
     val recyclerViewItems: MutableList<RecyclerViewItem<G,I>> = ArrayList()
     var items: MutableList<I> = ArrayList()
 
-    fun putObject(o: G){
-        data = o
-    }
-
-    fun getObject(): G?{
+    fun getObject(): G{
         return data
     }
 
@@ -39,7 +38,7 @@ class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
     //    public int addTask(Task item){
     //        item.addParentGroup(this);
     //        recyclerViewItems.add(item);
-    //        if (State == DisplayState.Hide) State = DisplayState.Show;
+    //        if (state == DisplayState.Hide) state = DisplayState.Show;
     //        return recyclerViewItems.size();      //返回加入的任务的位置序号，便于组列表处理（0位是组标题）
     //    }
     fun addItem(item: RecyclerViewItem<G, I>): Int {
@@ -62,9 +61,9 @@ class RecyclerViewGroup<G, I>: RecyclerViewBaseItem() {  //abstract
 //            }
 //            recyclerViewItems.add(site, item)
 //        }
-//        if (State === DisplayState.Hide) State = DisplayState.Show
+//        if (state === DisplayState.Hide) state = DisplayState.Show
         parentData?.let {
-            if (State === DisplayState.Hide) {
+            if (state === DisplayState.Hide) {
                 it.activeGroup(this)
             }
             it.addItemToRecyclerViewItems(this, position, item)

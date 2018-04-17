@@ -44,7 +44,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 
         fun displayText(R: Int, text: String): ItemViewHolder {
             val textView = currentItemView.findViewById<TextView>(R)
-            if (text.length == 0) {
+            if (text.isEmpty()) {
                 textView.visibility = View.GONE
             } else {
                 textView.visibility = View.VISIBLE
@@ -97,7 +97,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
-                    if (dataSet.recyclerGroups.size >0) {
+                    if (dataSet.recyclerViewGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.clickItem(item, itemViewHolder)
@@ -110,7 +110,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                    if (dataSet.recyclerGroups.size >0) {
+                    if (dataSet.recyclerViewGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.longClickItem(item, itemViewHolder)
@@ -136,12 +136,15 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
         //return null
     }
 
-    // 当前的item可能属于多个group（同dataSet的或是当前dataSet都有可能），所以不能通过item的parentGroups来判断
-    // 当前item的当前group，只有通过获取当前item的position，让后判断这个position处于当前dataSet中那个group的区
-    // 间来确定当前group是那一个
+    /**
+     * 当前的item可能属于多个group（同dataSet的或是当前dataSet都有可能），所以不能通过item的parentGroups来判断
+     * 当前item的当前group，只有通过获取当前item的position，让后判断这个position处于当前dataSet中那个group的区
+     * 间来确定当前group是那一个（只判断当前dataSet，自然排除了其他dataSet中的group）。
+     */
+
     private fun findCurrentGroup(position: Int){
         dataSet.currentGroup = null
-        for (group in dataSet.recyclerGroups) {
+        for (group in dataSet.recyclerViewGroups) {
             if (position > group.groupSiteID && position <= (group.groupSiteID + group.recyclerViewItems.size)) {
                 dataSet.currentGroup = group
                 break
