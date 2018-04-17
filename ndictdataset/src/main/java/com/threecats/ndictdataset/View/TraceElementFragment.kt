@@ -6,13 +6,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cn.bmob.v3.BmobBatch
-import cn.bmob.v3.BmobObject
 import cn.bmob.v3.BmobQuery
-import cn.bmob.v3.datatype.BatchResult
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
-import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
@@ -24,8 +20,6 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.fragment_trace_element.*
 import org.jetbrains.anko.toast
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.concurrent.fixedRateTimer
 
 
 /**
@@ -55,20 +49,15 @@ class TraceElementFragment : Fragment() {
 
         teShell?.let {
             it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
-            it.setDisplayItemListener(object : onDisplayItemListener<Any, BNutrient>{
-                override fun onDisplayItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    val e = item.getObject() as BNutrient
-                    holder.displayText(nutrientTitle, e.name)
+            it.setDisplayItemListener(object : DisplayItemListener<Any, BNutrient>{
+                override fun onDisplayItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    holder.displayText(nutrientTitle, item.name)
                     //nutrientTitle.text = e.name
                 }
             })
-            it.setOnClickItemListener(object : onClickItemListener<Any, BNutrient>{
-                override fun onClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    val e = item.getObject()
-                    e?.let {
-                        //it.add("testArray", "1")
-                        //it.add("testArray", "2")
-                        it.addAll("testArray", Arrays.asList("1","2"))
+            it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
+                override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    item.let {
                         it.update(object : UpdateListener(){
                             override fun done(p0: BmobException?) {
                                 if (p0 == null) {
@@ -81,12 +70,9 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             })
-            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BNutrient>{
-                override fun onLongClickItem(item: RecyclerViewItem<Any, BNutrient>, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    val e = item.getObject()
-                    e?.let {
-                        //context.toast("${it.testArray?.size}")
-                        it.remove("testArray")
+            it.setOnLongClickItemListener(object : LongClickItemListener<Any, BNutrient>{
+                override fun onLongClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
+                    item.let {
                         it.update(object : UpdateListener() {
                             override fun done(p0: BmobException?) {
                                 if (p0 == null) {
@@ -99,7 +85,7 @@ class TraceElementFragment : Fragment() {
                     }
                 }
             })
-            it.setQueryDataListener(object : onQueryDatasListener<Any, BNutrient>{
+            it.setQueryDataListener(object : QueryDatasListener<Any, BNutrient>{
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BNutrient>) {
                     val query = BmobQuery<BNutrient>()
                     query.findObjects(object : FindListener<BNutrient>() {
@@ -119,7 +105,7 @@ class TraceElementFragment : Fragment() {
                     })
                 }
             })
-            it.setOnNullDataListener((object : onNullDataListener{
+            it.setOnNullDataListener((object : NullDataListener{
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
                         //context.toast("当前没有数据")

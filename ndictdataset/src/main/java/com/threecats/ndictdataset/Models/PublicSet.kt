@@ -12,27 +12,22 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewShell
 class PublicSet(val AppContext: Context) {
 
     var ItemEditState = EEditerState.FoodEdit
-    var CurrentCategory: RecyclerViewItem<Any, BFoodCategory>? = null
+    var currentCategory: BFoodCategory? = null
     var CurrentCategoryPosition: Int = 0
-    var CurrentFood: RecyclerViewItem<Any, BFood>? = null
     var currentFood: BFood? = null
     var CurrentNutrient: BNutrient? = null
 
     fun createFood(){
         ItemEditState = EEditerState.FoodAppend
         val food = BFood().apply {
-            category = CurrentCategory?.self
+            category = currentCategory
         }
-        CurrentFood = RecyclerViewItem<Any, BFood>().apply{
-            putObject(food)
-        }
-
+        currentFood = food
     }
 
-    fun editFood(food: RecyclerViewItem<Any, BFood>){
+    fun editFood(food: BFood){
         ItemEditState = EEditerState.FoodEdit
-        CurrentFood = food
-        currentFood = food.self
+        currentFood = food
     }
 
 }

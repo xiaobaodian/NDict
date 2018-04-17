@@ -64,7 +64,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     }
 
     fun setREOrOther(){
-        val food = shareSet.CurrentFood!!.self
+        val food = shareSet.currentFood!!
         if (food.foodBased == 0) {
             if (isREMode) {
                 REILayout.hint = "视黄醇当量（毫克）"
@@ -93,7 +93,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     private fun getFields(food: BFood){
         with (foodEditTextHelper) {
             textBoxs.clear()
-            if (!isREMode && shareSet.CurrentFood!!.self.foodBased == 0) {
+            if (!isREMode && shareSet.currentFood!!.foodBased == 0) {
                 addEditBox(REIEditText, (food.vitamins[0].content*6).toString())
             } else {
                 addEditBox(REIEditText, food.vitamins[0].content.toString())

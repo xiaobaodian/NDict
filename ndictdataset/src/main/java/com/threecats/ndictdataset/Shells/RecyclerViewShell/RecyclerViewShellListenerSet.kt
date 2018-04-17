@@ -3,38 +3,38 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
 /**
  * 由 zhang 创建于 2018/3/28.
  */
-interface onDisplayGroupListener<G, I>{
-    fun onDisplayGroup(group: RecyclerViewGroup<G, I>, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
+interface DisplayGroupListener<G, I>{
+    fun onDisplayGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
 }
 
-interface onDisplayItemListener<G, I>{
-    fun onDisplayItem(item: RecyclerViewItem<G, I>, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
+interface DisplayItemListener<G, I>{
+    fun onDisplayItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
 }
 
-interface onClickGroupListener<G, I>{
-    fun onClickGroup(group: RecyclerViewGroup<G, I>, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
+interface ClickGroupListener<G, I>{
+    fun onClickGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
 }
 
-interface onClickItemListener<G, I>{
-    fun onClickItem(item: RecyclerViewItem<G, I>, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
+interface ClickItemListener<G, I>{
+    fun onClickItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
 }
 
-interface onLongClickGroupListener<G, I>{
-    fun onLongClickGroup(group: RecyclerViewGroup<G, I>, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
+interface LongClickGroupListener<G, I>{
+    fun onLongClickGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
 }
 
-interface onLongClickItemListener<G, I>{
-    fun onLongClickItem(item: RecyclerViewItem<G, I>, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
+interface LongClickItemListener<G, I>{
+    fun onLongClickItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder)
 }
 
-interface onQueryDatasListener<G, I>{
+interface QueryDatasListener<G, I>{
     fun onQueryDatas(shell: RecyclerViewShell<G, I>)
 }
 
-interface onCompleteQueryListener{
+interface CompleteQueryListener{
     fun onCompleteQuery()
 }
 
-interface onNullDataListener{
+interface NullDataListener{
     fun onNullData(isNull: Boolean)
 }

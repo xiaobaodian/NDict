@@ -68,7 +68,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 .addFragment(FoodNoteFragment(),"描述")
                 .link()
         val food: BFood = shareSet.currentFood!!
-        val category: BFoodCategory = shareSet.CurrentCategory!!.self
+        val category: BFoodCategory = shareSet.currentCategory!!
         if (food.foodBased != category.foodBased) {
             food.foodBased = category.foodBased
             updateFoodToBmob(food)
@@ -170,13 +170,12 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     private fun addFoodToBmob(food: BFood){
-        food.category = shareSet.CurrentCategory?.self
+        food.category = shareSet.currentCategory
         food.save(object: SaveListener<String>() {
             override fun done(objectID: String?, e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("添加了食材[${food.name}]，objectID：$objectID")
-                    val f = RecyclerViewItem<Any, BFood>().putObject(food)
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(f, EEditerState.FoodAppend))  //Sticky
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodAppend))  //Sticky
                 } else {
                     //longToast("添加食材${food.name}出现错误。错误信息：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)
@@ -190,8 +189,7 @@ class FoodEditerActivity : AppCompatActivity() {
             override fun done(e: BmobException?) {
                 if (e == null) {
                     if (BDM.ShowTips) toast("更新了食材数据")
-                    val f = RecyclerViewItem<Any, BFood>().putObject(food)
-                    EventBus.getDefault().post(UpdateFoodRecyclerItem(f, EEditerState.FoodEdit))
+                    EventBus.getDefault().post(UpdateFoodRecyclerItem(food, EEditerState.FoodEdit))
                 } else {
                     //longToast("更新食材数据出现错误：${e.message}")
                     ErrorMessage(this@FoodEditerActivity, e)

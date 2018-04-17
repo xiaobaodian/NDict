@@ -31,7 +31,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.CurrentFood?.let { importFields(it.self) }
+            shareSet.currentFood?.let { importFields(it) }
         }
     }
 

@@ -100,7 +100,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     if (dataSet.recyclerViewGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
-                    shell.clickItem(item, itemViewHolder)
+                    shell.clickItem(item.self, itemViewHolder)
                 }
                 itemViewHolder.currentItemView.setOnLongClickListener { v ->
                     //if (isChecked) return@itemViewHolder.currentItemView.setOnLongClickListener false
@@ -113,7 +113,7 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                     if (dataSet.recyclerViewGroups.size >0) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
-                    shell.longClickItem(item, itemViewHolder)
+                    shell.longClickItem(item.self, itemViewHolder)
                     true
                 }
                 return itemViewHolder
@@ -123,11 +123,11 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener { v ->
                     val group = groupViewHolder.group as RecyclerViewGroup<G, I>
-                    shell.clickGroup(group, groupViewHolder)
+                    shell.clickGroup(group.self, groupViewHolder)
                 }
                 groupViewHolder.currentGroupView.setOnLongClickListener { v ->
                     val group = groupViewHolder.group
-                    shell.longClickGroup(group, groupViewHolder)
+                    shell.longClickGroup(group.self, groupViewHolder)
                     true
                 }
                 return groupViewHolder
@@ -166,13 +166,13 @@ class RecyclerViewAdapter<G, I>(private val dataSet: RecyclerViewData<G,I>, priv
 //                itemViewHolder.checkBox!!.ID = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
-                shell.displayItem(recyclerItem as RecyclerViewItem<G, I>, itemViewHolder)
+                shell.displayItem((recyclerItem as RecyclerViewItem<G, I>).self, itemViewHolder)
             }
             ItemType.Group -> {
                 val groupViewHolder = holder as RecyclerViewAdapter<G, I>.GroupViewHolder
                 val group = recyclerItem as RecyclerViewGroup<G, I>
                 //OnBindGroup(groupViewHolder, group)
-                shell.displayGroup(group, groupViewHolder)
+                shell.displayGroup(group.self, groupViewHolder)
             }
         }
     }

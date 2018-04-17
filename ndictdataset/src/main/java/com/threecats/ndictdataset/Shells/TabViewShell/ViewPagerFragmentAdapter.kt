@@ -12,9 +12,9 @@ import android.support.v4.app.FragmentPagerAdapter
 class ViewPagerFragmentAdapter: FragmentPagerAdapter {
 
     //private var fragments: List<ViewPagerFragment>
-    private var fragments: List<out Fragment>
+    private var fragments: List<Fragment>
 
-    constructor(fragmentManager: FragmentManager, fragments: List<out Fragment>) : super(fragmentManager) {
+    constructor(fragmentManager: FragmentManager, fragments: List<Fragment>) : super(fragmentManager) {
         this.fragments = fragments
     }
 

@@ -33,14 +33,14 @@ import org.jetbrains.anko.toast
 class FoodListActivity : AppCompatActivity() {
 
     private val shareSet = BDM.ShareSet!!
-    private lateinit var currentCategory: RecyclerViewItem<Any, BFoodCategory>
+    private lateinit var currentCategory: BFoodCategory
     private var foodListShell: RecyclerViewShell<Any, BFood>? = null
 
     init{
-        if (shareSet.CurrentCategory == null) {
+        if (shareSet.currentCategory == null) {
             onBackPressed()
         } else {
-            currentCategory = shareSet.CurrentCategory!!
+            currentCategory = shareSet.currentCategory!!
         }
     }
 
@@ -52,7 +52,7 @@ class FoodListActivity : AppCompatActivity() {
         setSupportActionBar(FoodToolbar)
 
         with (FoodToolbar){
-            title = currentCategory.getObject()?.longTitle
+            title = currentCategory.longTitle
             setNavigationOnClickListener { onBackPressed() }
         }
 
@@ -72,34 +72,33 @@ class FoodListActivity : AppCompatActivity() {
 
         foodListShell?.let {
             it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
-            it.setDisplayItemListener(object : onDisplayItemListener<Any, BFood> {
-                override fun onDisplayItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    val e = item.self
+            it.setDisplayItemListener(object : DisplayItemListener<Any, BFood> {
+                override fun onDisplayItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+                    val e = item
                     val updateTime = if (e.updatedAt == null) "" else e.updatedAt
                     holder.displayText(R.id.ItemName, if (e.alias.isEmpty()) e.name else "${e.name}、${e.alias}")
                     holder.displayText(R.id.ItemAlias, updateTime)
                 }
             })
-            it.setOnClickItemListener(object : onClickItemListener<Any, BFood> {
-                override fun onClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
+            it.setOnClickItemListener(object : ClickItemListener<Any, BFood> {
+                override fun onClickItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
                     shareSet.editFood(item)
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
                     startActivity(intent)
                 }
             })
-            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFood> {
-                override fun onLongClickItem(item: RecyclerViewItem<Any, BFood>, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    val i = foodListShell?.currentItem
+            it.setOnLongClickItemListener(object : LongClickItemListener<Any, BFood> {
+                override fun onLongClickItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
                     foodListShell?.currentItem
                     shareSet.editFood(item)
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
                     startActivity(intent)
                 }
             })
-            it.setQueryDataListener(object : onQueryDatasListener<Any, BFood> {
+            it.setQueryDataListener(object : QueryDatasListener<Any, BFood> {
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BFood>) {
                     val query: BmobQuery<BFood> = BmobQuery()
-                    query.addWhereEqualTo("category", BmobPointer(currentCategory.getObject()))
+                    query.addWhereEqualTo("category", BmobPointer(currentCategory))
                     //query.include("vitamin,mineral,mineralExt,article")
                     query.setLimit(300)
                     query.findObjects(object: FindListener<BFood>(){
@@ -108,7 +107,7 @@ class FoodListActivity : AppCompatActivity() {
                                 foods?.let {
                                     shell.addItems(it)
                                     shell.completeQuery()
-                                    if (currentCategory.self.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
+                                    if (currentCategory.foodTotal != it.size) updateCategoryFoodSize(it.size, true)
 //                                    foodList = it
 //                                    FoodRView.adapter = FoodListAdapter(it, this@FoodListActivity)
                                 }
@@ -121,7 +120,7 @@ class FoodListActivity : AppCompatActivity() {
                     })
                 }
             })
-            it.setOnNullDataListener((object : onNullDataListener {
+            it.setOnNullDataListener((object : NullDataListener {
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
                         //toast("当前没有数据")
@@ -165,12 +164,12 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun doUpdateRecyclerItem(updateItem: UpdateFoodRecyclerItem){
-        when (updateItem.State){
+        when (updateItem.state){
             EEditerState.FoodEdit -> {
-                foodListShell?.updateItem(updateItem.Food)
+                foodListShell?.updateItem(updateItem.food)
             }
             EEditerState.FoodAppend -> {
-                foodListShell?.addItem(updateItem.Food.self)
+                foodListShell?.addItem(updateItem.food)
                 updateCategoryFoodSize(foodListShell?.itemsSize()!!)
             }
             else -> toast("EditState Error !")
@@ -204,13 +203,13 @@ class FoodListActivity : AppCompatActivity() {
 
     // 已建立DataModel代码
     private fun updateCategoryFoodSize(size: Int, showMessage: Boolean = false){
-        currentCategory.self.foodTotal = size
-        currentCategory.self.update(object: UpdateListener(){
+        currentCategory.foodTotal = size
+        currentCategory.update(object: UpdateListener(){
             override fun done(e: BmobException?) {
                 if (e == null) {
                     EventBus.getDefault().post(UpdateCategoryRecyclerItem(currentCategory, EEditerState.CategoryEdit))
                     if (showMessage) {
-                        toast("更新 ${currentCategory.getObject()?.longTitle} 类的食材总数：$size ")
+                        toast("更新 ${currentCategory.longTitle} 类的食材总数：$size ")
                     }
                 } else {
                     //toast("${e.message}")

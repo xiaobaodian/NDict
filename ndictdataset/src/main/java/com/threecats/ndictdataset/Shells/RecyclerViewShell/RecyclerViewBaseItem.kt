@@ -7,10 +7,6 @@ import java.util.ArrayList
  */
 
 open class RecyclerViewBaseItem {
-    var viewType: RecyclerViewViewType
+    var viewType: RecyclerViewViewType = RecyclerViewViewType(ItemType.Item)
     var checked = false
-
-    init {
-        viewType = RecyclerViewViewType(ItemType.Item)
-    }
 }

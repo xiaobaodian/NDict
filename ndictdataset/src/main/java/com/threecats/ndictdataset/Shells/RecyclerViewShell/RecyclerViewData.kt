@@ -162,7 +162,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     fun removeItem(item: I){
         val recyclerItem = mapRecyclerItem[item]
         recyclerItem?.let{
-            removeItem(recyclerItem as RecyclerViewItem<G, I>)
+            removeItem(recyclerItem)
             mapRecyclerItem.remove(item)
         }
     }
@@ -228,7 +228,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         }
     }
 
-    fun updateItemDisplay(item: RecyclerViewItem<G, I>){
+    fun updateItemDisplay(item: I){
         currentRecyclerItemPosition?.let {
             shell.recyclerAdapter?.notifyItemChanged(it)
         }

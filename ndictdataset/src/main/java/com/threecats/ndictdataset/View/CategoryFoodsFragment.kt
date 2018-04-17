@@ -56,29 +56,27 @@ class CategoryFoodsFragment : Fragment() {
 
         rvShell?.let {
             it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.category_recycleritem)
-            it.setDisplayItemListener(object : onDisplayItemListener<Any, BFoodCategory> {
-                override fun onDisplayItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
-                    val e = item.getObject() as BFoodCategory
-                    holder.displayText(R.id.categoryTitle, e.longTitle!!)
-                    holder.displayText(R.id.subTotal, e.foodTotal.toString())
+            it.setDisplayItemListener(object : DisplayItemListener<Any, BFoodCategory> {
+                override fun onDisplayItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    holder.displayText(R.id.categoryTitle, item.longTitle!!)
+                    holder.displayText(R.id.subTotal, item.foodTotal.toString())
                 }
             })
-            it.setOnClickItemListener(object : onClickItemListener<Any, BFoodCategory> {
-                override fun onClickItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
-                    val e = item.getObject()
-                    BDM.ShareSet?.CurrentCategory = item
+            it.setOnClickItemListener(object : ClickItemListener<Any, BFoodCategory> {
+                override fun onClickItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    BDM.ShareSet?.currentCategory = item
                     val intent = Intent(context, FoodListActivity::class.java)
                     context.startActivity(intent)
                 }
             })
-            it.setOnLongClickItemListener(object : onLongClickItemListener<Any, BFoodCategory> {
-                override fun onLongClickItem(item: RecyclerViewItem<Any, BFoodCategory>, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
-                    BDM.ShareSet?.CurrentCategory = it.currentRecyclerViewItem
+            it.setOnLongClickItemListener(object : LongClickItemListener<Any, BFoodCategory> {
+                override fun onLongClickItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
+                    BDM.ShareSet?.currentCategory = item
                     val intent = Intent(context, FoodListActivity::class.java)
                     context.startActivity(intent)
                 }
             })
-            it.setQueryDataListener(object : onQueryDatasListener<Any, BFoodCategory> {
+            it.setQueryDataListener(object : QueryDatasListener<Any, BFoodCategory> {
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BFoodCategory>) {
                     val query = BmobQuery<BFoodCategory>()
                     query.findObjects(object : FindListener<BFoodCategory>() {
@@ -97,7 +95,7 @@ class CategoryFoodsFragment : Fragment() {
                     })
                 }
             })
-            it.setOnNullDataListener((object : onNullDataListener {
+            it.setOnNullDataListener((object : NullDataListener {
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
                         //context.toast("当前没有数据")
@@ -116,10 +114,10 @@ class CategoryFoodsFragment : Fragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem<Any, BFoodCategory>){
-        when (updateItem.State){
-            EEditerState.CategoryEdit -> rvShell!!.updateItem(updateItem.Category)
-            EEditerState.CategoryAppend -> {rvShell!!.addItem(updateItem.Category.getObject()!!)
+    fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem<BFoodCategory>){
+        when (updateItem.state){
+            EEditerState.CategoryEdit -> rvShell!!.updateItem(updateItem.category)
+            EEditerState.CategoryAppend -> {rvShell!!.addItem(updateItem.category)
             }
             else -> context.toast("EditState Error !")
         }

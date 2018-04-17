@@ -27,7 +27,7 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val article = shareSet.CurrentFood?.self!!.article
+        val article = shareSet.currentFood?.article
         if (isLoadUrl) {
             article?.let {
                 NoteWebView.loadUrl(it.url)
