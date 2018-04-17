@@ -36,8 +36,8 @@ class FoodMineralFragment : FoodPropertyFragment() {
     }
 
     override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.ChangeNumber()
-        val extChangeNumber = checkTextExtHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.changeNumber()
+        val extChangeNumber = checkTextExtHelper.changeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(EChangeBlock.Mineral)
         }
@@ -95,7 +95,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     private fun setFields(food: BFood){
 
-        foodEditTextHelper.CheckNull("0.0")
+        foodEditTextHelper.checkNull("0.0")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 KIEditText    ->  food.minerals[0].content  = it.editBox.text.toString().toFloat()

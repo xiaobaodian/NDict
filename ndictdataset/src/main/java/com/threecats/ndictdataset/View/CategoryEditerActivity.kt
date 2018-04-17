@@ -79,7 +79,7 @@ class CategoryEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (checkTextHelper.ChangeNumber() > 0) updateCategory()
+        if (checkTextHelper.changeNumber() > 0) updateCategory()
     }
 
     private fun updateCategory(){

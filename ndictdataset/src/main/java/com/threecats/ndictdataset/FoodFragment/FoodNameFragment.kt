@@ -67,7 +67,7 @@ class FoodNameFragment: FoodPropertyFragment() {
     }
 
     override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.ChangeNumber()
+        val changeNumber = foodEditTextHelper.changeNumber()
         if (changeNumber > 0) {
             parent.addChangeBlock(EChangeBlock.Food)
         }
@@ -103,7 +103,7 @@ class FoodNameFragment: FoodPropertyFragment() {
     }
 
     private fun setFields(food: BFood){
-        foodEditTextHelper.CheckNull("")
+        foodEditTextHelper.checkNull("")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 NameIEditText -> food.name = it.editBox.text.toString()

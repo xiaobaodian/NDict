@@ -12,12 +12,6 @@ import kotlin.reflect.KProperty
 class EditTextHelper {
     var textBoxs: MutableList<EditItem> = ArrayList<EditItem>()
 
-    fun addEditBox(editBox: EditText){
-        //var v: KProperty<MutableList<EditItem>> = EditTextHelper::textBoxs
-
-        textBoxs.add(EditItem(0, editBox))
-    }
-
     fun addEditBox(editBox: EditText, text: String){
         textBoxs.add(EditItem(0, editBox))
         editBox.text.clear()
@@ -33,13 +27,13 @@ class EditTextHelper {
         textBoxs.forEach { it.hash = it.editBox.text.toString().hashCode() }
     }
 
-    fun ChangeNumber(): Int {
-        var sum: Int = 0
+    fun changeNumber(): Int {
+        var sum = 0
         textBoxs.forEach { if (it.hash != it.editBox.text.toString().hashCode()) sum++ }
         return sum
     }
 
-    fun CheckNull(initStr: String){
+    fun checkNull(initStr: String){
         textBoxs.forEach { if (it.editBox.text.isEmpty()) it.editBox.text.append(initStr) }
     }
 

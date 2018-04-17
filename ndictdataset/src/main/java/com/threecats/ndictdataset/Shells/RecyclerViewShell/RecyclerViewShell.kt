@@ -14,15 +14,13 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
-        get() = field
     var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
-        get() = field
 
-    val isNullItems: Boolean
+    private val isNullItems: Boolean
         get() = dataSet.recyclerViewItems.size == 0
     val currentItem: I
         get() = dataSet.currentItem!!.self
-    val currentRecyclerViewItem: RecyclerViewItem<G, I>
+    private val currentRecyclerViewItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
     val recyclerViewItems: MutableList<RecyclerViewItem<G, I>>?
         get() = if (dataSet.recyclerViewGroups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
