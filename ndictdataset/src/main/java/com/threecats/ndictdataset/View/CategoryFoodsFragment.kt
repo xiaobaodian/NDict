@@ -39,7 +39,7 @@ class CategoryFoodsFragment : Fragment() {
     private var categoryList: MutableList<BFoodCategory>? = null
     private var categoryRView: RecyclerView? = null
 
-    private var rvShell: RecyclerViewShell<Any, BFoodCategory>? = null
+    private var categoryListShell: RecyclerViewShell<Any, BFoodCategory>? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,11 +50,11 @@ class CategoryFoodsFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (rvShell == null) {
-            rvShell = RecyclerViewShell(context)
+        if (categoryListShell == null) {
+            categoryListShell = RecyclerViewShell(context)
         }
 
-        rvShell?.let {
+        categoryListShell?.let {
             it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.category_recycleritem)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFoodCategory> {
                 override fun onDisplayItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
@@ -72,7 +72,7 @@ class CategoryFoodsFragment : Fragment() {
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BFoodCategory> {
                 override fun onLongClickItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
                     BDM.ShareSet?.currentCategory = item
-                    val intent = Intent(context, FoodListActivity::class.java)
+                    val intent = Intent(context, CategoryEditerActivity::class.java)
                     context.startActivity(intent)
                 }
             })
@@ -116,8 +116,8 @@ class CategoryFoodsFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem<BFoodCategory>){
         when (updateItem.state){
-            EEditerState.CategoryEdit -> rvShell!!.updateItem(updateItem.category)
-            EEditerState.CategoryAppend -> {rvShell!!.addItem(updateItem.category)
+            EEditerState.CategoryEdit -> categoryListShell!!.updateItem(updateItem.category)
+            EEditerState.CategoryAppend -> {categoryListShell!!.addItem(updateItem.category)
             }
             else -> context.toast("EditState Error !")
         }

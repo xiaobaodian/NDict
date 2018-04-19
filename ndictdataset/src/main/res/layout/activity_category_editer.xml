@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="类目" />
+        app:title="类目编辑" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/LongTitleILayout"

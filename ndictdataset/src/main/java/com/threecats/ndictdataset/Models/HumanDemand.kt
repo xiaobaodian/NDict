@@ -12,5 +12,5 @@ class HumanDemand {
     var ageEnd: Float = 0f
     var demandBegin: Float = 0f
     var demandEnd: Float = 0f
-    var measure: EMeasure = EMeasure.mg
+    var measure: EMeasure = EMeasure.Mg
 }
