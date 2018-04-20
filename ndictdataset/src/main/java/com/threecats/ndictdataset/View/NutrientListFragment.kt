@@ -19,15 +19,14 @@ import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.R.id.nutrientTitle
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
-import kotlinx.android.synthetic.main.fragment_trace_element.*
+import kotlinx.android.synthetic.main.fragment_nutrient_list.*
 import org.jetbrains.anko.toast
-import java.util.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class TraceElementFragment : Fragment() {
+class NutrientListFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
 
@@ -36,7 +35,7 @@ class TraceElementFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_trace_element, container, false)
+        return inflater!!.inflate(R.layout.fragment_nutrient_list, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

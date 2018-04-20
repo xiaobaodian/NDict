@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
-import cn.bmob.v3.Bmob
 import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Models.PublicSet
 import kotlinx.android.synthetic.main.activity_main.*
 import com.threecats.ndictdataset.R
 
@@ -15,7 +12,7 @@ import com.threecats.ndictdataset.R
 class BDMMainActivity : AppCompatActivity() {
 
     private val fragmentManager = supportFragmentManager
-    private var traceElementFragment: TraceElementFragment? = null
+    private var traceElementFragment: NutrientListFragment? = null
     private var categoryFoodsFragment: CategoryFoodsFragment? = null
     private var foodEnergyFragment: FoodEnergyFragment? = null
 
@@ -30,7 +27,7 @@ class BDMMainActivity : AppCompatActivity() {
             }
             R.id.navigation_dashboard -> {
                 MainToolbar.title = "能量与营养素"
-                if (traceElementFragment == null) traceElementFragment = TraceElementFragment()
+                if (traceElementFragment == null) traceElementFragment = NutrientListFragment()
                 loadFragment(traceElementFragment)
                 return@OnNavigationItemSelectedListener true
             }
