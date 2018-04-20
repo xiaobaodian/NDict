@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.Shells.TabViewShell.ViewPagerFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class DemandFragment : ViewPagerFragment() {
+class DemandFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

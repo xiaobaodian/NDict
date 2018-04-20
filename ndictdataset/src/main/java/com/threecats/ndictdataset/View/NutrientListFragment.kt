@@ -30,7 +30,7 @@ class NutrientListFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
 
-    private var teShell: RecyclerViewShell<Any, BNutrient>? = null
+    private var nutrientShell: RecyclerViewShell<Any, BNutrient>? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,11 +41,11 @@ class NutrientListFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (teShell == null) {
-            teShell = RecyclerViewShell(context)
+        if (nutrientShell == null) {
+            nutrientShell = RecyclerViewShell(context)
         }
 
-        teShell?.let {
+        nutrientShell?.let {
             it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.recycleritem_nutrient)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
