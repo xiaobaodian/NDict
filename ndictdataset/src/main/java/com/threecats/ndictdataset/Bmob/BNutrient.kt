@@ -5,9 +5,10 @@ import cn.bmob.v3.BmobObject
 /**
  * 由 zhang 于 2018/3/20 创建
  */
+
 class BNutrient: BmobObject() {
     var nutrientID: Int = 0
     var name = ""
     var context: _Article? = null
-    var testArray: List<String>? = null
+    var proposedDosages: List<ProposedDosage>? = null
 }
