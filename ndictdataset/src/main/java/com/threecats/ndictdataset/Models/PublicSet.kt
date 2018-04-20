@@ -15,7 +15,7 @@ class PublicSet(val AppContext: Context) {
     var currentCategory: BFoodCategory? = null
     var CurrentCategoryPosition: Int = 0
     var currentFood: BFood? = null
-    var CurrentNutrient: BNutrient? = null
+    var currentNutrient: BNutrient? = null
 
     fun createFood(){
         ItemEditState = EEditerState.FoodAppend

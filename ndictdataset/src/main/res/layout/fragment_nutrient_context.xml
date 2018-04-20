@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.threecats.ndictdataset.NutrientFragment.DemandFragment">
+    tools:context="com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hhhhhh" />
+        android:text="这里是微量元素的描述文本" />
 
 </FrameLayout>

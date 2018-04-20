@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.View
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -55,30 +56,18 @@ class NutrientListFragment : Fragment() {
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-
-                    if (item.proposedDosages.size > 0) {
-                        context.toast("计量单位：${item.proposedDosages[0].measure.chinaName}")
+                    shareSet.currentNutrient = item
+                    val intent = Intent(context, ActivityNutrientEditer::class.java)
+                    context.startActivity(intent)
+                    if (item.nutrientID == 5 || item.nutrientID == 6) {
                     } else {
-                        item.proposedDosages.add(ProposedDosage("0-3","80"))
-                        item.proposedDosages.add(ProposedDosage("4-9","120"))
-                        item.proposedDosages.add(ProposedDosage("10-49","140"))
-                        item.proposedDosages.add(ProposedDosage("50-","145"))
-                        item.update(object : UpdateListener(){
-                            override fun done(p0: BmobException?) {
-                                if (p0 == null)
-                                    context.toast("添加数组成功")
-                                else{
-                                    context.toast("添加数组失败")
-                                }
-                            }
-                        })
+
                     }
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BNutrient>{
                 override fun onLongClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-                    item.proposedDosages[0].measure = EMeasure.Kilocalorie
-                    item.proposedDosages[0].ageRange = "60-90"
+                    item.proposedDosages.clear()
                     item.update(object : UpdateListener(){
                         override fun done(p0: BmobException?) {
                             if (p0 == null)

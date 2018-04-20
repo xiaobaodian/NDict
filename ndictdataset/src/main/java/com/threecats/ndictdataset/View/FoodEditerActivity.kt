@@ -6,11 +6,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
-import cn.bmob.v3.BmobBatch
-import cn.bmob.v3.BmobObject
-import cn.bmob.v3.datatype.BatchResult
 import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
@@ -20,10 +16,9 @@ import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
-import com.threecats.ndictdataset.FoodFragment.*
+import com.threecats.ndictdataset.FoodFragments.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewItem
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_food_editer.*
