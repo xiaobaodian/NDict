@@ -46,7 +46,7 @@ class NutrientListFragment : Fragment() {
         }
 
         teShell?.let {
-            it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.nutrient_recycleritem)
+            it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.recycleritem_nutrient)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     holder.displayText(nutrientTitle, item.name)

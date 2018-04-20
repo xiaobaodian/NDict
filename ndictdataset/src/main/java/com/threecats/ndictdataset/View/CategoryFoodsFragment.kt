@@ -55,7 +55,7 @@ class CategoryFoodsFragment : Fragment() {
         }
 
         categoryListShell?.let {
-            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.category_recycleritem)
+            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.recycleritem_category)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFoodCategory> {
                 override fun onDisplayItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
                     holder.displayText(R.id.categoryTitle, item.longTitle!!)

@@ -71,7 +71,7 @@ class FoodListActivity : AppCompatActivity() {
         }
 
         foodListShell?.let {
-            it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.food_recycleritem)
+            it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.recycleritem_food)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFood> {
                 override fun onDisplayItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
                     val e = item
