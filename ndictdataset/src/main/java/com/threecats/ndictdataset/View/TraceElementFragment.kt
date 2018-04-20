@@ -12,6 +12,8 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
+import com.threecats.ndictdataset.Bmob.ProposedDosage
+import com.threecats.ndictdataset.Enum.EMeasure
 import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
@@ -55,11 +57,38 @@ class TraceElementFragment : Fragment() {
             it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
 
+                    if (item.proposedDosages.size > 0) {
+                        context.toast("计量单位：${item.proposedDosages[0].measure.chinaName}")
+                    } else {
+                        item.proposedDosages.add(ProposedDosage("0-3","80"))
+                        item.proposedDosages.add(ProposedDosage("4-9","120"))
+                        item.proposedDosages.add(ProposedDosage("10-49","140"))
+                        item.proposedDosages.add(ProposedDosage("50-","145"))
+                        item.update(object : UpdateListener(){
+                            override fun done(p0: BmobException?) {
+                                if (p0 == null)
+                                    context.toast("添加数组成功")
+                                else{
+                                    context.toast("添加数组失败")
+                                }
+                            }
+                        })
+                    }
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BNutrient>{
                 override fun onLongClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
-
+                    item.proposedDosages[0].measure = EMeasure.Kilocalorie
+                    item.proposedDosages[0].ageRange = "60-90"
+                    item.update(object : UpdateListener(){
+                        override fun done(p0: BmobException?) {
+                            if (p0 == null)
+                                context.toast("更新数组成功")
+                            else{
+                                context.toast("更新数组失败")
+                            }
+                        }
+                    })
                 }
             })
             it.setQueryDataListener(object : QueryDatasListener<Any, BNutrient>{

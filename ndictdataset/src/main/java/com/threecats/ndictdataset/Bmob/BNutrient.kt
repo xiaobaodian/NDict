@@ -10,5 +10,5 @@ class BNutrient: BmobObject() {
     var nutrientID: Int = 0
     var name = ""
     var context: _Article? = null
-    var proposedDosages: List<ProposedDosage>? = null
+    val proposedDosages: MutableList<ProposedDosage> = ArrayList()
 }
