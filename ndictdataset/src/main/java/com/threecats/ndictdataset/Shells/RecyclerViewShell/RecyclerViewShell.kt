@@ -52,6 +52,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     fun progressBar(progressBar: ProgressBar): RecyclerViewShell<G, I> {
         this.progressBar = progressBar
+        this.progressBar?.visibility = View.GONE
         return this
     }
 
