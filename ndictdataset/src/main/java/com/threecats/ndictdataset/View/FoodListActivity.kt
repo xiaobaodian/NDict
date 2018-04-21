@@ -24,7 +24,7 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 
 import kotlinx.android.synthetic.main.activity_food_list.*
-import kotlinx.android.synthetic.main.content_food_list.*
+import kotlinx.android.synthetic.main.content_recycler_view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -64,14 +64,14 @@ class FoodListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        FoodRView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        RecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         if (foodListShell == null) {
             foodListShell = RecyclerViewShell(this)
         }
 
         foodListShell?.let {
-            it.recyclerView(FoodRView).progressBar(progressBarFood).addViewType("item", ItemType.Item, R.layout.recycleritem_food)
+            it.recyclerView(RecyclerView).progressBar(ProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_food)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFood> {
                 override fun onDisplayItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
                     val e = item
