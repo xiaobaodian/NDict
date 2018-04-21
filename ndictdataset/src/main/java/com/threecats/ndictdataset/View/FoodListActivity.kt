@@ -64,14 +64,14 @@ class FoodListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        RecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        GRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         if (foodListShell == null) {
             foodListShell = RecyclerViewShell(this)
         }
 
         foodListShell?.let {
-            it.recyclerView(RecyclerView).progressBar(ProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_food)
+            it.recyclerView(GRecyclerView).progressBar(GProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_food)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFood> {
                 override fun onDisplayItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
                     val e = item
