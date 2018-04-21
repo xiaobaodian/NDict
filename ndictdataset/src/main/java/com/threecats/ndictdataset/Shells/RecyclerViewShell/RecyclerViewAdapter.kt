@@ -87,7 +87,6 @@ class RecyclerViewAdapter<G, I>(
         val view: View
 
         when (type.itemType) {
-
             ItemType.Item -> {
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val itemViewHolder = ItemViewHolder(view)
