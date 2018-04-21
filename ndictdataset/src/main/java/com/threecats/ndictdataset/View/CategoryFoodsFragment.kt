@@ -21,7 +21,8 @@ import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
-import kotlinx.android.synthetic.main.fragment_category_foods.*
+import kotlinx.android.synthetic.main.content_recycler_view.*
+import kotlinx.android.synthetic.main.fragment_main_category.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -43,7 +44,7 @@ class CategoryFoodsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
-        return inflater.inflate(R.layout.fragment_category_foods, container, false)
+        return inflater.inflate(R.layout.fragment_main_category, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class CategoryFoodsFragment : Fragment() {
         }
 
         categoryListShell?.let {
-            it.recyclerView(CategoryRView).progressBar(progressBarCategory).addViewType("item", ItemType.Item, R.layout.recycleritem_category)
+            it.recyclerView(GRecyclerView).progressBar(GProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_category)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BFoodCategory> {
                 override fun onDisplayItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
                     holder.displayText(R.id.categoryTitle, item.longTitle!!)

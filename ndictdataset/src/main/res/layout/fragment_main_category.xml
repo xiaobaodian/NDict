@@ -6,17 +6,9 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/CategoryRView"
+    <include
+        layout="@layout/content_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBarCategory"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
-
 </FrameLayout>
 

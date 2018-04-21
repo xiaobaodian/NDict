@@ -13,14 +13,13 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
-import com.threecats.ndictdataset.Bmob.ProposedDosage
-import com.threecats.ndictdataset.Enum.EMeasure
 import com.threecats.ndictdataset.Helper.ErrorMessage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.R.id.nutrientTitle
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
-import kotlinx.android.synthetic.main.fragment_nutrient_list.*
+import kotlinx.android.synthetic.main.content_recycler_view.*
+import kotlinx.android.synthetic.main.fragment_main_nutrient.*
 import org.jetbrains.anko.toast
 
 
@@ -35,7 +34,7 @@ class NutrientListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nutrient_list, container, false)
+        return inflater.inflate(R.layout.fragment_main_nutrient, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +45,7 @@ class NutrientListFragment : Fragment() {
         }
 
         nutrientShell?.let {
-            it.recyclerView(nutrientRView).progressBar(progressBarNutrient).addViewType("item", ItemType.Item, R.layout.recycleritem_nutrient)
+            it.recyclerView(GRecyclerView).progressBar(GProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_nutrient)
             it.setDisplayItemListener(object : DisplayItemListener<Any, BNutrient>{
                 override fun onDisplayItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     holder.displayText(nutrientTitle, item.name)
