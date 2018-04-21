@@ -33,17 +33,16 @@ class NutrientListFragment : Fragment() {
 
     private var nutrientShell: RecyclerViewShell<Any, BNutrient>? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_nutrient_list, container, false)
+        return inflater.inflate(R.layout.fragment_nutrient_list, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (nutrientShell == null) {
-            nutrientShell = RecyclerViewShell(context)
+            nutrientShell = RecyclerViewShell(context!!)
         }
 
         nutrientShell?.let {
@@ -58,7 +57,7 @@ class NutrientListFragment : Fragment() {
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     shareSet.currentNutrient = item
                     val intent = Intent(context, ActivityNutrientEditer::class.java)
-                    context.startActivity(intent)
+                    context?.startActivity(intent)
                     if (item.nutrientID == 5 || item.nutrientID == 6) {
                     } else {
 
@@ -71,9 +70,9 @@ class NutrientListFragment : Fragment() {
                     item.update(object : UpdateListener(){
                         override fun done(p0: BmobException?) {
                             if (p0 == null)
-                                context.toast("更新数组成功")
+                                context?.toast("更新数组成功")
                             else{
-                                context.toast("更新数组失败")
+                                context?.toast("更新数组失败")
                             }
                         }
                     })
@@ -92,7 +91,7 @@ class NutrientListFragment : Fragment() {
                                 }
                             } else {
                                 if (view != null) {
-                                    ErrorMessage(context, e)
+                                    ErrorMessage(context!!, e)
                                 }
                             }
                         }

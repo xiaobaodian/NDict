@@ -129,11 +129,11 @@ class RecyclerViewAdapter<G, I>(
             ItemType.Group -> {
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
-                groupViewHolder.currentGroupView.setOnClickListener { v ->
+                groupViewHolder.currentGroupView.setOnClickListener {
                     val group = groupViewHolder.group as RecyclerViewGroup<G, I>
                     shell.clickGroup(group.self, groupViewHolder)
                 }
-                groupViewHolder.currentGroupView.setOnLongClickListener { v ->
+                groupViewHolder.currentGroupView.setOnLongClickListener {
                     val group = groupViewHolder.group
                     shell.longClickGroup(group.self, groupViewHolder)
                     true

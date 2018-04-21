@@ -41,17 +41,16 @@ class CategoryFoodsFragment : Fragment() {
 
     private var categoryListShell: RecyclerViewShell<Any, BFoodCategory>? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
-        return inflater!!.inflate(R.layout.fragment_category_foods, container, false)
+        return inflater.inflate(R.layout.fragment_category_foods, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (categoryListShell == null) {
-            categoryListShell = RecyclerViewShell(context)
+            categoryListShell = RecyclerViewShell(context!!)
         }
 
         categoryListShell?.let {
@@ -66,14 +65,14 @@ class CategoryFoodsFragment : Fragment() {
                 override fun onClickItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
                     BDM.ShareSet?.currentCategory = item
                     val intent = Intent(context, FoodListActivity::class.java)
-                    context.startActivity(intent)
+                    context?.startActivity(intent)
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BFoodCategory> {
                 override fun onLongClickItem(item: BFoodCategory, holder: RecyclerViewAdapter<Any, BFoodCategory>.ItemViewHolder) {
                     BDM.ShareSet?.currentCategory = item
                     val intent = Intent(context, CategoryEditerActivity::class.java)
-                    context.startActivity(intent)
+                    context?.startActivity(intent)
                 }
             })
             it.setQueryDataListener(object : QueryDatasListener<Any, BFoodCategory> {
@@ -88,7 +87,7 @@ class CategoryFoodsFragment : Fragment() {
                                 }
                             } else {
                                 if (view != null) {
-                                    ErrorMessage(context, e)
+                                    ErrorMessage(context!!, e)
                                 }
                             }
                         }
@@ -119,7 +118,7 @@ class CategoryFoodsFragment : Fragment() {
             EEditerState.CategoryEdit -> categoryListShell!!.updateItem(updateItem.category)
             EEditerState.CategoryAppend -> {categoryListShell!!.addItem(updateItem.category)
             }
-            else -> context.toast("EditState Error !")
+            else -> context?.toast("EditState Error !")
         }
 
     }
