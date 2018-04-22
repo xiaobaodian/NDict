@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
+import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.Bmob.BTraceElement
+import com.threecats.ndictdataset.Enum.EMeasure
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
@@ -54,8 +58,20 @@ class NutrientSublistFragment : Fragment() {
             it.setQueryDataListener(object : QueryDatasListener<Any, BTraceElement>{
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BTraceElement>) {
                     val query = BmobQuery<BTraceElement>()
-
-                    it.completeQuery()
+                    query.addWhereEqualTo("nutrientID", 5)
+                    query.setLimit(200)
+                    query.findObjects(object : FindListener<BTraceElement>(){
+                        override fun done(elements: MutableList<BTraceElement>?, e: BmobException?) {
+                            if (e == null) {
+                                elements?.let{
+                                    shell.addItems(it)
+                                    shell.completeQuery()
+                                }
+                            } else {
+                                context?.toast("加入元素数据失败")
+                            }
+                        }
+                    })
                 }
             })
             it.setOnNullDataListener((object : NullDataListener{

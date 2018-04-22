@@ -57,10 +57,6 @@ class NutrientListFragment : Fragment() {
                     shareSet.currentNutrient = item
                     val intent = Intent(context, ActivityNutrientEditer::class.java)
                     context?.startActivity(intent)
-                    if (item.nutrientID == 5 || item.nutrientID == 6) {
-                    } else {
-
-                    }
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BNutrient>{
