@@ -37,9 +37,6 @@ class CategoryFoodsFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
 
-    private var categoryList: MutableList<BFoodCategory>? = null
-    private var categoryRView: RecyclerView? = null
-
     private var categoryListShell: RecyclerViewShell<Any, BFoodCategory>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
