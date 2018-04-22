@@ -10,6 +10,7 @@ import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
+import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BTraceElement
 import com.threecats.ndictdataset.Enum.EMeasure
 
@@ -25,7 +26,9 @@ import org.jetbrains.anko.toast
 
 class NutrientSublistFragment : Fragment() {
 
+    private val shareSet = BDM.ShareSet!!
     private var elementListShell: RecyclerViewShell<Any, BTraceElement>? = null
+    private var nutrientID: Int = 5
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,6 +38,8 @@ class NutrientSublistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        nutrientID = shareSet.currentNutrient!!.nutrientID
 
         if (elementListShell == null) {
             elementListShell = RecyclerViewShell(context!!)
@@ -58,7 +63,7 @@ class NutrientSublistFragment : Fragment() {
             it.setQueryDataListener(object : QueryDatasListener<Any, BTraceElement>{
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, BTraceElement>) {
                     val query = BmobQuery<BTraceElement>()
-                    query.addWhereEqualTo("nutrientID", 5)
+                    query.addWhereEqualTo("nutrientID", nutrientID)
                     query.setLimit(200)
                     query.findObjects(object : FindListener<BTraceElement>(){
                         override fun done(elements: MutableList<BTraceElement>?, e: BmobException?) {
