@@ -3,16 +3,20 @@ package com.threecats.ndictdataset.FoodFragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EChangeBlock
+import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.Helper.EditTextHelper
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
+import kotlinx.android.synthetic.main.fragment_food_vitamin.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +28,20 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_food_mineral, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        SIEditText.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    return@setOnKeyListener  true
+                }
+            }
+            false
+        }
+
     }
 
     override fun onResume() {
