@@ -9,6 +9,7 @@ import com.threecats.ndictdataset.Enum.EMeasure
 class BTraceElement: BmobObject() {
     var nutrientID: Int = 0
     var name: String = ""
+    var alias: String = ""
     var symbol: String = ""
     var measure: EMeasure = EMeasure.Mg
     var content: _Article? = null
