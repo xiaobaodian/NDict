@@ -2,14 +2,18 @@ package com.threecats.ndictdataset.FoodFragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EChangeBlock
+import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
+import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * A simple [Fragment] subclass.
@@ -23,12 +27,26 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         return inflater.inflate(R.layout.fragment_food_vitamin, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        PABAIEditText.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    EventBus.getDefault().post(NextFragment("food"))
+                    return@setOnKeyListener  true
+                }
+            }
+            false
+        }
+
+    }
+
     override fun onResume() {
         super.onResume()
         //setREOrOther()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            //shareSet.CurrentFood?.let { importFields(it.self) }
             shareSet.currentFood?.let { importFields(it) }
         }
     }

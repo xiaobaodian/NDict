@@ -15,10 +15,11 @@ import android.view.View
  */
 class TabViewLayoutShell {
 
-    private var tab: TabLayout? = null
-    private var viewPager: ViewPager? = null
     var currentFragment: Fragment? = null
+    var currentTabPosition = 0
 
+    private var tabLayout: TabLayout? = null
+    private var viewPager: ViewPager? = null
     private var tabSelectedListener: onShellTabSelectedListener? = null
     private var tabUnselectedListener: onShellTabUnselectedListener? = null
     private var tabReselectedListener: onShellTabReselectedListener? = null
@@ -52,7 +53,7 @@ class TabViewLayoutShell {
     }
 
     fun tab(tab: TabLayout): TabViewLayoutShell {
-        this.tab = tab
+        this.tabLayout = tab
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
@@ -64,6 +65,7 @@ class TabViewLayoutShell {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     val fragment = fragments[it.position]
+                    currentTabPosition = it.position
                     tabSelectedListener?.let { it.onTabSelected(tab, fragment) }
                 }
             }
@@ -90,13 +92,22 @@ class TabViewLayoutShell {
         viewPager?.offscreenPageLimit = count
         if (count == 0) return
         if (count == 1) {
-            tab?.visibility = View.GONE
+            tabLayout?.visibility = View.GONE
         } else {
-            tab?.visibility = View.VISIBLE
+            tabLayout?.visibility = View.VISIBLE
         }
-        if (tab!= null && viewPager != null) {
+        if (tabLayout!= null && viewPager != null) {
             viewPager!!.adapter = ViewPagerFragmentAdapter(fragmentManager, fragments)
-            tab!!.setupWithViewPager(viewPager)
+            tabLayout!!.setupWithViewPager(viewPager)
+        }
+    }
+
+    fun next(){
+        val length = fragments.size
+        if (length == 0) return
+        val position = if (currentTabPosition == length - 1) 0 else currentTabPosition+1
+        tabLayout?.let {
+            it.getTabAt(position)?.select()
         }
     }
 }

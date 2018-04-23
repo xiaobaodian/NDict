@@ -15,6 +15,7 @@ import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
+import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
 import com.threecats.ndictdataset.FoodFragments.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
@@ -23,6 +24,8 @@ import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.*
 
 class FoodEditerActivity : AppCompatActivity() {
@@ -68,6 +71,12 @@ class FoodEditerActivity : AppCompatActivity() {
             food.foodBased = category.foodBased
             updateFoodToBmob(food)
         }
+        EventBus.getDefault().register(this@FoodEditerActivity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this@FoodEditerActivity)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -140,6 +149,11 @@ class FoodEditerActivity : AppCompatActivity() {
             }
         }
         super.onBackPressed()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
+    fun nextFragment(next: NextFragment){
+        nutrientFragments.next()
     }
 
     fun addChangeBlock(changeBlock: EChangeBlock){

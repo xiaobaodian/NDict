@@ -3,15 +3,22 @@ package com.threecats.ndictdataset.FoodFragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EChangeBlock
+import com.threecats.ndictdataset.EventClass.NextFragment
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_nutrient.*
+import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
+//import com.threecats.ndict.View.MainActivity
+import android.content.Intent
+import android.os.Handler
 
 
 /**
@@ -20,12 +27,22 @@ import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 class FoodNutrientFragment : FoodPropertyFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_food_nutrient, container, false)
+        return inflater.inflate(R.layout.fragment_food_nutrient, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //getFields(currentFood)
+
+        FatIEditText.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    EventBus.getDefault().post(NextFragment("food"))
+                    return@setOnKeyListener  true
+                }
+            }
+            false
+        }
+
     }
 
     override fun onResume() {
