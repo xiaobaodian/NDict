@@ -1,6 +1,5 @@
 package com.threecats.ndictdataset.NutrientFragments
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import com.threecats.ndictdataset.Bmob.ProposedDosage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.content_recycler_view.*
-
+import org.jetbrains.anko.toast
 
 /**
  * A simple [Fragment] subclass.
@@ -67,14 +66,15 @@ class NutrientDosisFragment : Fragment() {
                             shareSet.currentNutrient?.proposedDosages?.forEach { dosisListShell?.addItem(it) }
                         }
                     }
+                    shell.completeQuery()
                 }
             })
             it.setOnNullDataListener((object : NullDataListener{
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
-                        //context.toast("当前没有数据")
+                        context?.toast("当前没有数据")
                     } else{
-                        //context.toast("已经添加数据")
+                        context?.toast("已经添加数据")
                     }
                 }
             }))
