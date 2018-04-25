@@ -25,9 +25,8 @@ import com.threecats.ndict.R
  */
 class CategoryFoodsFragment(val foodCategory: FoodCategory) : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_food_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_food_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {

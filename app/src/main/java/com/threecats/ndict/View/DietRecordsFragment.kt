@@ -21,19 +21,18 @@ class DietRecordsFragment : Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_diet_records, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_diet_records, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //date.text="后天"
         val man = PersonPlus(DataSet.currentPerson)
         val powerChart = PowerChart(piechart)
         val list  = arrayListOf("轻微活动","日常家务","轻体力劳动","中体力劳动","重体力劳动")
         powerChart.setPower(man.BMR.auto.toFloat())
-        val sa = SpinnerHelper(context, spinner)
+        val sa = SpinnerHelper(context!!, spinner)
         sa.items = arrayListOf("轻微活动","日常家务","轻体力","中体力","重体力")
         sa.bind()
     }
