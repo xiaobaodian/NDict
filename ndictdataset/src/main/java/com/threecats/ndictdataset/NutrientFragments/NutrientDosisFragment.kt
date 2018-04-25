@@ -59,7 +59,14 @@ class NutrientDosisFragment : Fragment() {
             */
             it.setQueryDataListener(object : QueryDatasListener<Any, ProposedDosage>{
                 override fun onQueryDatas(shell: RecyclerViewShell<Any, ProposedDosage>) {
-
+                    when (shareSet.currentNutrient?.nutrientID){
+                        in 5..6 -> {
+                            shareSet.currentTraceElement?.demand?.forEach { dosisListShell?.addItem(it) }
+                        }
+                        else -> {
+                            shareSet.currentNutrient?.proposedDosages?.forEach { dosisListShell?.addItem(it) }
+                        }
+                    }
                 }
             })
             it.setOnNullDataListener((object : NullDataListener{

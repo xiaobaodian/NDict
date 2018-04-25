@@ -16,6 +16,7 @@ class PublicSet(val AppContext: Context) {
     var CurrentCategoryPosition: Int = 0
     var currentFood: BFood? = null
     var currentNutrient: BNutrient? = null
+    var currentTraceElement: BTraceElement? = null
 
     fun createFood(){
         ItemEditState = EEditerState.FoodAppend
