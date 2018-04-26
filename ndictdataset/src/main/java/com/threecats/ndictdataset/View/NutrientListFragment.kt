@@ -19,7 +19,6 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.R.id.nutrientTitle
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.content_recycler_view.*
-import kotlinx.android.synthetic.main.fragment_main_nutrient.*
 import org.jetbrains.anko.toast
 
 
@@ -55,7 +54,7 @@ class NutrientListFragment : Fragment() {
             it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     shareSet.currentNutrient = item
-                    val intent = Intent(context, ActivityNutrientEditer::class.java)
+                    val intent = Intent(context, NutrientEditerActivity::class.java)
                     context?.startActivity(intent)
                 }
             })

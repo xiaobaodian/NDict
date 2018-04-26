@@ -1,5 +1,7 @@
 package com.threecats.ndictdataset.NutrientFragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import com.threecats.ndictdataset.Bmob.ProposedDosage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
+import com.threecats.ndictdataset.View.DosisEditerActivity
+import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.content_recycler_view.*
 import org.jetbrains.anko.toast
 
@@ -43,6 +47,8 @@ class NutrientDosisFragment : Fragment() {
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, ProposedDosage> {
                 override fun onClickItem(item: ProposedDosage, holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
+                    val intent = Intent(context, DosisEditerActivity::class.java)
+                    startActivity(intent)
                 }
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, ProposedDosage>{

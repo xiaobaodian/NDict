@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
+import java.util.ArrayList
 
 class FoodListActivity : AppCompatActivity() {
 
@@ -64,7 +65,7 @@ class FoodListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        GRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        //GRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         if (foodListShell == null) {
             foodListShell = RecyclerViewShell(this)
@@ -187,7 +188,7 @@ class FoodListActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doBatchUpdateFood(updateItems: BatchUpdateFood){
-        val batchFoods: MutableList<BmobObject> = arrayListOf()
+        val batchFoods: MutableList<BmobObject> = ArrayList()
         updateItems.Foods.forEach { batchFoods.add(it) }
         BmobBatch().updateBatch(batchFoods).doBatch(object: QueryListListener<BatchResult>(){
             override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
