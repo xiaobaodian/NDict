@@ -16,8 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="qqqqq" />
+            app:subtitle="人体需求量条目编辑"
+            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:title="标题" />
 
     </android.support.design.widget.AppBarLayout>
 

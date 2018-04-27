@@ -1,5 +1,6 @@
 package com.threecats.ndictdataset.View
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.threecats.ndictdataset.BDM
+import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientSublistFragment
@@ -23,6 +25,7 @@ class NutrientEditerActivity : AppCompatActivity() {
     private val viewPagerShell = TabViewLayoutShell()
     private lateinit var workFragment: Fragment
     private lateinit var workTitle: String
+    private var nutrientType: ENutrientType = ENutrientType.Vitamin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +39,17 @@ class NutrientEditerActivity : AppCompatActivity() {
             5 -> {
                 workFragment = NutrientSublistFragment()
                 workTitle = "人体所需维生素列表"
+                nutrientType = ENutrientType.Vitamin
             }
             6 -> {
                 workFragment = NutrientSublistFragment()
                 workTitle = "人体所需微量元素列表"
+                nutrientType = ENutrientType.Mineral
             }
             else -> {
                 workFragment = NutrientDosisFragment()
                 workTitle = "日常需求量"
+                nutrientType = ENutrientType.Nutrient
             }
         }
 
@@ -65,16 +71,26 @@ class NutrientEditerActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu!!.findItem(R.id.addDosisItem).isVisible = shareSet.currentNutrient?.nutrientID !in 5..6
-        return super.onPrepareOptionsMenu(menu)
-    }
+//    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+//        menu!!.findItem(R.id.addDosisItem).isVisible = shareSet.currentNutrient?.nutrientID !in 5..6
+//        return super.onPrepareOptionsMenu(menu)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId){
             R.id.addDosisItem -> {
-                toast("加入摄入量")
-                //checkFoodRelevant()
+                when (nutrientType){
+                    ENutrientType.Vitamin -> {
+
+                    }
+                    ENutrientType.Mineral -> {
+
+                    }
+                    ENutrientType.Nutrient -> {
+                        val intent = Intent(this, DosisEditerActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
             }
         }
         return true
