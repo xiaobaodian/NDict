@@ -9,6 +9,7 @@ enum class EEditState{
 }
 
 class EditorShell<I> {
+
     var currentItem: I? = null
     var editState: EEditState = EEditState.Append
 
