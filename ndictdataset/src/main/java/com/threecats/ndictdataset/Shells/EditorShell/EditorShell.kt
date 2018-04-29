@@ -5,13 +5,34 @@ package com.threecats.ndictdataset.Shells.EditorShell
  */
 
 enum class EEditState{
-    Append, Editor, Cancel
+    Append, Update, Cancel, Delete
 }
 
 class EditorShell<I> {
 
     var currentItem: I? = null
     var editState: EEditState = EEditState.Append
+
+    private var appendItemListener: AppendItemListener<I>? = null
+    private var updateItemListener: UpdateItemListener<I>? = null
+    private var deleteItemListener: DeleteItemListener<I>? = null
+    private var cancelListener: CancelListener<I>? = null
+
+    fun setOnAppendItemListener(listener: AppendItemListener<I>){
+        appendItemListener = listener
+    }
+
+    fun setOnUpdateItemListener(listener: UpdateItemListener<I>){
+        updateItemListener = listener
+    }
+
+    fun setOnDeleteItemListener(listener: DeleteItemListener<I>){
+        deleteItemListener = listener
+    }
+
+    fun setOnCancelListener(listener: CancelListener<I>){
+        cancelListener = listener
+    }
 
     fun append(item: I){
         currentItem = item
@@ -20,14 +41,27 @@ class EditorShell<I> {
 
     fun edit(item: I){
         currentItem = item
-        editState = EEditState.Editor
+        editState = EEditState.Update
     }
 
     fun cancel(){
         editState = EEditState.Cancel
     }
 
+    fun delete(){
+        editState = EEditState.Delete
+    }
+
     fun commit(){
+
+        currentItem?.let {
+            when (editState){
+                EEditState.Append -> {appendItemListener?.onAppendItem(it)}
+                EEditState.Update -> {updateItemListener?.onUpdateItem(it)}
+                EEditState.Delete -> {deleteItemListener?.onDeleteItem(it)}
+                EEditState.Cancel -> {cancelListener?.onCancel(it)}
+            }
+        }
 
     }
 
