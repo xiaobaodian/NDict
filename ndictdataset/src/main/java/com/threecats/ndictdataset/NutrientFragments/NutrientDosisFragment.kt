@@ -51,7 +51,7 @@ class NutrientDosisFragment : Fragment() {
             it.setDisplayItemListener(object : DisplayItemListener<Any, ProposedDosage> {
                 override fun onDisplayItem(item:ProposedDosage , holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
                     holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
-                    holder.displayText(R.id.dosage, "${item.dosisRange}")
+                    holder.displayText(R.id.dosage, "推荐：${item.dosisRange}")
                 }
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, ProposedDosage> {
