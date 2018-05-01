@@ -12,6 +12,7 @@ import com.threecats.ndictdataset.Bmob.BTraceElement
 import com.threecats.ndictdataset.Bmob.ProposedDosage
 
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import com.threecats.ndictdataset.View.DosisEditerActivity
 import com.threecats.ndictdataset.View.FoodEditerActivity
@@ -28,7 +29,13 @@ class NutrientDosisFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        shareSet.editorProposedDosage?.let {
+            it.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
+                override fun onAppendItem(item: ProposedDosage) {
+                    dosisListShell?.addItem(item)
+                }
+            })
+        }
         return inflater.inflate(R.layout.fragment_nutrient_dosis, container, false)
     }
 
@@ -43,6 +50,8 @@ class NutrientDosisFragment : Fragment() {
             it.recyclerView(GRecyclerView).progressBar(GProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_dosage)
             it.setDisplayItemListener(object : DisplayItemListener<Any, ProposedDosage> {
                 override fun onDisplayItem(item:ProposedDosage , holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
+                    holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
+                    holder.displayText(R.id.dosage, "${item.dosisRange}")
                 }
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, ProposedDosage> {

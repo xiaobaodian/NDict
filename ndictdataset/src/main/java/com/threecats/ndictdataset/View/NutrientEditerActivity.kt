@@ -8,11 +8,13 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.threecats.ndictdataset.BDM
+import com.threecats.ndictdataset.Bmob.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientSublistFragment
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_nutrient_editer.*
@@ -53,11 +55,6 @@ class NutrientEditerActivity : AppCompatActivity() {
             }
         }
 
-        viewPagerShell.setOnTabSelectedListener(object : onShellTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab, fragment: Fragment) {
-                toast("${tab.text}")
-            }
-        })
         viewPagerShell.parent(this)
                 .tab(NutrientPropertyTabs)
                 .viewPage(NutrientEditerViewPage)
@@ -87,6 +84,8 @@ class NutrientEditerActivity : AppCompatActivity() {
 
                     }
                     ENutrientType.Nutrient -> {
+                        viewPagerShell.selectTab(1)
+                        shareSet.editorProposedDosage.append(ProposedDosage())
                         val intent = Intent(this, DosisEditerActivity::class.java)
                         startActivity(intent)
                     }

@@ -3,6 +3,7 @@ package com.threecats.ndictdataset.Models
 import android.content.Context
 import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EEditerState
+import com.threecats.ndictdataset.Shells.EditorShell.EditorShell
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewItem
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewShell
 
@@ -17,6 +18,7 @@ class PublicSet(val AppContext: Context) {
     var currentFood: BFood? = null
     var currentNutrient: BNutrient? = null
     var currentTraceElement: BTraceElement? = null
+    val editorProposedDosage = EditorShell<ProposedDosage>()
 
     fun createFood(){
         ItemEditState = EEditerState.FoodAppend

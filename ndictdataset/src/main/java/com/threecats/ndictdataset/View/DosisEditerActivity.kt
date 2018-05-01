@@ -9,6 +9,7 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.EditorShell.EEditState
 
 import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
@@ -56,11 +57,33 @@ class DosisEditerActivity : AppCompatActivity() {
             btnPregnancyShowTitle()
         }
 
+        if (shareSet.editorProposedDosage.editState == EEditState.Append) {
+            val proposedDosage = shareSet.editorProposedDosage.currentItem
+            proposedDosage?.let {
+                genderID = it.gender.ordinal
+                isPregnancy = it.pregnancy
+                btnGenderShowTitle(genderID)
+                btnPregnancyShowTitle()
+                etAgeRange.append(it.ageRange)
+                etDosisRange.append(it.dosisRange)
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.foodlist_menu, menu!!)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        shareSet.editorProposedDosage.currentItem?.let {
+            it.gender = EGender.values()[genderID]
+            it.ageRange = etAgeRange.text.toString()
+            it.dosisRange = etDosisRange.text.toString()
+        }
+        shareSet.editorProposedDosage.commit()
     }
 
     private fun btnGenderShowTitle(index: Int){

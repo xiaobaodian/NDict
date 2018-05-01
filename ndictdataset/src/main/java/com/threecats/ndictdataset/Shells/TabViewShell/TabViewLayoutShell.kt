@@ -110,4 +110,12 @@ class TabViewLayoutShell {
             it.getTabAt(position)?.select()
         }
     }
+
+    fun selectTab(index: Int){
+        val length = fragments.size
+        if (length == 0 || index >= length) return
+        tabLayout?.let {
+            it.getTabAt(index)?.select()
+        }
+    }
 }
