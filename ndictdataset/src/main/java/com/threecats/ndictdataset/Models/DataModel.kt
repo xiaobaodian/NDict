@@ -34,4 +34,8 @@ class DataModel {
         })
     }
 
+    fun updateNutrient(nutrient: BNutrient){
+        nutrient.update()
+    }
+
 }

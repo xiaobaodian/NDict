@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
+import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.Models.NumberRange
@@ -14,6 +17,7 @@ import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientSublistFragment
 import com.threecats.ndictdataset.R
+import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import kotlinx.android.synthetic.main.activity_nutrient_editer.*
 import org.jetbrains.anko.toast
@@ -34,6 +38,15 @@ class NutrientEditerActivity : AppCompatActivity() {
 
         NutrientEditerToolbar.title = shareSet.currentNutrient?.name
         NutrientEditerToolbar.setNavigationOnClickListener { onBackPressed() }
+
+        shareSet.editorNutrient.let {
+            it.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
+                override fun onUpdateItem(item: BNutrient) {
+                    item.update()
+                }
+            })
+            it.edit(shareSet.currentNutrient!!)
+        }
 
         when (shareSet.currentNutrient?.nutrientID){
             5 -> {
@@ -96,4 +109,8 @@ class NutrientEditerActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        shareSet.editorNutrient.commit()
+    }
 }

@@ -11,6 +11,7 @@ import com.threecats.ndictdataset.Models.ProposedDosage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
+import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import com.threecats.ndictdataset.View.DosisEditerActivity
 import kotlinx.android.synthetic.main.content_recycler_view.*
@@ -26,11 +27,19 @@ class NutrientDosisFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        shareSet.editorProposedDosage.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
-            override fun onAppendItem(item: ProposedDosage) {
-                dosisListShell?.addItem(item)
-            }
-        })
+        shareSet.editorProposedDosage.let {
+            it.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
+                override fun onAppendItem(item: ProposedDosage) {
+                    dosisListShell?.addItem(item)
+                    shareSet.currentNutrient?.proposedDosages?.add(item)
+                }
+            })
+            it.setOnUpdateItemListener(object : UpdateItemListener<ProposedDosage>{
+                override fun onUpdateItem(item: ProposedDosage) {
+                    dosisListShell?.updateItem(item)
+                }
+            })
+        }
         return inflater.inflate(R.layout.fragment_nutrient_dosis, container, false)
     }
 
@@ -51,6 +60,7 @@ class NutrientDosisFragment : Fragment() {
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, ProposedDosage> {
                 override fun onClickItem(item: ProposedDosage, holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
+                    shareSet.editorProposedDosage.edit(item)
                     val intent = Intent(context, DosisEditerActivity::class.java)
                     startActivity(intent)
                 }
@@ -82,13 +92,14 @@ class NutrientDosisFragment : Fragment() {
             it.setOnNullDataListener((object : NullDataListener{
                 override fun onNullData(isNull: Boolean) {
                     if (isNull) {
-                        context?.toast("当前没有数据")
+                        //context?.toast("当前没有数据")
                     } else{
-                        context?.toast("已经添加数据")
+                        //context?.toast("已经添加数据")
                     }
                 }
             }))
             it.link()
         }
+
     }
 }// Required empty public constructor

@@ -57,13 +57,22 @@ class DosisEditerActivity : AppCompatActivity() {
             btnPregnancyShowTitle()
         }
 
-        if (shareSet.editorProposedDosage.editState == EEditState.Append) {
+        if (shareSet.editorProposedDosage.editState == EEditState.Update) {
             setFieldsToView()
         } else {
             btnGenderShowTitle(genderID)
         }
 
+
+        with (etAgeRange){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
+
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.foodlist_menu, menu!!)
