@@ -82,13 +82,13 @@ class NutrientEditerActivity : AppCompatActivity() {
 
                     }
                     ENutrientType.Nutrient -> {
-                        val rang: NumberRange = NumberRange()
-                        rang.put(" 0.6 -1.3 -3")
-                        toast("[${rang.start}] ~ [${rang.end}]")
-//                        viewPagerShell.selectTab(1)
-//                        shareSet.editorProposedDosage.append(ProposedDosage())
-//                        val intent = Intent(this, DosisEditerActivity::class.java)
-//                        startActivity(intent)
+//                        val rang: NumberRange = NumberRange()
+//                        rang.put(" 0.6 -1.3 -3")
+//                        toast("[${rang.start}] ~ [${rang.end}]")
+                        viewPagerShell.selectTab(1)
+                        shareSet.editorProposedDosage.append(ProposedDosage())
+                        val intent = Intent(this, DosisEditerActivity::class.java)
+                        startActivity(intent)
                     }
                 }
             }
