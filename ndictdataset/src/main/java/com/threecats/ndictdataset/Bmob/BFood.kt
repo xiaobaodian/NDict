@@ -1,8 +1,7 @@
 package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
-import cn.bmob.v3.datatype.BmobPointer
-import com.threecats.ndictdataset.Enum.EFoodBase
+import com.threecats.ndictdataset.Models.ElementContent
 
 /**
  * 由 zhang 于 2018/2/17 创建

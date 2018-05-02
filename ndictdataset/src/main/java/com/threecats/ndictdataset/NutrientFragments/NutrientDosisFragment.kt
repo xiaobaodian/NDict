@@ -1,6 +1,5 @@
 package com.threecats.ndictdataset.NutrientFragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,14 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Bmob.BTraceElement
-import com.threecats.ndictdataset.Bmob.ProposedDosage
+import com.threecats.ndictdataset.Models.ProposedDosage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import com.threecats.ndictdataset.View.DosisEditerActivity
-import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.content_recycler_view.*
 import org.jetbrains.anko.toast
 
@@ -29,13 +26,11 @@ class NutrientDosisFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        shareSet.editorProposedDosage?.let {
-            it.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
-                override fun onAppendItem(item: ProposedDosage) {
-                    dosisListShell?.addItem(item)
-                }
-            })
-        }
+        shareSet.editorProposedDosage.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
+            override fun onAppendItem(item: ProposedDosage) {
+                dosisListShell?.addItem(item)
+            }
+        })
         return inflater.inflate(R.layout.fragment_nutrient_dosis, container, false)
     }
 
@@ -49,7 +44,7 @@ class NutrientDosisFragment : Fragment() {
         dosisListShell?.let {
             it.recyclerView(GRecyclerView).progressBar(GProgressBar).addViewType("item", ItemType.Item, R.layout.recycleritem_dosage)
             it.setDisplayItemListener(object : DisplayItemListener<Any, ProposedDosage> {
-                override fun onDisplayItem(item:ProposedDosage , holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
+                override fun onDisplayItem(item: ProposedDosage, holder: RecyclerViewAdapter<Any, ProposedDosage>.ItemViewHolder) {
                     holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
                     holder.displayText(R.id.dosage, "推荐：${item.dosisRange}")
                 }

@@ -44,7 +44,7 @@ class DosisEditerActivity : AppCompatActivity() {
                 toolbar.title = shareSet.currentNutrient?.name
             }
         }
-        btnGenderShowTitle(genderID)
+
         btnGender.setOnClickListener{
             if (--genderID < 0) {
                 genderID = 2
@@ -58,15 +58,9 @@ class DosisEditerActivity : AppCompatActivity() {
         }
 
         if (shareSet.editorProposedDosage.editState == EEditState.Append) {
-            val proposedDosage = shareSet.editorProposedDosage.currentItem
-            proposedDosage?.let {
-                genderID = it.gender.ordinal
-                isPregnancy = it.pregnancy
-                btnGenderShowTitle(genderID)
-                btnPregnancyShowTitle()
-                etAgeRange.append(it.ageRange)
-                etDosisRange.append(it.dosisRange)
-            }
+            setFieldsToView()
+        } else {
+            btnGenderShowTitle(genderID)
         }
 
     }
@@ -99,6 +93,18 @@ class DosisEditerActivity : AppCompatActivity() {
 
     private fun btnPregnancyShowTitle(){
         btnPregnancy.text = if (isPregnancy) "孕期" else "正常"
+    }
+
+    private fun setFieldsToView(){
+        val proposedDosage = shareSet.editorProposedDosage.currentItem
+        proposedDosage?.let {
+            genderID = it.gender.ordinal
+            isPregnancy = it.pregnancy
+            btnGenderShowTitle(genderID)
+            btnPregnancyShowTitle()
+            etAgeRange.append(it.ageRange)
+            etDosisRange.append(it.dosisRange)
+        }
     }
 
 }

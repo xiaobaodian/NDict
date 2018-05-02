@@ -2,21 +2,19 @@ package com.threecats.ndictdataset.View
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.threecats.ndictdataset.BDM
-import com.threecats.ndictdataset.Bmob.ProposedDosage
+import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.Models.NumberRange
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientSublistFragment
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
-import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_nutrient_editer.*
 import org.jetbrains.anko.toast
 
@@ -84,10 +82,13 @@ class NutrientEditerActivity : AppCompatActivity() {
 
                     }
                     ENutrientType.Nutrient -> {
-                        viewPagerShell.selectTab(1)
-                        shareSet.editorProposedDosage.append(ProposedDosage())
-                        val intent = Intent(this, DosisEditerActivity::class.java)
-                        startActivity(intent)
+                        val rang: NumberRange = NumberRange()
+                        rang.put(" 0.6 -1.3 -3")
+                        toast("[${rang.start}] ~ [${rang.end}]")
+//                        viewPagerShell.selectTab(1)
+//                        shareSet.editorProposedDosage.append(ProposedDosage())
+//                        val intent = Intent(this, DosisEditerActivity::class.java)
+//                        startActivity(intent)
                     }
                 }
             }

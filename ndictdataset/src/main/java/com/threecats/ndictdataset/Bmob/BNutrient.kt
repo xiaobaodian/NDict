@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
+import com.threecats.ndictdataset.Models.ProposedDosage
 
 /**
  * 由 zhang 于 2018/3/20 创建

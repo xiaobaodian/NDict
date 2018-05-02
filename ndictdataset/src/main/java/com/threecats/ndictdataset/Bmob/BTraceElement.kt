@@ -2,6 +2,7 @@ package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
 import com.threecats.ndictdataset.Enum.EMeasure
+import com.threecats.ndictdataset.Models.ProposedDosage
 
 /**
  * 由 zhang 于 2018/4/21 创建

@@ -4,8 +4,6 @@ import android.content.Context
 import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EEditerState
 import com.threecats.ndictdataset.Shells.EditorShell.EditorShell
-import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewItem
-import com.threecats.ndictdataset.Shells.RecyclerViewShell.RecyclerViewShell
 
 /**
  * 由 zhang 于 2018/2/17 创建

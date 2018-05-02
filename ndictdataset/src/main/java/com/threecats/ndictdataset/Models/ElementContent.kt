@@ -1,4 +1,4 @@
-package com.threecats.ndictdataset.Bmob
+package com.threecats.ndictdataset.Models
 
 /**
  * 由 zhang 于 2018/4/16 创建

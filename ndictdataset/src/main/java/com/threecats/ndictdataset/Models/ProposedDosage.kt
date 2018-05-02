@@ -1,4 +1,4 @@
-package com.threecats.ndictdataset.Bmob
+package com.threecats.ndictdataset.Models
 
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.EMeasure
