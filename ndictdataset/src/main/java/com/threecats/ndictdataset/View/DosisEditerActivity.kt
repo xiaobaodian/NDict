@@ -14,6 +14,7 @@ import com.threecats.ndictdataset.Shells.EditorShell.EEditState
 
 import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.toast
 
 class DosisEditerActivity : AppCompatActivity() {
@@ -79,8 +80,13 @@ class DosisEditerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.DeleteDosis -> {
-                shareSet.editorProposedDosage.editState = EEditState.Delete
-                onBackPressed()
+                alert("确实要删除该摄入量条目吗？", "删除条目") {
+                    positiveButton("确定") {
+                        shareSet.editorProposedDosage.editState = EEditState.Delete
+                        onBackPressed()  //返回动作会引发提交操作
+                    }
+                    negativeButton("取消") {  }
+                }.show()
             }
             R.id.SaveAddDosis -> {
 
