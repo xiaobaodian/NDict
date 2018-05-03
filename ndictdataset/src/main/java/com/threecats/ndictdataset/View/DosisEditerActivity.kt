@@ -1,7 +1,6 @@
 package com.threecats.ndictdataset.View
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -9,13 +8,13 @@ import android.view.View
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.EEditState
 
 import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.toast
 
 class DosisEditerActivity : AppCompatActivity() {
 
@@ -58,7 +57,7 @@ class DosisEditerActivity : AppCompatActivity() {
         }
 
         if (shareSet.editorProposedDosage.editState == EEditState.Update) {
-            setFieldsToView()
+            setFields()
         } else {
             btnGenderShowTitle(genderID)
         }
@@ -89,7 +88,9 @@ class DosisEditerActivity : AppCompatActivity() {
                 }.show()
             }
             R.id.SaveAddDosis -> {
-
+                shareSet.editorProposedDosage.commit()
+                shareSet.editorProposedDosage.append(ProposedDosage())
+                setFields()
             }
             R.id.CancelDosis -> {
                 shareSet.editorProposedDosage.editState = EEditState.Cancel
@@ -101,11 +102,7 @@ class DosisEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        shareSet.editorProposedDosage.currentItem?.let {
-            it.gender = EGender.values()[genderID]
-            it.ageRange = etAgeRange.text.toString()
-            it.dosisRange = etDosisRange.text.toString()
-        }
+        getFields()
         shareSet.editorProposedDosage.commit()
     }
 
@@ -124,7 +121,7 @@ class DosisEditerActivity : AppCompatActivity() {
         btnPregnancy.text = if (isPregnancy) "孕期" else "正常"
     }
 
-    private fun setFieldsToView(){
+    private fun setFields(){
         val proposedDosage = shareSet.editorProposedDosage.currentItem
         proposedDosage?.let {
             genderID = it.gender.ordinal
@@ -133,6 +130,14 @@ class DosisEditerActivity : AppCompatActivity() {
             btnPregnancyShowTitle()
             etAgeRange.append(it.ageRange)
             etDosisRange.append(it.dosisRange)
+        }
+    }
+
+    private fun getFields(){
+        shareSet.editorProposedDosage.currentItem?.let {
+            it.gender = EGender.values()[genderID]
+            it.ageRange = etAgeRange.text.toString()
+            it.dosisRange = etDosisRange.text.toString()
         }
     }
 
