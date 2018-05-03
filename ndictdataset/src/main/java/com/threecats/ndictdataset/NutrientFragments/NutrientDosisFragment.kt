@@ -11,6 +11,7 @@ import com.threecats.ndictdataset.Models.ProposedDosage
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.AppendItemListener
+import com.threecats.ndictdataset.Shells.EditorShell.DeleteItemListener
 import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import com.threecats.ndictdataset.View.DosisEditerActivity
@@ -37,6 +38,12 @@ class NutrientDosisFragment : Fragment() {
             it.setOnUpdateItemListener(object : UpdateItemListener<ProposedDosage>{
                 override fun onUpdateItem(item: ProposedDosage) {
                     dosisListShell?.updateItem(item)
+                }
+            })
+            it.setOnDeleteItemListener(object : DeleteItemListener<ProposedDosage>{
+                override fun onDeleteItem(item: ProposedDosage) {
+                    dosisListShell?.removeItem(item)
+                    shareSet.currentNutrient?.proposedDosages?.remove(item)
                 }
             })
         }

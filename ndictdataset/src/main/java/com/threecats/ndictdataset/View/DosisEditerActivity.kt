@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
@@ -46,9 +47,7 @@ class DosisEditerActivity : AppCompatActivity() {
         }
 
         btnGender.setOnClickListener{
-            if (--genderID < 0) {
-                genderID = 2
-            }
+            if (--genderID < 0) genderID = 2
             btnGenderShowTitle(genderID)
         }
 
@@ -72,11 +71,26 @@ class DosisEditerActivity : AppCompatActivity() {
 
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.foodlist_menu, menu!!)
+        menuInflater.inflate(R.menu.dosisediter_menu, menu!!)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.DeleteDosis -> {
+                shareSet.editorProposedDosage.editState = EEditState.Delete
+                onBackPressed()
+            }
+            R.id.SaveAddDosis -> {
+
+            }
+            R.id.CancelDosis -> {
+                shareSet.editorProposedDosage.editState = EEditState.Cancel
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
