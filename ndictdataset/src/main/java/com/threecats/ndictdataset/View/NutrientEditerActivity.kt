@@ -13,6 +13,7 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.EventClass.UpdateNutrient
 import com.threecats.ndictdataset.Models.NumberRange
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
@@ -21,6 +22,9 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import kotlinx.android.synthetic.main.activity_nutrient_editer.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
 
 class NutrientEditerActivity : AppCompatActivity() {
@@ -75,20 +79,18 @@ class NutrientEditerActivity : AppCompatActivity() {
                 .addFragment(workFragment, workTitle)
                 .addFragment(NutrientContextFragment(), "描述")
                 .link()
+        EventBus.getDefault().register(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        Handler().postDelayed({
-            val hashInt = getProposedDosagesHashCode(shareSet.editorNutrient.currentItem!!)
-            if (dosisHashCode == hashInt) {
-                //toast("没有修改数据")
-            } else {
-                toast("数据已经被修改，模拟保存")
-                dosisHashCode = hashInt
-            }
-        },800)
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateNutrient(updateEvent: UpdateNutrient){
+        val hashInt = getProposedDosagesHashCode(shareSet.editorNutrient.currentItem!!)
+        if (dosisHashCode == hashInt) {
+            //toast("没有修改数据")
+        } else {
+            toast("数据已经被修改，模拟保存")
+            dosisHashCode = hashInt
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,9 +114,6 @@ class NutrientEditerActivity : AppCompatActivity() {
 
                     }
                     ENutrientType.Nutrient -> {
-//                        val rang: NumberRange = NumberRange()
-//                        rang.put(" 0.6 -1.3 -3")
-//                        toast("[${rang.start}] ~ [${rang.end}]")
                         viewPagerShell.selectTab(1)
                         shareSet.editorProposedDosage.append(ProposedDosage())
                         val intent = Intent(this, DosisEditerActivity::class.java)
@@ -129,6 +128,7 @@ class NutrientEditerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         shareSet.editorNutrient.commit()
+        EventBus.getDefault().unregister(this)
     }
 
     private fun getProposedDosagesHashCode(nutrient: BNutrient): Int{

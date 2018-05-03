@@ -8,12 +8,14 @@ import android.view.View
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.EventClass.UpdateNutrient
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.EEditState
 
 import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.alert
 
 class DosisEditerActivity : AppCompatActivity() {
@@ -24,6 +26,7 @@ class DosisEditerActivity : AppCompatActivity() {
     private val genderTitle: List<String> = listOf("女性", "男性", "不限性别")
     private var genderID: Int = 2
     private var isPregnancy = false
+    private var dosisHashCode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +107,7 @@ class DosisEditerActivity : AppCompatActivity() {
         super.onDestroy()
         getFields()
         shareSet.editorProposedDosage.commit()
+        shareSet.currentNutrient?.let { EventBus.getDefault().post(UpdateNutrient(it)) }
     }
 
     private fun btnGenderShowTitle(index: Int){
@@ -123,6 +127,7 @@ class DosisEditerActivity : AppCompatActivity() {
 
     private fun setFields(){
         val proposedDosage = shareSet.editorProposedDosage.currentItem
+        dosisHashCode = proposedDosage.toString().hashCode()
         proposedDosage?.let {
             genderID = it.gender.ordinal
             isPregnancy = it.pregnancy
@@ -134,10 +139,15 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     private fun getFields(){
+        var hashCode = 0
         shareSet.editorProposedDosage.currentItem?.let {
             it.gender = EGender.values()[genderID]
             it.ageRange = etAgeRange.text.toString()
             it.dosisRange = etDosisRange.text.toString()
+            hashCode = it.toString().hashCode()
+        }
+        if (hashCode == dosisHashCode) {
+            shareSet.editorProposedDosage.editState = EEditState.Cancel
         }
     }
 
