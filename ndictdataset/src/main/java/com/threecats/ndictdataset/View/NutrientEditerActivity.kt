@@ -34,7 +34,6 @@ class NutrientEditerActivity : AppCompatActivity() {
     private val viewPagerShell = TabViewLayoutShell()
     private lateinit var workFragment: Fragment
     private lateinit var workTitle: String
-    private var dosisHashCode: Int = 0
     private var nutrientType: ENutrientType = ENutrientType.Vitamin
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +68,6 @@ class NutrientEditerActivity : AppCompatActivity() {
                 workFragment = NutrientDosisFragment()
                 workTitle = "日常需求量"
                 nutrientType = ENutrientType.Nutrient
-                dosisHashCode = getProposedDosagesHashCode(shareSet.editorNutrient.currentItem!!)
             }
         }
 
@@ -84,12 +82,10 @@ class NutrientEditerActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateNutrient(updateEvent: UpdateNutrient){
-        val hashInt = getProposedDosagesHashCode(shareSet.editorNutrient.currentItem!!)
-        if (dosisHashCode == hashInt) {
-            //toast("没有修改数据")
-        } else {
-            toast("数据已经被修改，模拟保存")
-            dosisHashCode = hashInt
+        //shareSet.editorNutrient.commit()
+        //toast("对象：${shareSet.editorNutrient.hashString()}")
+        if (shareSet.editorNutrient.isChanged()) {
+            toast("数据已更改，模拟保存")
         }
     }
 
@@ -127,15 +123,7 @@ class NutrientEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        shareSet.editorNutrient.commit()
         EventBus.getDefault().unregister(this)
     }
 
-    private fun getProposedDosagesHashCode(nutrient: BNutrient): Int{
-        var hashInt = 0
-        nutrient.proposedDosages.forEach {
-            hashInt += it.toString().hashCode()
-        }
-        return hashInt
-    }
 }

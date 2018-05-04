@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.toast
 
 class DosisEditerActivity : AppCompatActivity() {
 
@@ -26,7 +27,6 @@ class DosisEditerActivity : AppCompatActivity() {
     private val genderTitle: List<String> = listOf("女性", "男性", "不限性别")
     private var genderID: Int = 2
     private var isPregnancy = false
-    private var dosisHashCode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +56,11 @@ class DosisEditerActivity : AppCompatActivity() {
 
         btnPregnancy.setOnClickListener{
             isPregnancy = !isPregnancy
+            shareSet.editorProposedDosage.currentItem?.pregnancy = isPregnancy
             btnPregnancyShowTitle()
         }
 
-        if (shareSet.editorProposedDosage.editState == EEditState.Update) {
+        if (shareSet.editorProposedDosage.isUpdate) {
             setFields()
         } else {
             btnGenderShowTitle(genderID)
@@ -84,7 +85,7 @@ class DosisEditerActivity : AppCompatActivity() {
             R.id.DeleteDosis -> {
                 alert("确实要删除该摄入量条目吗？", "删除条目") {
                     positiveButton("确定") {
-                        shareSet.editorProposedDosage.editState = EEditState.Delete
+                        shareSet.editorProposedDosage.delete()
                         onBackPressed()  //返回动作会引发提交操作
                     }
                     negativeButton("取消") {  }
@@ -96,7 +97,7 @@ class DosisEditerActivity : AppCompatActivity() {
                 setFields()
             }
             R.id.CancelDosis -> {
-                shareSet.editorProposedDosage.editState = EEditState.Cancel
+                shareSet.editorProposedDosage.cancel()
                 onBackPressed()
             }
         }
@@ -127,7 +128,6 @@ class DosisEditerActivity : AppCompatActivity() {
 
     private fun setFields(){
         val proposedDosage = shareSet.editorProposedDosage.currentItem
-        dosisHashCode = proposedDosage.toString().hashCode()
         proposedDosage?.let {
             genderID = it.gender.ordinal
             isPregnancy = it.pregnancy
@@ -139,15 +139,10 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     private fun getFields(){
-        var hashCode = 0
         shareSet.editorProposedDosage.currentItem?.let {
             it.gender = EGender.values()[genderID]
             it.ageRange = etAgeRange.text.toString()
             it.dosisRange = etDosisRange.text.toString()
-            hashCode = it.toString().hashCode()
-        }
-        if (hashCode == dosisHashCode) {
-            shareSet.editorProposedDosage.editState = EEditState.Cancel
         }
     }
 

@@ -2,6 +2,8 @@ package com.threecats.ndictdataset.Shells.EditorShell
 
 /**
  * 由 zhang 于 2018/4/29 创建
+ * 用于规范对数据对象编辑的操作流程，传入的类型<I>必须是数据对象（data class），否则无法通过toString()后获
+ * 取hashcode()来判断对象属性是否发生改变
  */
 
 enum class EEditState{
@@ -11,12 +13,70 @@ enum class EEditState{
 class EditorShell<I> {
 
     var currentItem: I? = null
-    var editState: EEditState = EEditState.Append
+    val isAppend: Boolean
+        get() = editState == EEditState.Append
+    val isUpdate: Boolean
+        get() = editState == EEditState.Update
+
+    private var editState: EEditState = EEditState.Append
+    private var initHashCode: Int = 0
 
     private var appendItemListener: AppendItemListener<I>? = null
     private var updateItemListener: UpdateItemListener<I>? = null
     private var deleteItemListener: DeleteItemListener<I>? = null
     private var cancelListener: CancelListener<I>? = null
+
+    fun append(item: I){
+        currentItem = item
+        initHashCode = getHashCode()
+        editState = EEditState.Append
+    }
+
+    fun edit(item: I){
+        currentItem = item
+        initHashCode = getHashCode()
+        editState = EEditState.Update
+    }
+
+    fun cancel(){
+        editState = EEditState.Cancel
+    }
+
+    fun delete(){
+        editState = EEditState.Delete
+    }
+
+    fun commit(){
+
+        val newHashCode = getHashCode()
+        if (initHashCode == newHashCode) {
+            return
+        }
+
+        currentItem?.let {
+            when (editState){
+                EEditState.Append -> {appendItemListener?.onAppendItem(it)}
+                EEditState.Update -> {updateItemListener?.onUpdateItem(it)}
+                EEditState.Delete -> {deleteItemListener?.onDeleteItem(it)}
+                EEditState.Cancel -> {cancelListener?.onCancel(it)}
+            }
+        }
+        initHashCode = newHashCode
+
+    }
+
+    fun isChanged(): Boolean{
+        val newHashCode = getHashCode()
+        val changed = initHashCode != newHashCode
+        initHashCode = newHashCode
+        return changed
+    }
+
+    fun hashString(): String{  //测试用
+        return currentItem.toString()
+    }
+
+    private fun getHashCode() = currentItem.toString().hashCode()
 
     fun setOnAppendItemListener(listener: AppendItemListener<I>){
         appendItemListener = listener
@@ -32,37 +92,6 @@ class EditorShell<I> {
 
     fun setOnCancelListener(listener: CancelListener<I>){
         cancelListener = listener
-    }
-
-    fun append(item: I){
-        currentItem = item
-        editState = EEditState.Append
-    }
-
-    fun edit(item: I){
-        currentItem = item
-        editState = EEditState.Update
-    }
-
-    fun cancel(){
-        editState = EEditState.Cancel
-    }
-
-    fun delete(){
-        editState = EEditState.Delete
-    }
-
-    fun commit(){
-
-        currentItem?.let {
-            when (editState){
-                EEditState.Append -> {appendItemListener?.onAppendItem(it)}
-                EEditState.Update -> {updateItemListener?.onUpdateItem(it)}
-                EEditState.Delete -> {deleteItemListener?.onDeleteItem(it)}
-                EEditState.Cancel -> {cancelListener?.onCancel(it)}
-            }
-        }
-
     }
 
 }

@@ -7,9 +7,16 @@ import com.threecats.ndictdataset.Models.ProposedDosage
  * 由 zhang 于 2018/3/20 创建
  */
 
-class BNutrient: BmobObject() {
-    var nutrientID: Int = 0
-    var name = ""
-    var context: _Article? = null
-    val proposedDosages: MutableList<ProposedDosage> = ArrayList()
-}
+data class BNutrient(
+        var nutrientID: Int = 0,
+        var name: String = "",
+        var context: _Article? = null,
+        val proposedDosages: MutableList<ProposedDosage> = ArrayList()
+): BmobObject()
+
+//class BNutrient: BmobObject() {
+//    var nutrientID: Int = 0
+//    var name = ""
+//    var context: _Article? = null
+//    val proposedDosages: MutableList<ProposedDosage> = ArrayList()
+//}
