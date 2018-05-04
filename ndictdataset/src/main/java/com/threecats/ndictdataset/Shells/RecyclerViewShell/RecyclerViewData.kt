@@ -18,7 +18,8 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     private val mapRecyclerGroup: HashMap<G, RecyclerViewGroup<G, I>> = hashMapOf()
     private val mapRecyclerItem: HashMap<I, RecyclerViewItem<G, I>> = hashMapOf()
 
-    val groups: MutableList<G> = ArrayList()
+    val groups: List<G>// = ArrayList()
+        get() = mapRecyclerGroup.keys.toList()
     val items: MutableList<I> = ArrayList()
 
     fun addGroup(group: G){
@@ -126,7 +127,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             var lostItem = true
             groups.forEach {
                 if (it is GroupMembership) {
-                    if (it.isMembers(item)) {
+                    if (it.isMembers(item as Any)) {
                         addItem(item, it)
                         lostItem = false
                     }

@@ -6,11 +6,12 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.GroupMembership
 /**
  * 由 zhang 于 2018/5/4 创建
  */
-class DosisGenderGroup: GroupMembership {
-    var title: String = ""
-    val genderGroup: EGender = EGender.None
-    override fun <I> isMembers(item: I): Boolean {
-        var dosis: ProposedDosage
-        return true
+class DosisGenderGroup(
+        var title: String = "",
+        val genderGroup: EGender = EGender.None
+): GroupMembership {
+
+    override fun isMembers(item: Any): Boolean {
+        return genderGroup == (item as ProposedDosage).gender
     }
 }

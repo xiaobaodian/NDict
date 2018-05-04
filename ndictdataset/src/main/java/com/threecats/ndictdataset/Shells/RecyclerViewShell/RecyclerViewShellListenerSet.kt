@@ -5,7 +5,7 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
  */
 
 interface GroupMembership{
-    fun <I> isMembers(item: I): Boolean
+    fun isMembers(item: Any): Boolean
 }
 
 interface DisplayGroupListener<G, I>{
