@@ -82,11 +82,7 @@ class NutrientEditerActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateNutrient(updateEvent: UpdateNutrient){
-        //shareSet.editorNutrient.commit()
-        //toast("对象：${shareSet.editorNutrient.hashString()}")
-        if (shareSet.editorNutrient.isChanged()) {
-            toast("数据已更改，模拟保存")
-        }
+        shareSet.editorNutrient.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

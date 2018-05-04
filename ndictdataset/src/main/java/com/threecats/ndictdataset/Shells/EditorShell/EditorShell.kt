@@ -3,7 +3,7 @@ package com.threecats.ndictdataset.Shells.EditorShell
 /**
  * 由 zhang 于 2018/4/29 创建
  * 用于规范对数据对象编辑的操作流程，传入的类型<I>必须是数据对象（data class），否则无法通过toString()后获
- * 取hashcode()来判断对象属性是否发生改变
+ * 取hashcode()来判断对象属性是否发生改变。对象的toString()不能被重写
  */
 
 enum class EEditState{
@@ -63,17 +63,6 @@ class EditorShell<I> {
         }
         initHashCode = newHashCode
 
-    }
-
-    fun isChanged(): Boolean{
-        val newHashCode = getHashCode()
-        val changed = initHashCode != newHashCode
-        initHashCode = newHashCode
-        return changed
-    }
-
-    fun hashString(): String{  //测试用
-        return currentItem.toString()
     }
 
     private fun getHashCode() = currentItem.toString().hashCode()

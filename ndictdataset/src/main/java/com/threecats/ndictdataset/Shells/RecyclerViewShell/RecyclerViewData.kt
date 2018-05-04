@@ -119,8 +119,24 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun addItem(item: I): Int{
-        val recyclerItem = RecyclerViewItem<G, I>(item)
-        return addItem(recyclerItem)
+        var position: Int = -1
+        if (groups.isEmpty()) {
+            position = addItem(RecyclerViewItem(item))
+        } else {
+            var lostItem = true
+            groups.forEach {
+                if (it is GroupMembership) {
+                    if (it.isMembers(item)) {
+                        addItem(item, it)
+                        lostItem = false
+                    }
+                }
+            }
+            if (lostItem) {
+                // 发出item丢失提醒
+            }
+        }
+        return position
     }
 
     private fun addItem(recyclerItem: RecyclerViewItem<G, I>): Int{
@@ -136,22 +152,25 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         return position
     }
 
-    fun addItem(item: I, group: G){
+    fun addItem(item: I, group: G): Int{
+        var position = -1
         val recyclerGroup = mapRecyclerGroup[group]
         recyclerGroup?.let {
-            val recyclerItem = RecyclerViewItem<G, I>(item)
-            addItem(recyclerItem, recyclerGroup)
+            //val recyclerItem = RecyclerViewItem<G, I>(item)
+            position = addItem(RecyclerViewItem(item), recyclerGroup)
         }
+        return position
     }
 
-    private fun addItem(recyclerItem: RecyclerViewItem<G, I>, recyclerGroup: RecyclerViewGroup<G,I>) {
+    private fun addItem(recyclerItem: RecyclerViewItem<G, I>, recyclerGroup: RecyclerViewGroup<G,I>): Int {
         if (recyclerGroup.state === DisplayState.Hide) {
             activeGroup(recyclerGroup)
         }
-        val site = recyclerGroup.addItem(recyclerItem)
+        val position = recyclerGroup.addItem(recyclerItem)
         mapRecyclerItem.put(recyclerItem.self, recyclerItem)
-        addItemToRecyclerViewItems(recyclerGroup, site, recyclerItem)
+        addItemToRecyclerViewItems(recyclerGroup, position, recyclerItem)
         calculatorTitleSite()
+        return position
     }
 
     private fun addItem(recyclerItem: RecyclerViewItem<G,I>, groupID: Long) {

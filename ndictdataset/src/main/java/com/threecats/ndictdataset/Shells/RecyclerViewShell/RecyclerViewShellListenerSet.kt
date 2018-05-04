@@ -3,6 +3,11 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
 /**
  * 由 zhang 创建于 2018/3/28.
  */
+
+interface GroupMembership{
+    fun <I> isMembers(item: I): Boolean
+}
+
 interface DisplayGroupListener<G, I>{
     fun onDisplayGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder)
 }
