@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import org.jetbrains.anko.toast
 
 /**
  * 由 zhang 于 2018/3/28 创建
@@ -152,7 +153,7 @@ class RecyclerViewAdapter<G, I>(
     private fun findCurrentGroup(position: Int){
         dataSet.currentGroup = null
         for (group in dataSet.recyclerViewGroups) {
-            if (position > group.groupSiteID && position <= (group.groupSiteID + group.recyclerViewItems.size)) {
+            if (position > group.groupPositionID && position <= (group.groupPositionID + group.groupItems.size)) {
                 dataSet.currentGroup = group
                 break
             }

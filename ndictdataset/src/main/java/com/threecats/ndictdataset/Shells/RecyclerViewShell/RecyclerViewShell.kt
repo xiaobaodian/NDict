@@ -24,10 +24,10 @@ class RecyclerViewShell<G,I>(val context: Context) {
         get() = dataSet.currentItem!!
     val recyclerViewItems: MutableList<RecyclerViewItem<G, I>>?
         get() = if (dataSet.recyclerViewGroups.size > 0) null else dataSet.recyclerViewItems as MutableList<RecyclerViewItem<G, I>>
-    val items: MutableList<I>?
+    val items: List<I>?
         get() = if (dataSet.recyclerViewGroups.size > 0) null else dataSet.items
 
-    internal val viewTypes: MutableList<RecyclerViewViewType> = ArrayList()
+    internal val viewTypes: MutableList<RecyclerViewType> = ArrayList()
 
     private var dataSet: RecyclerViewData<G, I> = RecyclerViewData(this)
 
@@ -74,15 +74,15 @@ class RecyclerViewShell<G,I>(val context: Context) {
     }
 
     fun addViewType(title: String, type: ItemType, layout: Int): RecyclerViewShell<G, I>{
-        viewTypes.add(RecyclerViewViewType(title, type, layout))
+        viewTypes.add(RecyclerViewType(title, type, layout))
         return this
     }
 
-    fun getViewType(id: String): RecyclerViewViewType? {
+    fun getViewType(id: String): RecyclerViewType? {
         return viewTypes.find { it.ID === id }
     }
 
-    fun getViewType(index: Int): RecyclerViewViewType {
+    fun getViewType(index: Int): RecyclerViewType {
         return viewTypes[index]
     }
 

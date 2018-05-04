@@ -15,7 +15,7 @@ class RecyclerViewItem<G,I>(item: I): RecyclerViewBaseItem() {
         get() = data
 
     init {
-        viewType = RecyclerViewViewType(ItemType.Item)
+        viewType = RecyclerViewType(ItemType.Item)
         data = item
     }
 

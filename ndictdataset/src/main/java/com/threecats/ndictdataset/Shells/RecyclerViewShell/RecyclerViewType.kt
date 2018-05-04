@@ -3,7 +3,7 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
 /**
  * 由 zhang 于 2018/3/29 创建
  */
-class RecyclerViewViewType(itemType: ItemType) {
+class RecyclerViewType(itemType: ItemType) {
     var ID: String = ""
     var itemType: ItemType
     var layoutID: Int? = null
@@ -17,18 +17,18 @@ class RecyclerViewViewType(itemType: ItemType) {
         this.layoutID = layoutId
     }
 
-    fun title(title: String): RecyclerViewViewType{
+    fun title(title: String): RecyclerViewType{
         this.ID = title
         return this
     }
 
-    fun layout(layout: Int): RecyclerViewViewType{
+    fun layout(layout: Int): RecyclerViewType{
         this.layoutID = layout
         return this
     }
 
     private var site: Int = -1
-    fun indexAt(viewTypes: List<RecyclerViewViewType>): Int{
+    fun indexAt(viewTypes: List<RecyclerViewType>): Int{
         if (site < 0) {
             site = viewTypes.indexOf(this)
         }
