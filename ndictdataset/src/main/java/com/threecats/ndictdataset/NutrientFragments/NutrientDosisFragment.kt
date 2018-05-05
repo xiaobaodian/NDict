@@ -64,9 +64,9 @@ class NutrientDosisFragment : Fragment() {
         if (dosisListShell == null) {
             dosisListShell = RecyclerViewShell(context!!)
             dosisListShell?.let {
-                //it.addGroup(humanGroup)
-                //it.addGroup(femaleGroup)
-                //it.addGroup(maleGroup)
+                it.addGroup(humanGroup)
+                it.addGroup(femaleGroup)
+                it.addGroup(maleGroup)
             }
         }
 

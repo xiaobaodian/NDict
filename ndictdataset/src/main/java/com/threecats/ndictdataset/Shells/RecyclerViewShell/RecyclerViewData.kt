@@ -94,6 +94,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             group.groupPositionID = nextGroupSite
             recyclerViewItems.add(nextGroupSite, group)
             shell.recyclerAdapter?.notifyItemInserted(nextGroupSite)
+            calculatorTitlePosition()
         } else {
             //如果没有下一组，就表明当前组就是最后一组，不用插入，只需要添加
             recyclerViewItems.add(group)
@@ -111,7 +112,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
                 if (currentGroup === group) hasBeforeGroup = false
                 continue
             }
-            if (currentGroup.state === DisplayState.Show) {
+            if (currentGroup.state == DisplayState.Show) {
                 nextGroupSite = currentGroup.groupPositionID
                 break
             }
@@ -231,7 +232,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         group?.let { removeItem(item, it) }
     }
 
-    fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
+    private fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置
         val site = group.groupPositionID + groupSite + 1
         if (site >= recyclerViewItems.size) {
