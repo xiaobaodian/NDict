@@ -106,7 +106,7 @@ class NutrientEditerActivity : AppCompatActivity() {
 
                     }
                     ENutrientType.Nutrient -> {
-                        viewPagerShell.selectTab(1)
+                        //viewPagerShell.selectTab(1)
                         shareSet.editorProposedDosage.append(ProposedDosage())
                         val intent = Intent(this, DosisEditerActivity::class.java)
                         startActivity(intent)

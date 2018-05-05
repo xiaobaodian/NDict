@@ -1,5 +1,6 @@
 package com.threecats.ndictdataset.Shells.RecyclerViewShell
 
+import com.threecats.ndictdataset.Models.DosisGenderGroup
 import org.jetbrains.anko.toast
 import java.util.ArrayList
 
@@ -57,11 +58,13 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun calculatorTitlePosition() {
-        var site = 0
-        //parentGroups.takeWhile { it.state === DisplayState.Show }.forEach {
-        recyclerViewGroups.filter { it.state === DisplayState.Show }.forEach {
-            it.groupPositionID = site
-            site += it.groupItems.size + 1
+
+        var position = 0
+        recyclerViewGroups.forEach {
+            if (it.state == DisplayState.Show) {
+                it.groupPositionID = position
+                position += it.items.size + 1
+            }
         }
     }
 
@@ -89,11 +92,11 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     fun activeGroup(group: RecyclerViewGroup<G,I>) {
         if (group.state === DisplayState.Show || group.state === DisplayState.Fold) return
-        val nextGroupSite = nextGroupSite(group)
-        if (nextGroupSite >= 0) {
-            group.groupPositionID = nextGroupSite
-            recyclerViewItems.add(nextGroupSite, group)
-            shell.recyclerAdapter?.notifyItemInserted(nextGroupSite)
+        val nextGroupPosition = nextGroupPosition(group)
+        if (nextGroupPosition >= 0) {
+            group.groupPositionID = nextGroupPosition
+            recyclerViewItems.add(nextGroupPosition, group)
+            shell.recyclerAdapter?.notifyItemInserted(nextGroupPosition)
             calculatorTitlePosition()
         } else {
             //如果没有下一组，就表明当前组就是最后一组，不用插入，只需要添加
@@ -104,7 +107,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         group.state = DisplayState.Show
     }
 
-    private fun nextGroupSite(group: RecyclerViewGroup<G,I>): Int {
+    private fun nextGroupPosition(group: RecyclerViewGroup<G,I>): Int {
         var nextGroupSite = -1
         var hasBeforeGroup = true
         for (currentGroup in recyclerViewGroups) {
@@ -125,17 +128,16 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (groups.isEmpty()) {
             position = addItem(RecyclerViewItem(item))
         } else {
-            var lostItem = true
+            var isLostItem = true
             groups.forEach {
                 if (it is GroupMembership) {
                     if (it.isMembers(item as Any)) {
-                        addItem(item, it)
-                        lostItem = false
+                        if (addItem(item, it) > -1) isLostItem = false
                     }
                 }
             }
-            if (lostItem) {
-                // 发出item丢失提醒
+            if (isLostItem) {
+                shell.context.toast("丢失了记录：${item.toString()}")
             }
         }
         return position
@@ -183,18 +185,14 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     fun removeItem(item: I){
         val recyclerItem = mapRecyclerItem[item]
         recyclerItem?.let{
-            removeItem(recyclerItem)
+            removeItem(it)
             mapRecyclerItem.remove(item)
         }
     }
 
     private fun removeItem(recyclerItem: RecyclerViewItem<G, I>) {
         if (recyclerItem.parentGroups.size == 0) {
-            var position = items.indexOf(recyclerItem.self)
-            if (position >= 0){
-                //items.removeAt(position)
-            }
-            position = recyclerViewItems.indexOf(recyclerItem)
+            val position = recyclerViewItems.indexOf(recyclerItem)
             if (position >= 0) {
                 recyclerViewItems.removeAt(position)
                 shell.recyclerAdapter?.notifyItemRemoved(position)
@@ -217,9 +215,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             recyclerItem: RecyclerViewItem<G,I>,
             recyclerGroup: RecyclerViewGroup<G,I>
     ) {
-        val site = recyclerGroup.removeItem(recyclerItem)
-        if (site >= 0) {
-            removeItemFromRecyclerViewItems(recyclerGroup, site, recyclerItem)
+        val position = recyclerGroup.removeItem(recyclerItem)
+        if (position >= 0) {
+            removeItemFromRecyclerViewItems(recyclerGroup, position, recyclerItem)
             if (recyclerGroup.groupItems.size == 0) {
                 hideGroup(recyclerGroup)
             }
@@ -250,7 +248,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             recyclerViewItems.removeAt(site)
             shell.recyclerAdapter?.notifyItemRemoved(site)
         } else {
-            shell.context.toast("要删除的Item与列表中指定位置的记录不相符")
+            shell.context.toast("注意：要删除的Item与列表中指定位置的记录不相符 ！")
         }
     }
 

@@ -7,8 +7,8 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.GroupMembership
  * 由 zhang 于 2018/5/4 创建
  */
 class DosisGenderGroup(
-        var title: String = "",
-        val genderGroup: EGender = EGender.None
+        var title: String = "所有人",
+        private var genderGroup: EGender = EGender.None
 ): GroupMembership {
 
     override fun isMembers(item: Any): Boolean {

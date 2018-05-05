@@ -50,7 +50,8 @@ class RecyclerViewGroup<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
         item.parentGroups.add(this)
         groupItems.add(item)
         items.add(item.self)
-        val position = groupItems.size
+        val position = groupItems.size - 1
+
 //        if (groupItems.size == 0) {
 //            groupItems.add(item)
 //            site = 0
@@ -86,13 +87,11 @@ class RecyclerViewGroup<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
         if (position >= 0){
             groupItems.removeAt(position)
             item.parentGroups.remove(this)
-            parentData?.let {
-                if (groupItems.size == 0) {
-                    it.hideGroup(this)
-                }
-                it.removeItemFromRecyclerViewItems(this, position, item)
-                it.calculatorTitlePosition()
-            }
+//            parentData?.let {
+//                if (groupItems.size == 0) {
+//                    it.hideGroup(this)
+//                }
+//            }
         }
         return position
     }
