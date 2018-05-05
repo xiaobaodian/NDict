@@ -82,7 +82,7 @@ class NutrientDosisFragment : Fragment() {
             it.setDisplayItemListener(object : DisplayItemListener<DosisGenderGroup, ProposedDosage> {
                 override fun onDisplayItem(item: ProposedDosage, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.ItemViewHolder) {
                     holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
-                    holder.displayText(R.id.dosage, "推荐：${item.dosisRange}")
+                    holder.displayText(R.id.dosage, "${item.dosisRange}毫克/天")
                 }
             })
             it.setOnClickItemListener(object : ClickItemListener<DosisGenderGroup, ProposedDosage> {
