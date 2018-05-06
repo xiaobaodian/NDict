@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
+import com.threecats.ndictdataset.Enum.EMeasure
 import com.threecats.ndictdataset.Models.ProposedDosage
 
 /**
@@ -11,6 +12,7 @@ data class BNutrient(
         var nutrientID: Int = 0,
         var name: String = "",
         var context: _Article? = null,
+        var measure: EMeasure = EMeasure.Mg,
         val proposedDosages: MutableList<ProposedDosage> = ArrayList()
 ): BmobObject()
 

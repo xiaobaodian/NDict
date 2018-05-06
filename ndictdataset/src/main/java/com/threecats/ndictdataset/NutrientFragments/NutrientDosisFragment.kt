@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
+import com.threecats.ndictdataset.Enum.EMeasure
 import com.threecats.ndictdataset.Models.DosisGenderGroup
 import com.threecats.ndictdataset.Models.ProposedDosage
 
@@ -26,8 +27,9 @@ import org.jetbrains.anko.toast
 class NutrientDosisFragment : Fragment() {
 
     private val shareSet = BDM.ShareSet!!
+    private var measure = EMeasure.Mg
 
-    private val humanGroup = DosisGenderGroup("所有人", EGender.None)
+    private val humanGroup = DosisGenderGroup("男女适用", EGender.None)
     private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
     private val maleGroup = DosisGenderGroup("男性", EGender.Male)
 
@@ -82,7 +84,7 @@ class NutrientDosisFragment : Fragment() {
             it.setDisplayItemListener(object : DisplayItemListener<DosisGenderGroup, ProposedDosage> {
                 override fun onDisplayItem(item: ProposedDosage, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.ItemViewHolder) {
                     holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
-                    holder.displayText(R.id.dosage, "${item.dosisRange}毫克/天")
+                    holder.displayText(R.id.dosage, "${item.dosisRange} ${measure.chinaName}/天")
                 }
             })
             it.setOnClickItemListener(object : ClickItemListener<DosisGenderGroup, ProposedDosage> {
@@ -107,10 +109,16 @@ class NutrientDosisFragment : Fragment() {
                 override fun onQueryDatas(shell: RecyclerViewShell<DosisGenderGroup, ProposedDosage>) {
                     when (shareSet.currentNutrient?.nutrientID){
                         in 5..6 -> {
-                            shareSet.currentTraceElement?.demand?.forEach { dosisListShell?.addItem(it) }
+                            shareSet.currentTraceElement?.let {
+                                measure = it.measure
+                                it.demand.forEach { dosisListShell?.addItem(it) }
+                            }
                         }
                         else -> {
-                            shareSet.currentNutrient?.proposedDosages?.forEach { dosisListShell?.addItem(it) }
+                            shareSet.currentNutrient?.let {
+                                measure = it.measure
+                                it.proposedDosages.forEach { dosisListShell?.addItem(it) }
+                            }
                         }
                     }
                     shell.completeQuery()
