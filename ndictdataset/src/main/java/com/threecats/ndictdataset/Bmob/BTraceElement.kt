@@ -14,7 +14,7 @@ data class BTraceElement(
         var alias: String = "",
         var symbol: String = "",
         var measure: EMeasure = EMeasure.Mg,
-        var demand: MutableList<ProposedDosage> = ArrayList(),
+        var proposedDosages: MutableList<ProposedDosage> = ArrayList(),
         var content: _Article? = null
 ): BmobObject()
 
@@ -25,5 +25,5 @@ data class BTraceElement(
 //    var symbol: String = ""
 //    var measure: EMeasure = EMeasure.Mg
 //    var content: _Article? = null
-//    var demand: MutableList<ProposedDosage> = ArrayList()
+//    var proposedDosages: MutableList<ProposedDosage> = ArrayList()
 //}

@@ -34,20 +34,26 @@ class DosisEditerActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        when (shareSet.currentNutrient?.nutrientID){
-            5 -> {
-                nutrientType = ENutrientType.Vitamin
-                toolbar.title = ""
-            }
-            6 -> {
-                nutrientType = ENutrientType.Mineral
-                toolbar.title = ""
-            }
-            else -> {
-                nutrientType = ENutrientType.Nutrient
-                toolbar.title = shareSet.currentNutrient?.name
-            }
+        if (shareSet.currentTraceElement == null) {
+            toolbar.title = shareSet.currentNutrient?.name
+        } else {
+            toolbar.title = shareSet.currentTraceElement?.name
         }
+
+//        when (shareSet.currentNutrient?.nutrientID){
+//            5 -> {
+//                nutrientType = ENutrientType.Vitamin
+//                toolbar.title = "维生素推荐量"
+//            }
+//            6 -> {
+//                nutrientType = ENutrientType.Mineral
+//                toolbar.title = "微量元素推荐量"
+//            }
+//            else -> {
+//                nutrientType = ENutrientType.Nutrient
+//                toolbar.title = shareSet.currentNutrient?.name
+//            }
+//        }
 
         btnGender.setOnClickListener{
             if (--genderID < 0) genderID = 2

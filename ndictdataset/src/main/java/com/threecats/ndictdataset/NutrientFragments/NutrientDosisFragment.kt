@@ -19,7 +19,6 @@ import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import com.threecats.ndictdataset.View.DosisEditerActivity
 import kotlinx.android.synthetic.main.content_recycler_view.*
-import org.jetbrains.anko.toast
 
 /**
  * A simple [Fragment] subclass.
@@ -42,7 +41,11 @@ class NutrientDosisFragment : Fragment() {
             it.setOnAppendItemListener(object : AppendItemListener<ProposedDosage> {
                 override fun onAppendItem(item: ProposedDosage) {
                     dosisListShell?.addItem(item)
-                    shareSet.currentNutrient?.proposedDosages?.add(item)
+                    if (shareSet.currentTraceElement == null) {
+                        shareSet.currentNutrient?.proposedDosages?.add(item)
+                    } else {
+                        shareSet.currentTraceElement?.proposedDosages?.add(item)
+                    }
                 }
             })
             it.setOnUpdateItemListener(object : UpdateItemListener<ProposedDosage>{
@@ -53,7 +56,11 @@ class NutrientDosisFragment : Fragment() {
             it.setOnDeleteItemListener(object : DeleteItemListener<ProposedDosage>{
                 override fun onDeleteItem(item: ProposedDosage) {
                     dosisListShell?.removeItem(item)
-                    shareSet.currentNutrient?.proposedDosages?.remove(item)
+                    if (shareSet.currentTraceElement == null) {
+                        shareSet.currentNutrient?.proposedDosages?.remove(item)
+                    } else {
+                        shareSet.currentTraceElement?.proposedDosages?.remove(item)
+                    }
                 }
             })
         }
@@ -111,7 +118,7 @@ class NutrientDosisFragment : Fragment() {
                         in 5..6 -> {
                             shareSet.currentTraceElement?.let {
                                 measure = it.measure
-                                it.demand.forEach { dosisListShell?.addItem(it) }
+                                it.proposedDosages.forEach { dosisListShell?.addItem(it) }
                             }
                         }
                         else -> {

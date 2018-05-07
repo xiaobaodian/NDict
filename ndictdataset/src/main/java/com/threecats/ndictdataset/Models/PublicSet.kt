@@ -17,6 +17,7 @@ class PublicSet(val AppContext: Context) {
     var currentNutrient: BNutrient? = null
     var currentTraceElement: BTraceElement? = null
     val editorProposedDosage = EditorShell<ProposedDosage>()
+    val editorTraceElement = EditorShell<BTraceElement>()
     val editorNutrient = EditorShell<BNutrient>()
 
     fun createFood(){

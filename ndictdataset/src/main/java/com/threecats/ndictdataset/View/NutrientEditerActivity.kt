@@ -11,6 +11,7 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
+import com.threecats.ndictdataset.Bmob.BTraceElement
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.EventClass.UpdateNutrient
@@ -41,23 +42,18 @@ class NutrientEditerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_nutrient_editer)  //NutrientEditerToolbar
         setSupportActionBar(NutrientEditerToolbar)
 
-        NutrientEditerToolbar.title = shareSet.currentNutrient?.name
         NutrientEditerToolbar.setNavigationOnClickListener { onBackPressed() }
 
-        shareSet.editorNutrient.let {
-            it.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
-                override fun onUpdateItem(item: BNutrient) {
-                    item.update()
-                }
-            })
-            it.edit(shareSet.currentNutrient!!)
-        }
-
-        if (shareSet.currentTraceElement != null) {
-            workFragment = NutrientDosisFragment()
-            workTitle = "日常需求量"
-            nutrientType = ENutrientType.Nutrient
-        } else {
+        if (shareSet.currentTraceElement == null) {
+            NutrientEditerToolbar.title = shareSet.currentNutrient?.name
+            shareSet.editorNutrient.let {
+                it.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
+                    override fun onUpdateItem(item: BNutrient) {
+                        item.update()
+                    }
+                })
+                it.edit(shareSet.currentNutrient!!)
+            }
             when (shareSet.currentNutrient?.nutrientID){
                 5 -> {
                     workFragment = NutrientSublistFragment()
@@ -71,10 +67,23 @@ class NutrientEditerActivity : AppCompatActivity() {
                 }
                 else -> {
                     workFragment = NutrientDosisFragment()
-                    workTitle = "日常需求量"
+                    workTitle = "日常===需求量"
                     nutrientType = ENutrientType.Nutrient
                 }
             }
+        } else {
+            NutrientEditerToolbar.title = shareSet.currentTraceElement?.name
+            shareSet.editorTraceElement.let {
+                it.setOnUpdateItemListener(object : UpdateItemListener<BTraceElement>{
+                    override fun onUpdateItem(item: BTraceElement) {
+                        item.update()
+                    }
+                })
+                it.edit(shareSet.currentTraceElement!!)
+            }
+            workFragment = NutrientDosisFragment()
+            workTitle = "日常需求量"
+            nutrientType = ENutrientType.Nutrient
         }
 
         viewPagerShell.parent(this)
@@ -88,7 +97,11 @@ class NutrientEditerActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateNutrient(updateEvent: UpdateNutrient){
-        shareSet.editorNutrient.commit()
+        if (shareSet.currentTraceElement == null) {
+            shareSet.editorNutrient.commit()
+        } else {
+            shareSet.editorTraceElement.commit()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
