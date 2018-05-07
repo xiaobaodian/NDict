@@ -67,7 +67,7 @@ class NutrientEditerActivity : AppCompatActivity() {
                 }
                 else -> {
                     workFragment = NutrientDosisFragment()
-                    workTitle = "日常===需求量"
+                    workTitle = "日常需求量"
                     nutrientType = ENutrientType.Nutrient
                 }
             }
@@ -110,7 +110,8 @@ class NutrientEditerActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu!!.findItem(R.id.addDosisItem).isVisible = shareSet.currentNutrient?.nutrientID !in 5..6
+        //menu!!.findItem(R.id.addDosisItem).isVisible = shareSet.currentNutrient?.nutrientID !in 5..6
+        menu!!.findItem(R.id.addDosisItem).isVisible = workFragment !is NutrientSublistFragment
         return super.onPrepareOptionsMenu(menu)
     }
 

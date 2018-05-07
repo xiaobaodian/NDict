@@ -67,6 +67,7 @@ class RecyclerViewAdapter<G, I>(
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
 
         val group: RecyclerViewGroup<G, I>
+            @Suppress("UNCHECKED_CAST")
             get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewGroup<G, I>
 
         fun displayText(R: Int, text: String): GroupViewHolder {
@@ -164,6 +165,7 @@ class RecyclerViewAdapter<G, I>(
         val recyclerItem = dataSet.recyclerViewItems[position]
         when (recyclerItem.viewType.itemType) {
             ItemType.Item -> {
+                @Suppress("UNCHECKED_CAST")
                 val itemViewHolder = holder as RecyclerViewAdapter<G, I>.ItemViewHolder
 //                if (isChecked) {
 //                    itemViewHolder.checkBox!!.visibility = View.VISIBLE
@@ -174,10 +176,13 @@ class RecyclerViewAdapter<G, I>(
 //                itemViewHolder.checkBox!!.ID = item
                 //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
+                @Suppress("UNCHECKED_CAST")
                 shell.displayItem((recyclerItem as RecyclerViewItem<G, I>).self, itemViewHolder)
             }
             ItemType.Group -> {
+                @Suppress("UNCHECKED_CAST")
                 val groupViewHolder = holder as RecyclerViewAdapter<G, I>.GroupViewHolder
+                @Suppress("UNCHECKED_CAST")
                 val group = recyclerItem as RecyclerViewGroup<G, I>
                 //OnBindGroup(groupViewHolder, group)
                 shell.displayGroup(group.self, groupViewHolder)
