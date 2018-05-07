@@ -109,13 +109,13 @@ class NutrientDosisFragment : Fragment() {
             /*
             当前fragment建立实例的时候，表明是开始显示推荐摄入量的列表的状态。通过判断currentNutrient的nutrientID来
             判断是获取那个级别的ProposedDosage数组：
-                nutrientID == 5,6   -> 需要查找currentTraceElement，然后获取ProposedDosage数组
+                nutrientID == 4,5,6   -> 需要查找currentTraceElement，然后获取ProposedDosage数组
                 nutrientID == 其他值 -> 获取currentNutrient的ProposedDosage数组
             */
             it.setQueryDataListener(object : QueryDatasListener<DosisGenderGroup, ProposedDosage>{
                 override fun onQueryDatas(shell: RecyclerViewShell<DosisGenderGroup, ProposedDosage>) {
                     when (shareSet.currentNutrient?.nutrientID){
-                        in 5..6 -> {
+                        in 4..6 -> {
                             shareSet.currentTraceElement?.let {
                                 measure = it.measure
                                 it.proposedDosages.forEach { dosisListShell?.addItem(it) }

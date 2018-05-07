@@ -12,7 +12,7 @@ data class BNutrient(
         var nutrientID: Int = 0,
         var name: String = "",
         var context: _Article? = null,
-        var measure: EMeasure = EMeasure.Mg,
+        var measure: EMeasure = EMeasure.Gram,
         val proposedDosages: MutableList<ProposedDosage> = ArrayList()
 ): BmobObject()
 

@@ -55,14 +55,19 @@ class NutrientEditerActivity : AppCompatActivity() {
                 it.edit(shareSet.currentNutrient!!)
             }
             when (shareSet.currentNutrient?.nutrientID){
+                4 -> {
+                    workFragment = NutrientSublistFragment()
+                    workTitle = "脂类列表"
+                    nutrientType = ENutrientType.Vitamin
+                }
                 5 -> {
                     workFragment = NutrientSublistFragment()
-                    workTitle = "人体所需维生素列表"
+                    workTitle = "维生素列表"
                     nutrientType = ENutrientType.Vitamin
                 }
                 6 -> {
                     workFragment = NutrientSublistFragment()
-                    workTitle = "人体所需微量元素列表"
+                    workTitle = "微量元素列表"
                     nutrientType = ENutrientType.Mineral
                 }
                 else -> {
