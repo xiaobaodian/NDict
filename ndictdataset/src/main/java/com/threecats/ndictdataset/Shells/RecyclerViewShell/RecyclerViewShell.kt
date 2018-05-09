@@ -105,7 +105,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     }
 
     fun updateItem(item: I){
-        dataSet.updateItemDisplay(item)
+        dataSet.updateItem(item)
     }
 
     fun removeItem(item: I){

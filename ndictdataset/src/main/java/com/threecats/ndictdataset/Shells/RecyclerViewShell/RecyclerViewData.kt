@@ -57,7 +57,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         return count
     }
 
-    fun calculatorTitlePosition() {
+    private fun calculatorTitlePosition() {
 
         var position = 0
         recyclerViewGroups.forEach {
@@ -74,7 +74,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         recyclerViewItems.addAll(group.groupItems)
     }
 
-    fun hideGroup(group: RecyclerViewGroup<G,I>) {
+    private fun hideGroup(group: RecyclerViewGroup<G,I>) {
         if (group.groupItems.size > 0) return
         if (group.groupPositionID > recyclerViewItems.size - 1) {
             shell.context.toast("Hide Group : group.groupPositionID > size()")
@@ -228,6 +228,33 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     fun removeItem(item: RecyclerViewItem<G,I>, groupID: Long){
         val group = recyclerViewGroups.find { it.id == groupID }
         group?.let { removeItem(item, it) }
+    }
+
+    fun updateItem(item: I){
+        if (recyclerViewGroups.isEmpty()) {
+            updateItemDisplay(item)
+        } else {
+            val oldGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
+            val addGroups = recyclerViewGroups.toMutableList()
+            val recyclerItem = mapRecyclerItem[item]
+            recyclerItem?.let {
+                val realItem = it
+                realItem.parentGroups.forEach {
+                    if (it is GroupMembership) {
+                        if (it.isMembers(item as Any)) {
+                            oldGroups.add(it)
+                            addGroups.remove(it)
+                        } else {
+                            it.removeItem(realItem)
+                        }
+                    }
+                }
+                addGroups.forEach {
+                    it.addItem(realItem)
+                }
+            }
+        }
+
     }
 
     private fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {

@@ -8,7 +8,10 @@ import android.view.View
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.Enum.EPregnancy
 import com.threecats.ndictdataset.EventClass.UpdateNutrient
+import com.threecats.ndictdataset.Helper.next
+import com.threecats.ndictdataset.Helper.previous
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.EEditState
@@ -25,8 +28,9 @@ class DosisEditerActivity : AppCompatActivity() {
 
     private var nutrientType: ENutrientType = ENutrientType.Vitamin
     private val genderTitle: List<String> = listOf("女性", "男性", "不限性别")
+    private val pregnancyTitle: List<String> = listOf("正常","孕全期","孕早期","孕中期","孕后期")
     private var genderID: Int = 2
-    private var isPregnancy = false
+    private var pregnancyStage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,14 +60,14 @@ class DosisEditerActivity : AppCompatActivity() {
 //        }
 
         btnGender.setOnClickListener{
-            if (--genderID < 0) genderID = 2
+            genderID = genderTitle.previous(genderID)
             btnGenderShowTitle(genderID)
         }
 
         btnPregnancy.setOnClickListener{
-            isPregnancy = !isPregnancy
-            shareSet.editorProposedDosage.currentItem?.pregnancy = isPregnancy
-            btnPregnancyShowTitle()
+            pregnancyStage = pregnancyTitle.next(pregnancyStage)
+            //shareSet.editorProposedDosage.currentItem?.pregnancy = isPregnancy
+            btnPregnancyShowTitle(pregnancyStage)
         }
 
         if (shareSet.editorProposedDosage.isUpdate) {
@@ -118,27 +122,28 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     private fun btnGenderShowTitle(index: Int){
-        if (index !in 0..2) { return }
+        if (index !in 0 until genderTitle.size) { return }
         btnGender.text = genderTitle[index]
         if (index == 0) {
             btnPregnancy.visibility = View.VISIBLE
-            btnPregnancyShowTitle()
+            btnPregnancyShowTitle(pregnancyStage)
         } else {
             btnPregnancy.visibility = View.GONE
         }
     }
 
-    private fun btnPregnancyShowTitle(){
-        btnPregnancy.text = if (isPregnancy) "孕期" else "正常"
+    private fun btnPregnancyShowTitle(index: Int){
+        if (index !in 0 until pregnancyTitle.size) { return }
+        btnPregnancy.text = pregnancyTitle[index]
     }
 
     private fun setFields(){
         val proposedDosage = shareSet.editorProposedDosage.currentItem
         proposedDosage?.let {
             genderID = it.gender.ordinal
-            isPregnancy = it.pregnancy
+            pregnancyStage = it.pregnancy.ordinal
             btnGenderShowTitle(genderID)
-            btnPregnancyShowTitle()
+            btnPregnancyShowTitle(pregnancyStage)
             etAgeRange.append(it.ageRange)
             etDosisRange.append(it.dosisRange)
         }
@@ -147,6 +152,7 @@ class DosisEditerActivity : AppCompatActivity() {
     private fun getFields(){
         shareSet.editorProposedDosage.currentItem?.let {
             it.gender = EGender.values()[genderID]
+            it.pregnancy = EPregnancy.values()[pregnancyStage]
             it.ageRange = etAgeRange.text.toString()
             it.dosisRange = etDosisRange.text.toString()
         }
