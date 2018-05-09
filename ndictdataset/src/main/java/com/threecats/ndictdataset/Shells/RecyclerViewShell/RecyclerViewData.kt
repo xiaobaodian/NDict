@@ -1,6 +1,5 @@
 package com.threecats.ndictdataset.Shells.RecyclerViewShell
 
-import com.threecats.ndictdataset.Models.DosisGenderGroup
 import org.jetbrains.anko.toast
 import java.util.ArrayList
 
@@ -234,22 +233,30 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (recyclerViewGroups.isEmpty()) {
             updateItemDisplay(item)
         } else {
-            val oldGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
-            val addGroups = recyclerViewGroups.toMutableList()
-            val recyclerItem = mapRecyclerItem[item]
+            val addItemToGroups = recyclerViewGroups.toMutableList()
+            var recyclerItem = mapRecyclerItem[item]
+            recyclerViewItems.forEach {
+                if (it is RecyclerViewItem<*,*>) {
+                    @Suppress("UNCHECKED_CAST")
+                    val i = it as RecyclerViewItem<G,I>
+                    if (i.self == item) {
+                        recyclerItem = i
+                    }
+                }
+            }
+            val a=recyclerItem
             recyclerItem?.let {
                 val realItem = it
                 realItem.parentGroups.forEach {
                     if (it is GroupMembership) {
                         if (it.isMembers(item as Any)) {
-                            oldGroups.add(it)
-                            addGroups.remove(it)
+                            addItemToGroups.remove(it)
                         } else {
                             it.removeItem(realItem)
                         }
                     }
                 }
-                addGroups.forEach {
+                addItemToGroups.forEach {
                     it.addItem(realItem)
                 }
             }
