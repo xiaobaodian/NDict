@@ -272,7 +272,14 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             }
         }
         holdToGroups.forEach { updateItemDisplay(recyclerItem, it) }
-        moveToGroups.forEach { it.addItem(recyclerItem) }
+        moveToGroups.forEach {
+            val group = it.self
+            if (group is GroupMembership) {
+                if (group.isMembers(recyclerItem.self as Any)) {
+                    addItem(recyclerItem, it)
+                }
+            }
+        }
     }
 
     private fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
