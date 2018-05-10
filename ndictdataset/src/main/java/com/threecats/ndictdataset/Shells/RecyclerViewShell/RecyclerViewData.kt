@@ -20,6 +20,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     //private val mapRecyclerItem: MutableMap<I, RecyclerViewItem<G, I>> = mutableMapOf()
     private val mapRecyclerGroup: ItemMap<G, RecyclerViewGroup<G, I>> = ItemMap()
     private val mapRecyclerItem: ItemMap<I, RecyclerViewItem<G, I>> = ItemMap()
+    private var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
 
     val hasGroup: Boolean
         get() = !recyclerViewGroups.isEmpty()
@@ -36,8 +37,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun addGroup(recyclerGroup: RecyclerViewGroup<G, I>){
-        if (recyclerViewGroups.size > 0) {
-            val lastGroup = recyclerViewGroups[recyclerViewGroups.size - 1]
+        if (hasGroup) {
+            //val lastGroup = recyclerViewGroups[recyclerViewGroups.size - 1]
+            val lastGroup = recyclerViewGroups.last()
             lastGroup.nextGroup = recyclerGroup
             recyclerGroup.previousGroup = lastGroup
         }
@@ -81,7 +83,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun hideGroup(group: RecyclerViewGroup<G,I>) {
-        if (group.groupItems.size > 0) return
+        if (hasGroup) return
         if (group.groupPositionID > recyclerViewItems.size - 1) {
             shell.context.toast("Hide Group : group.groupPositionID > size()")
             return
@@ -199,7 +201,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun removeItem(recyclerItem: RecyclerViewItem<G, I>) {
-        if (recyclerItem.parentGroups.size == 0) {
+        if (recyclerItem.parentGroups.isEmpty()) {
             val position = recyclerViewItems.indexOf(recyclerItem)
             if (position >= 0) {
                 recyclerViewItems.removeAt(position)
