@@ -266,7 +266,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
                     moveToGroups.remove(it)
                     holdToGroups.add(it)
                 } else {
-                    it.removeItem(recyclerItem)
+                    removeItem(recyclerItem, it)
                     recyclerItem.parentGroups.remove(it)
                 }
             }
