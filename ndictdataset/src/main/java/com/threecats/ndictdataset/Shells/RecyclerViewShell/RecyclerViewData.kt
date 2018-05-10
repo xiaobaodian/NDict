@@ -6,6 +6,7 @@ import java.util.ArrayList
 /**
  * 由 zhang 于 2018/3/28 创建
  */
+
 class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     var currentGroup: RecyclerViewGroup<G, I>? = null
@@ -17,6 +18,8 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
     private val mapRecyclerGroup: MutableMap<G, RecyclerViewGroup<G, I>> = mutableMapOf()  // mutableMapOf
     private val mapRecyclerItem: MutableMap<I, RecyclerViewItem<G, I>> = mutableMapOf()
+    private val mmapRecyclerGroup: ItemMap<G, RecyclerViewGroup<G, I>> = ItemMap()
+    private val mmapRecyclerItem: ItemMap<I, RecyclerViewItem<G, I>> = ItemMap()
 
     val hasGroup: Boolean
         get() = !recyclerViewGroups.isEmpty()
@@ -134,6 +137,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             var isLostItem = true
             val recyclerItem = RecyclerViewItem<G,I>(item)
             mapRecyclerItem[recyclerItem.self] = recyclerItem
+            mmapRecyclerItem.put(item, recyclerItem)
             recyclerViewGroups.forEach {
                 val group = it.self
                 if (group is GroupMembership) {
@@ -144,6 +148,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             }
             if (isLostItem) {
                 mapRecyclerItem.remove(item)
+                mmapRecyclerItem.remove(item)
                 shell.context.toast("丢失了记录：${item.toString()}")
             }
         }
@@ -155,6 +160,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (recyclerViewGroups.size == 0) {
             //items.add(recyclerItem.self)  // 建立I类的实例对象的映射列表
             mapRecyclerItem[recyclerItem.self] = recyclerItem
+            mmapRecyclerItem.put(recyclerItem.self, recyclerItem)
             recyclerItem.viewType.itemType = ItemType.Item
             recyclerViewItems.add(recyclerItem)
             position = recyclerViewItems.size - 1
@@ -235,7 +241,8 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun updateItem(item: I){
-        val recyclerItem = mapRecyclerItem[item]
+        //val recyclerItem = mapRecyclerItem[item]
+        val recyclerItem = mmapRecyclerItem.get(item)
         recyclerItem?.let {
             if (recyclerViewGroups.isEmpty()) {
                 updateCurrentItemDisplay(item)
@@ -248,9 +255,11 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     private fun updateItem(recyclerItem: RecyclerViewItem<G,I>){
         val moveToGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
         val holdToGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
+        val parentGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
         moveToGroups.addAll(recyclerViewGroups)
+        parentGroups.addAll(recyclerItem.parentGroups)
 
-        recyclerItem.parentGroups.forEach {
+        parentGroups.forEach {
             val group = it.self
             if (group is GroupMembership) {
                 if (group.isMembers(recyclerItem.self as Any)) {
@@ -258,6 +267,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
                     holdToGroups.add(it)
                 } else {
                     it.removeItem(recyclerItem)
+                    recyclerItem.parentGroups.remove(it)
                 }
             }
         }
