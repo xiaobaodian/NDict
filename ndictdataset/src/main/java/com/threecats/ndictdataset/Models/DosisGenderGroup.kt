@@ -1,6 +1,7 @@
 package com.threecats.ndictdataset.Models
 
 import com.threecats.ndictdataset.Enum.EGender
+import com.threecats.ndictdataset.Enum.EPregnancy
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.GroupMembership
 
 /**
@@ -8,10 +9,17 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.GroupMembership
  */
 class DosisGenderGroup(
         var title: String = "所有人",
-        private var genderGroup: EGender = EGender.None
+        private var genderGroup: EGender = EGender.None,
+        private var pregnancy: EPregnancy = EPregnancy.None
 ): GroupMembership {
 
     override fun isMembers(item: Any): Boolean {
-        return genderGroup == (item as ProposedDosage).gender
+        var proposedDosage = item as ProposedDosage
+        if (genderGroup != proposedDosage.gender) return false
+        if (genderGroup == EGender.Female) {
+            return pregnancy == proposedDosage.pregnancy
+        } else {
+            return true
+        }
     }
 }

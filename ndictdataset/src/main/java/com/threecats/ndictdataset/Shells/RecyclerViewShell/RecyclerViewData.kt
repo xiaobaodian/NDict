@@ -16,11 +16,11 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     val recyclerViewGroups: MutableList<RecyclerViewGroup<G, I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
+    var adapter: RecyclerViewAdapter<G,I>? = null
     //private val mapRecyclerGroup: MutableMap<G, RecyclerViewGroup<G, I>> = mutableMapOf()  // mutableMapOf
     //private val mapRecyclerItem: MutableMap<I, RecyclerViewItem<G, I>> = mutableMapOf()
     private val mapRecyclerGroup: ItemMap<G, RecyclerViewGroup<G, I>> = ItemMap()
     private val mapRecyclerItem: ItemMap<I, RecyclerViewItem<G, I>> = ItemMap()
-    private var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
 
     val hasGroup: Boolean
         get() = !recyclerViewGroups.isEmpty()
@@ -90,7 +90,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         }
         if (group === recyclerViewItems[group.groupPositionID]) {
             recyclerViewItems.removeAt(group.groupPositionID)
-            shell.recyclerAdapter?.notifyItemRemoved(group.groupPositionID)
+            adapter?.notifyItemRemoved(group.groupPositionID)
             group.state = DisplayState.Hide
             calculatorTitlePosition()
         } else {
@@ -104,13 +104,13 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (nextGroupPosition >= 0) {
             group.groupPositionID = nextGroupPosition
             recyclerViewItems.add(nextGroupPosition, group)
-            shell.recyclerAdapter?.notifyItemInserted(nextGroupPosition)
+            adapter?.notifyItemInserted(nextGroupPosition)
             calculatorTitlePosition()
         } else {
             //如果没有下一组，就表明当前组就是最后一组，不用插入，只需要添加
             recyclerViewItems.add(group)
             group.groupPositionID = recyclerViewItems.size - 1
-            shell.recyclerAdapter?.notifyItemInserted(group.groupPositionID)
+            adapter?.notifyItemInserted(group.groupPositionID)
         }
         group.state = DisplayState.Show
     }
@@ -164,7 +164,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             recyclerItem.viewType.itemType = ItemType.Item
             recyclerViewItems.add(recyclerItem)
             position = recyclerViewItems.size - 1
-            shell.recyclerAdapter?.notifyItemInserted(position)
+            adapter?.notifyItemInserted(position)
         }
         return position
     }
@@ -205,7 +205,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             val position = recyclerViewItems.indexOf(recyclerItem)
             if (position >= 0) {
                 recyclerViewItems.removeAt(position)
-                shell.recyclerAdapter?.notifyItemRemoved(position)
+                adapter?.notifyItemRemoved(position)
             }
         } else {
             val tempGroups = recyclerItem.parentGroups.toList()
@@ -290,7 +290,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         } else {
             recyclerViewItems.add(site, item)
         }
-        shell.recyclerAdapter?.notifyItemInserted(site)
+        adapter?.notifyItemInserted(site)
         //shell.recyclerAdapter?.notifyDataSetChanged()
     }
 
@@ -298,7 +298,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         val site = group.groupPositionID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
         if (recyclerViewItems[site] === item) {
             recyclerViewItems.removeAt(site)
-            shell.recyclerAdapter?.notifyItemRemoved(site)
+            adapter?.notifyItemRemoved(site)
         } else {
             shell.context.toast("注意：要删除的Item与列表中指定位置的记录不相符 ！")
         }
@@ -306,13 +306,13 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun updateCurrentItemDisplay(item: I){
         currentRecyclerItemPosition?.let {
-            shell.recyclerAdapter?.notifyItemChanged(it)
+            adapter?.notifyItemChanged(it)
         }
     }
 
     private fun updateItemDisplay(recyclerItem: RecyclerViewItem<G, I>, recyclerGroup: RecyclerViewGroup<G, I>) {
         val site = recyclerGroup.groupItems.indexOf(recyclerItem) + recyclerGroup.groupPositionID + 1
-        shell.recyclerAdapter?.notifyItemChanged(site)
+        adapter?.notifyItemChanged(site)
     }
 
 }

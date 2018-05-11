@@ -14,7 +14,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
-    var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
+    private var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
 
     private val isNullItems: Boolean
         get() = dataSet.recyclerViewItems.size == 0
@@ -43,6 +43,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     init {
         recyclerAdapter = RecyclerViewAdapter(dataSet, this)
+        dataSet.adapter = recyclerAdapter
     }
 
     fun recyclerView(recyclerView: RecyclerView): RecyclerViewShell<G, I> {

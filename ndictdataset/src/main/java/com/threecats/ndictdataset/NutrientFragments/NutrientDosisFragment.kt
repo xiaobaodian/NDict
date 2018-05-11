@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.EMeasure
+import com.threecats.ndictdataset.Enum.EPregnancy
 import com.threecats.ndictdataset.Models.DosisGenderGroup
 import com.threecats.ndictdataset.Models.ProposedDosage
 
@@ -29,8 +30,12 @@ class NutrientDosisFragment : Fragment() {
     private var measure = EMeasure.Mg
 
     private val humanGroup = DosisGenderGroup("男女适用", EGender.None)
-    private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
     private val maleGroup = DosisGenderGroup("男性", EGender.Male)
+    private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
+    private val regnancyFullGroup = DosisGenderGroup("怀孕期间", EGender.Female, EPregnancy.Full)
+    private val regnancyEarlyGroup = DosisGenderGroup("怀孕前期", EGender.Female, EPregnancy.Early)
+    private val regnancyMiddleGroup = DosisGenderGroup("怀孕中期", EGender.Female, EPregnancy.Middle)
+    private val regnancyLateGroup = DosisGenderGroup("怀孕后期", EGender.Female, EPregnancy.Late)
 
     private var dosisListShell: RecyclerViewShell<DosisGenderGroup, ProposedDosage>? = null
 
@@ -74,8 +79,12 @@ class NutrientDosisFragment : Fragment() {
             dosisListShell = RecyclerViewShell(context!!)
             dosisListShell?.let {
                 it.addGroup(humanGroup)
-                it.addGroup(femaleGroup)
                 it.addGroup(maleGroup)
+                it.addGroup(femaleGroup)
+                it.addGroup(regnancyFullGroup)
+                it.addGroup(regnancyEarlyGroup)
+                it.addGroup(regnancyMiddleGroup)
+                it.addGroup(regnancyLateGroup)
             }
         }
 
@@ -90,7 +99,7 @@ class NutrientDosisFragment : Fragment() {
             })
             it.setDisplayItemListener(object : DisplayItemListener<DosisGenderGroup, ProposedDosage> {
                 override fun onDisplayItem(item: ProposedDosage, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.ItemViewHolder) {
-                    holder.displayText(R.id.ageRange, "（${item.gender.chinaName}） ${item.ageRange}岁")
+                    holder.displayText(R.id.ageRange, "${item.ageRange} 岁")
                     holder.displayText(R.id.dosage, "${item.dosisRange} ${measure.chinaName}/天")
                 }
             })
