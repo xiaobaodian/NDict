@@ -22,9 +22,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     private val mapRecyclerGroup: ItemMap<G, RecyclerViewGroup<G, I>> = ItemMap()
     private val mapRecyclerItem: ItemMap<I, RecyclerViewItem<G, I>> = ItemMap()
 
-    val hasGroup: Boolean
+    private val hasGroup: Boolean
         get() = !recyclerViewGroups.isEmpty()
-    val notGroup: Boolean
+    private val noGroup: Boolean
         get() = recyclerViewGroups.isEmpty()
 //    val groups: List<G>                                 // = ArrayList()
 //        get() = mapRecyclerGroup.keys.toList()
@@ -47,7 +47,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         recyclerViewGroups.add(recyclerGroup)
         recyclerGroup.parentData = this
         addGroupInRecyclerViewItems(recyclerGroup)
-        calculatorTitlePosition()
+        calculatorGroupPosition()
     }
 
     fun getGroup(id: Long): RecyclerViewGroup<G,I>? {
@@ -65,7 +65,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         return count
     }
 
-    private fun calculatorTitlePosition() {
+    private fun calculatorGroupPosition() {
 
         var position = 0
         recyclerViewGroups.forEach {
@@ -83,7 +83,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun hideGroup(group: RecyclerViewGroup<G,I>) {
-        if (notGroup) return
+        if (noGroup) return
         if (group.groupPositionID > recyclerViewItems.size - 1) {
             shell.context.toast("Hide Group : group.groupPositionID > size()")
             return
@@ -92,9 +92,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             recyclerViewItems.removeAt(group.groupPositionID)
             adapter?.notifyItemRemoved(group.groupPositionID)
             group.state = DisplayState.Hide
-            calculatorTitlePosition()
+            calculatorGroupPosition()
         } else {
-            shell.context.toast("HideGroup出现错误")
+            shell.context.toast("隐藏组出现错误")
         }
     }
 
@@ -105,7 +105,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             group.groupPositionID = nextGroupPosition
             recyclerViewItems.add(nextGroupPosition, group)
             adapter?.notifyItemInserted(nextGroupPosition)
-            calculatorTitlePosition()
+            calculatorGroupPosition()
         } else {
             //如果没有下一组，就表明当前组就是最后一组，不用插入，只需要添加
             recyclerViewItems.add(group)
@@ -133,7 +133,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     fun addItem(item: I): Int{
         var position: Int = -1
-        if (notGroup) {
+        if (noGroup) {
             position = addItem(RecyclerViewItem(item))
         } else {
             var isLostItem = true
@@ -183,7 +183,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (recyclerGroup.state === DisplayState.Hide) { activeGroup(recyclerGroup) }
         val position = recyclerGroup.addItem(recyclerItem)
         addItemToRecyclerViewItems(recyclerGroup, position, recyclerItem)
-        calculatorTitlePosition()
+        calculatorGroupPosition()
         return position
     }
 
@@ -231,7 +231,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             if (recyclerGroup.groupItems.size == 0) {
                 hideGroup(recyclerGroup)
             }
-            calculatorTitlePosition()
+            calculatorGroupPosition()
         }
     }
 

@@ -66,7 +66,6 @@ class DosisEditerActivity : AppCompatActivity() {
 
         btnPregnancy.setOnClickListener{
             pregnancyStage = pregnancyTitle.next(pregnancyStage)
-            //shareSet.editorProposedDosage.currentItem?.pregnancy = isPregnancy
             btnPregnancyShowTitle(pregnancyStage)
         }
 
@@ -135,6 +134,11 @@ class DosisEditerActivity : AppCompatActivity() {
     private fun btnPregnancyShowTitle(index: Int){
         if (index !in 0 until pregnancyTitle.size) { return }
         btnPregnancy.text = pregnancyTitle[index]
+        if (index == EPregnancy.None.ordinal) {
+            ageRangeLayout.visibility = View.VISIBLE  //ageRangeLayout
+        } else {
+            ageRangeLayout.visibility = View.INVISIBLE
+        }
     }
 
     private fun setFields(){
