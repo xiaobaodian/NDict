@@ -32,10 +32,10 @@ class NutrientDosisFragment : Fragment() {
     private val humanGroup = DosisGenderGroup("男女适用", EGender.None)
     private val maleGroup = DosisGenderGroup("男性", EGender.Male)
     private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
-    private val regnancyFullGroup = DosisGenderGroup("怀孕期间", EGender.Female, EPregnancy.Full)
-    private val regnancyEarlyGroup = DosisGenderGroup("怀孕前期", EGender.Female, EPregnancy.Early)
-    private val regnancyMiddleGroup = DosisGenderGroup("怀孕中期", EGender.Female, EPregnancy.Middle)
-    private val regnancyLateGroup = DosisGenderGroup("怀孕后期", EGender.Female, EPregnancy.Late)
+    private val regnancyFullGroup = DosisGenderGroup("孕全期", EGender.Female, EPregnancy.Full)
+    private val regnancyEarlyGroup = DosisGenderGroup("孕前期", EGender.Female, EPregnancy.Early)
+    private val regnancyMiddleGroup = DosisGenderGroup("孕中期", EGender.Female, EPregnancy.Middle)
+    private val regnancyLateGroup = DosisGenderGroup("孕后期", EGender.Female, EPregnancy.Late)
 
     private var dosisListShell: RecyclerViewShell<DosisGenderGroup, ProposedDosage>? = null
 
