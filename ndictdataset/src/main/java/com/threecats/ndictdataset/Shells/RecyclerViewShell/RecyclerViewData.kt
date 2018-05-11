@@ -83,7 +83,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun hideGroup(group: RecyclerViewGroup<G,I>) {
-        if (hasGroup) return
+        if (notGroup) return
         if (group.groupPositionID > recyclerViewItems.size - 1) {
             shell.context.toast("Hide Group : group.groupPositionID > size()")
             return
