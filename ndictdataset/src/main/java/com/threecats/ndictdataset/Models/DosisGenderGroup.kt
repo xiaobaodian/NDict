@@ -9,17 +9,10 @@ import com.threecats.ndictdataset.Shells.RecyclerViewShell.GroupMembership
  */
 class DosisGenderGroup(
         var title: String = "所有人",
-        private var genderGroup: EGender = EGender.None,
-        private var pregnancy: EPregnancy = EPregnancy.None
+        private var genderGroup: EGender = EGender.None
 ): GroupMembership {
 
     override fun isMembers(item: Any): Boolean {
-        var proposedDosage = item as ProposedDosage
-        if (genderGroup != proposedDosage.gender) return false
-        if (genderGroup == EGender.Female) {
-            return pregnancy == proposedDosage.pregnancy
-        } else {
-            return true
-        }
+        return (item as ProposedDosage).gender == genderGroup
     }
 }

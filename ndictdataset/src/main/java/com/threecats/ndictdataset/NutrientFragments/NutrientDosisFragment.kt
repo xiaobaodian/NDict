@@ -32,10 +32,6 @@ class NutrientDosisFragment : Fragment() {
     private val humanGroup = DosisGenderGroup("男女适用", EGender.None)
     private val maleGroup = DosisGenderGroup("男性", EGender.Male)
     private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
-    private val regnancyFullGroup = DosisGenderGroup("孕全期", EGender.Female, EPregnancy.Full)
-    private val regnancyEarlyGroup = DosisGenderGroup("孕前期", EGender.Female, EPregnancy.Early)
-    private val regnancyMiddleGroup = DosisGenderGroup("孕中期", EGender.Female, EPregnancy.Middle)
-    private val regnancyLateGroup = DosisGenderGroup("孕后期", EGender.Female, EPregnancy.Late)
 
     private var dosisListShell: RecyclerViewShell<DosisGenderGroup, ProposedDosage>? = null
 
@@ -81,10 +77,6 @@ class NutrientDosisFragment : Fragment() {
                 it.addGroup(humanGroup)
                 it.addGroup(maleGroup)
                 it.addGroup(femaleGroup)
-                it.addGroup(regnancyFullGroup)
-                it.addGroup(regnancyEarlyGroup)
-                it.addGroup(regnancyMiddleGroup)
-                it.addGroup(regnancyLateGroup)
             }
         }
 
@@ -99,7 +91,13 @@ class NutrientDosisFragment : Fragment() {
             })
             it.setDisplayItemListener(object : DisplayItemListener<DosisGenderGroup, ProposedDosage> {
                 override fun onDisplayItem(item: ProposedDosage, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.ItemViewHolder) {
-                    holder.displayText(R.id.ageRange, "${item.ageRange} 岁")
+                    var ageText = ""
+                    if (item.gender == EGender.Female) {
+                        ageText = if (item.pregnancy == EPregnancy.None) "${item.ageRange} 岁" else item.pregnancy.chineseName
+                    } else{
+                        ageText = "${item.ageRange} 岁"
+                    }
+                    holder.displayText(R.id.ageRange, ageText)
                     holder.displayText(R.id.dosage, "${item.dosisRange} ${measure.chinaName}/天")
                 }
             })
