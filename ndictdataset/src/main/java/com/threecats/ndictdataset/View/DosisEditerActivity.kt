@@ -14,13 +14,11 @@ import com.threecats.ndictdataset.Helper.next
 import com.threecats.ndictdataset.Helper.previous
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.Shells.EditorShell.EEditState
 
 import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.toast
 
 class DosisEditerActivity : AppCompatActivity() {
 
@@ -142,7 +140,7 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     private fun setFields(){
-        val proposedDosage = shareSet.editorProposedDosage.currentItem
+        val proposedDosage = shareSet.editorProposedDosage.item
         proposedDosage?.let {
             genderID = it.gender.ordinal
             pregnancyStage = it.pregnancy.ordinal
@@ -154,7 +152,7 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     private fun getFields(){
-        shareSet.editorProposedDosage.currentItem?.let {
+        shareSet.editorProposedDosage.item?.let {
             it.gender = EGender.values()[genderID]
             it.pregnancy = EPregnancy.values()[pregnancyStage]
             it.ageRange = etAgeRange.text.toString()

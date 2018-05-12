@@ -9,14 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EChangeBlock
-import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.Helper.EditTextHelper
 
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
-import kotlinx.android.synthetic.main.fragment_food_vitamin.*
-import org.greenrobot.eventbus.EventBus
 
 /**
  * A simple [Fragment] subclass.
@@ -48,7 +45,7 @@ class FoodMineralFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.editorFood.currentItem?.let { importFields(it) }
+            shareSet.editorFood.item?.let { importFields(it) }
         }
     }
 

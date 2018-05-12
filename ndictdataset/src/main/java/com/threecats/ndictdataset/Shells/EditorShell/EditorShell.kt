@@ -12,7 +12,8 @@ enum class EEditState{
 
 class EditorShell<I> {
 
-    var currentItem: I? = null
+    var item: I? = null
+
     val isAppend: Boolean
         get() = editState == EEditState.Append
     val isUpdate: Boolean
@@ -27,13 +28,13 @@ class EditorShell<I> {
     private var cancelListener: CancelListener<I>? = null
 
     fun append(item: I){
-        currentItem = item
+        this.item = item
         initHashCode = getHashCode()
         editState = EEditState.Append
     }
 
     fun edit(item: I){
-        currentItem = item
+        this.item = item
         initHashCode = getHashCode()
         editState = EEditState.Update
     }
@@ -50,7 +51,7 @@ class EditorShell<I> {
 
         val newHashCode = getHashCode()
 
-        currentItem?.let {
+        item?.let {
             when (editState){
                 EEditState.Append -> {
                     if (initHashCode == newHashCode) { return }
@@ -68,7 +69,7 @@ class EditorShell<I> {
 
     }
 
-    private fun getHashCode() = currentItem.toString().hashCode()
+    private fun getHashCode() = item.toString().hashCode()
 
     fun setOnAppendItemListener(listener: AppendItemListener<I>){
         appendItemListener = listener

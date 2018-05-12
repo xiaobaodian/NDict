@@ -15,10 +15,7 @@ import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import org.greenrobot.eventbus.EventBus
-import org.jetbrains.anko.toast
 //import com.threecats.ndict.View.MainActivity
-import android.content.Intent
-import android.os.Handler
 
 
 /**
@@ -49,7 +46,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.editorFood.currentItem?.let { importFields(it) }
+            shareSet.editorFood.item?.let { importFields(it) }
         }
     }
 

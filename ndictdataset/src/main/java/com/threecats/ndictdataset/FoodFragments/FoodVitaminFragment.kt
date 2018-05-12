@@ -11,7 +11,6 @@ import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.View.FoodEditerActivity
-import kotlinx.android.synthetic.main.fragment_food_nutrient.*
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
 import org.greenrobot.eventbus.EventBus
 
@@ -47,7 +46,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         //setREOrOther()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.editorFood.currentItem?.let { importFields(it) }
+            shareSet.editorFood.item?.let { importFields(it) }
         }
     }
 

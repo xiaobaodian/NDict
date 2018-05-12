@@ -61,7 +61,7 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onResume()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.editorFood.currentItem?.let { importFields(it) }
+            shareSet.editorFood.item?.let { importFields(it) }
         }
     }
 

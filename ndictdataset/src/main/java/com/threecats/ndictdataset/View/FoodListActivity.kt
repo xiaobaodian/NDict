@@ -66,7 +66,7 @@ class FoodListActivity : AppCompatActivity() {
             //        .setAction("Action", null).show()
             //shareSet.createFood()
             shareSet.editorFood.append(BFood().apply { category = currentCategory })
-            shareSet.currentFood = shareSet.editorFood.currentItem      // 考虑去掉
+            shareSet.currentFood = shareSet.editorFood.item      // 考虑去掉
             val intent = Intent(this@FoodListActivity, FoodEditerActivity::class.java)
             startActivity(intent)
         }

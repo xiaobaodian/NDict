@@ -6,19 +6,11 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
-import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.SaveListener
-import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Enum.EChangeBlock
-import com.threecats.ndictdataset.Enum.EEditerState
-import com.threecats.ndictdataset.EventClass.DeleteFoodRecyclerItem
 import com.threecats.ndictdataset.EventClass.NextFragment
-import com.threecats.ndictdataset.EventClass.UpdateFoodRecyclerItem
-import com.threecats.ndictdataset.EventClass.UpdateNutrient
 import com.threecats.ndictdataset.FoodFragments.*
-import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
@@ -66,7 +58,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 .addFragment(FoodNoteFragment(),"描述")
                 .link()
 
-        shareSet.editorFood.currentItem?.let {
+        shareSet.editorFood.item?.let {
             val food = it
             shareSet.currentCategory?.let {
                 if (food.foodBased != it.foodBased) food.foodBased = it.foodBased
@@ -110,8 +102,8 @@ class FoodEditerActivity : AppCompatActivity() {
                 assembleAllFields()
                 shareSet.editorFood.commit()
                 shareSet.editorFood.append(BFood())
-                shareSet.currentFood = shareSet.editorFood.currentItem   // 考虑去掉
-                shareSet.editorFood.currentItem?.let {
+                shareSet.currentFood = shareSet.editorFood.item   // 考虑去掉
+                shareSet.editorFood.item?.let {
                     val food = it
                     nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).importFields(food) }
                     nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
@@ -132,7 +124,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private fun assembleAllFields(){
         if (shareSet.editorFood.isAppend) {
-            shareSet.editorFood.currentItem?.let {
+            shareSet.editorFood.item?.let {
                 val food = it
                 nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
             }
@@ -140,7 +132,7 @@ class FoodEditerActivity : AppCompatActivity() {
             changBlockList.clear()
             nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).blockChangeState(this) }
             if (changBlockList.size > 0) {
-                shareSet.editorFood.currentItem?.let {
+                shareSet.editorFood.item?.let {
                     val food = it
                     nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
                 }
