@@ -22,17 +22,5 @@ class PublicSet(val appContext: Context) {
     val editorNutrient = EditorShell<BNutrient>()
     val lastUpdateState = LastUpdateState(appContext)
 
-    fun createFood(){
-        ItemEditState = EEditerState.FoodAppend
-        val food = BFood().apply {
-            category = currentCategory
-        }
-        currentFood = food
-    }
-
-    fun editFood(food: BFood){
-        ItemEditState = EEditerState.FoodEdit
-        currentFood = food
-    }
 
 }

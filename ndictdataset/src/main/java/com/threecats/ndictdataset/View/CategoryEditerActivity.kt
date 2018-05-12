@@ -23,7 +23,8 @@ import org.jetbrains.anko.toast
 
 class CategoryEditerActivity : AppCompatActivity() {
 
-    val currentCategory = BDM.ShareSet!!.currentCategory!!
+    private val shareSet = BDM.ShareSet!!
+    private val currentCategory = shareSet.currentCategory!!
     val checkTextHelper = EditTextHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
