@@ -114,10 +114,10 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         getFields()
         shareSet.editorProposedDosage.commit()
         shareSet.currentNutrient?.let { EventBus.getDefault().post(UpdateNutrient(it)) }
+        super.onDestroy()
     }
 
     private fun btnGenderShowTitle(index: Int){
