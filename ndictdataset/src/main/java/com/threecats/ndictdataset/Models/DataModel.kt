@@ -1,16 +1,9 @@
 package com.threecats.ndictdataset.Models
 
-import cn.bmob.v3.BmobBatch
-import cn.bmob.v3.BmobObject
-import cn.bmob.v3.datatype.BatchResult
 import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.QueryListListener
 import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.*
-import com.threecats.ndictdataset.Enum.EEditerState
-import com.threecats.ndictdataset.EventClass.UpdateCategoryRecyclerItem
-import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
 
 /**
@@ -19,7 +12,7 @@ import org.jetbrains.anko.toast
 class DataModel {
 
     val shareSet = BDM.ShareSet!!
-    val context = shareSet.AppContext
+    val context = shareSet.appContext
 
     fun updateCategoryFoodSize(category: BFoodCategory, size: Int){
         category.foodTotal = size

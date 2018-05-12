@@ -137,7 +137,7 @@ class DosisEditerActivity : AppCompatActivity() {
         if (index == EPregnancy.None.ordinal) {
             ageRangeLayout.visibility = View.VISIBLE  //ageRangeLayout
         } else {
-            ageRangeLayout.visibility = View.INVISIBLE
+            ageRangeLayout.visibility = View.GONE
         }
     }
 
