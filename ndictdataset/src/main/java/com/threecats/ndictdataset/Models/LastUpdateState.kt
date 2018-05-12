@@ -5,6 +5,7 @@ import cn.bmob.v3.BmobBatch
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.datatype.BatchResult
+import cn.bmob.v3.datatype.BmobDate
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListListener
@@ -37,7 +38,7 @@ class LastUpdateState(val context: Context) {
         })
     }
 
-    fun check(){
+    private fun check(){
         if (states.isEmpty()) {
             states.add(BUpdateState(ERecordType.Category))
             states.add(BUpdateState(ERecordType.Food))
@@ -56,5 +57,35 @@ class LastUpdateState(val context: Context) {
                 }
             })
         }
+    }
+
+    private fun find(type: ERecordType): BUpdateState? {
+        var result: BUpdateState? = null
+        states.forEach { if (it.recordType == type) result = it}
+        return result
+    }
+
+    fun changeDate(type: ERecordType, item: BmobObject){
+        val state = find(type)
+        state?.lastDate = BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", item.updatedAt)
+    }
+
+    fun appendDate(type: ERecordType, item: BmobObject){
+        val state = find(type)
+        state?.lastDate = BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", item.createdAt)
+    }
+
+    fun commit(){
+        val batchStates: MutableList<BmobObject> = ArrayList()
+        states.forEach { batchStates.add(it) }
+        BmobBatch().updateBatch(batchStates).doBatch(object: QueryListListener<BatchResult>(){
+            override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
+                if (e == null) {
+                    context.toast("更新了数据变更时间列表")
+                } else {
+                    ErrorMessage(context, e)
+                }
+            }
+        })
     }
 }

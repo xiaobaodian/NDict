@@ -54,6 +54,7 @@ class NutrientListFragment : Fragment() {
             it.setOnClickItemListener(object : ClickItemListener<Any, BNutrient>{
                 override fun onClickItem(item: BNutrient, holder: RecyclerViewAdapter<Any, BNutrient>.ItemViewHolder) {
                     shareSet.currentNutrient = item
+                    shareSet.editorNutrient.edit(item)
                     val intent = Intent(context, NutrientEditerActivity::class.java)
                     context?.startActivity(intent)
                 }
@@ -84,9 +85,7 @@ class NutrientListFragment : Fragment() {
                                     shell.completeQuery()
                                 }
                             } else {
-                                if (view != null) {
-                                    ErrorMessage(context!!, e)
-                                }
+                                ErrorMessage(context!!, e)
                             }
                         }
                     })

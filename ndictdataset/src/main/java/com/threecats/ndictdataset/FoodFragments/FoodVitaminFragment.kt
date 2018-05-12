@@ -47,7 +47,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         //setREOrOther()
         if (initFieldsFlag) {
             initFieldsFlag = false
-            shareSet.currentFood?.let { importFields(it) }
+            shareSet.editorFood.currentItem?.let { importFields(it) }
         }
     }
 

@@ -84,9 +84,7 @@ class CategoryFoodsFragment : Fragment() {
                                     shell.completeQuery()
                                 }
                             } else {
-                                if (view != null) {
-                                    ErrorMessage(context!!, e)
-                                }
+                                ErrorMessage(context!!, e)
                             }
                         }
                     })
@@ -113,41 +111,10 @@ class CategoryFoodsFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun doUpdateCategoryRecyclerItem(updateItem: UpdateCategoryRecyclerItem<BFoodCategory>){
         when (updateItem.state){
-            EEditerState.CategoryEdit -> categoryListShell!!.updateItem(updateItem.category)
-            EEditerState.CategoryAppend -> {categoryListShell!!.addItem(updateItem.category)
-            }
+            EEditerState.CategoryEdit -> categoryListShell?.updateItem(updateItem.category)
+            EEditerState.CategoryAppend -> categoryListShell?.addItem(updateItem.category)
             else -> context?.toast("EditState Error !")
         }
-
-    }
-
-    private fun queryOne(objectID: String){
-        val categoryQuery: BmobQuery<BFoodCategory> = BmobQuery<BFoodCategory>()
-        categoryQuery.getObject(objectID, object : QueryListener<BFoodCategory>() {
-            override fun done(category: BFoodCategory?, e: BmobException?) {
-                if (e == null) {
-                    //message.text = food!!.longTitle
-                } else {
-                    //message.text = e.message
-                }
-            }
-        })
-    }
-
-    private fun saveCategoryOne(categoryID: Int, longTitle: String, shortTitle: String){
-        val category = BFoodCategory()  //categoryID, longTitle, shortTitle
-        category.categoryID = categoryID
-        category.longTitle = longTitle
-        category.shortTitle = shortTitle
-        category.save(object : SaveListener<String>() {
-            override fun done(objectId: String?, e: BmobException?) {
-                if (e == null) {
-                    //message.text = "添加数据成功，返回objectId为：" + objectId
-                } else {
-                    //message.text = "创建数据失败：" + e.message
-                }
-            }
-        })
     }
 
 }// Required empty public constructor

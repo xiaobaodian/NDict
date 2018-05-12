@@ -46,14 +46,11 @@ class NutrientEditerActivity : AppCompatActivity() {
 
         if (shareSet.currentTraceElement == null) {
             NutrientEditerToolbar.title = shareSet.currentNutrient?.name
-            shareSet.editorNutrient.let {
-                it.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
-                    override fun onUpdateItem(item: BNutrient) {
-                        item.update()
-                    }
-                })
-                it.edit(shareSet.currentNutrient!!)
-            }
+            shareSet.editorNutrient.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
+                override fun onUpdateItem(item: BNutrient) {
+                    item.update()
+                }
+            })
             when (shareSet.currentNutrient?.nutrientID){
                 4 -> {
                     workFragment = NutrientSublistFragment()
