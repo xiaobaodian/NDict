@@ -184,6 +184,7 @@ class FoodListActivity : AppCompatActivity() {
                         override fun done(e: BmobException?) {
                             if (e == null) {
                                 foodListShell?.removeItem(item)
+                                updateCategoryFoodSize(foodListShell?.itemsSize()!!)
                                 toast("删除食材 ${item.name} 成功")
                             } else {
                                 ErrorMessage(applicationContext, e)

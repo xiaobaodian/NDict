@@ -22,9 +22,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     private val mapRecyclerGroup: ItemMap<G, RecyclerViewGroup<G, I>> = ItemMap()
     private val mapRecyclerItem: ItemMap<I, RecyclerViewItem<G, I>> = ItemMap()
 
-    private val hasGroup: Boolean
+    val hasGroup: Boolean
         get() = !recyclerViewGroups.isEmpty()
-    private val noGroup: Boolean
+    val noGroup: Boolean
         get() = recyclerViewGroups.isEmpty()
 //    val groups: List<G>                                 // = ArrayList()
 //        get() = mapRecyclerGroup.keys.toList()
@@ -57,7 +57,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     fun getItemsCount(): Int {
         var count = 0
-        if (recyclerViewGroups.size > 0) {
+        if (hasGroup) {
             recyclerViewGroups.forEach { count += it.groupItems.size }
         } else {
             count = recyclerViewItems.size
@@ -66,7 +66,6 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun calculatorGroupPosition() {
-
         var position = 0
         recyclerViewGroups.forEach {
             if (it.state == DisplayState.Show) {
@@ -158,7 +157,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun addItem(recyclerItem: RecyclerViewItem<G, I>): Int{
         var position = -1
-        if (recyclerViewGroups.size == 0) {
+        if (noGroup) {
             //items.add(recyclerItem.self)  // 建立I类的实例对象的映射列表
             mapRecyclerItem.put(recyclerItem.self, recyclerItem)
             recyclerItem.viewType.itemType = ItemType.Item
@@ -171,7 +170,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     fun addItem(item: I, group: G): Int{
         var position = -1
-        val recyclerGroup = mapRecyclerGroup.get(group)
+        val recyclerGroup = findRecyclerGroup(group)
         recyclerGroup?.let {
             //val recyclerItem = RecyclerViewItem<G, I>(item)
             position = addItem(RecyclerViewItem(item), recyclerGroup)
@@ -193,7 +192,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun removeItem(item: I){
-        val recyclerItem = mapRecyclerItem.get(item)
+        val recyclerItem = findRecyclerItem(item)
         recyclerItem?.let{
             removeItem(it)
             mapRecyclerItem.remove(item)
@@ -214,8 +213,8 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun removeItem(item: I, group: G){
-        val recyclerItem = mapRecyclerItem.get(item)
-        val recyclerGroup = mapRecyclerGroup.get(group)
+        val recyclerItem = findRecyclerItem(item)
+        val recyclerGroup = findRecyclerGroup(group)
         if (recyclerItem != null && recyclerGroup != null) {
             removeItem(recyclerItem, recyclerGroup)
         }
@@ -241,10 +240,9 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun updateItem(item: I){
-        //val recyclerItem = mapRecyclerItem[item]
-        val recyclerItem = mapRecyclerItem.get(item)
+        val recyclerItem = findRecyclerItem(item)
         recyclerItem?.let {
-            if (recyclerViewGroups.isEmpty()) {
+            if (noGroup) {
                 updateCurrentItemDisplay(item)
             } else {
                 updateItem(recyclerItem)
@@ -281,6 +279,14 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             }
         }
     }
+
+    private fun findRecyclerItem(item: I): RecyclerViewItem<G, I>? = if (currentItem?.self == item) currentItem else mapRecyclerItem.get(item)
+
+    private fun findRecyclerGroup(group: G): RecyclerViewGroup<G, I>? = if (currentGroup?.self == group) currentGroup else mapRecyclerGroup.get(group)
+
+//    var recyclerGroup: RecyclerViewGroup<G, I>? = null
+//    recyclerGroup = if (currentGroup?.self == group) currentGroup else mapRecyclerGroup.get(group)
+//    return recyclerGroup
 
     private fun addItemToRecyclerViewItems(group: RecyclerViewGroup<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置

@@ -105,7 +105,7 @@ class RecyclerViewAdapter<G, I>(
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
-                    if (dataSet.recyclerViewGroups.size >0) {
+                    if (dataSet.hasGroup) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.clickItem(item.self, itemViewHolder)
@@ -118,7 +118,7 @@ class RecyclerViewAdapter<G, I>(
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                    if (dataSet.recyclerViewGroups.size >0) {
+                    if (dataSet.hasGroup) {
                         findCurrentGroup(itemViewHolder.adapterPosition)
                     }
                     shell.longClickItem(item.self, itemViewHolder)
@@ -132,10 +132,14 @@ class RecyclerViewAdapter<G, I>(
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener {
                     val group = groupViewHolder.group as RecyclerViewGroup<G, I>
+                    dataSet.currentGroup = group
+                    dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
                     shell.clickGroup(group.self, groupViewHolder)
                 }
                 groupViewHolder.currentGroupView.setOnLongClickListener {
                     val group = groupViewHolder.group
+                    dataSet.currentGroup = group
+                    dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
                     shell.longClickGroup(group.self, groupViewHolder)
                     true
                 }
