@@ -16,7 +16,6 @@ abstract class FoodPropertyFragment : Fragment() {
     val foodEditTextHelper = EditTextHelper()
     var initFieldsFlag = true
 
-    abstract fun blockChangeState(parent: FoodEditerActivity)
     abstract fun importFields(food: BFood)
     abstract fun exportFields(food: BFood)
     abstract fun firstEditTextFocus()

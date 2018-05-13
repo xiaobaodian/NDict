@@ -49,17 +49,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
         }
     }
 
-    override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.changeNumber()
-        val extChangeNumber = checkTextExtHelper.changeNumber()
-        if (changeNumber > 0) {
-            parent.addChangeBlock(EChangeBlock.Mineral)
-        }
-        if (extChangeNumber > 0) {
-            parent.addChangeBlock(EChangeBlock.MineralExt)
-        }
-    }
-
     override fun importFields(food: BFood) {
         getFields(food)
     }
@@ -102,7 +91,6 @@ class FoodMineralFragment : FoodPropertyFragment() {
             addEditBox(SiIEditText, food.minerals[18].content.toString())
             addEditBox(CiIEditText, food.minerals[19].content.toString())
             addEditBox(SIEditText, food.minerals[20].content.toString())
-            initHash()
         }
 
     }

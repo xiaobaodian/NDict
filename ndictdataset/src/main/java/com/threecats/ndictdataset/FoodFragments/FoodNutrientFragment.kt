@@ -56,13 +56,6 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         //setFields(shareSet.CurrentFood!!)
     }
 
-    override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.changeNumber()
-        if (changeNumber > 0) {
-            parent.addChangeBlock(EChangeBlock.Food)
-        }
-    }
-
     override fun importFields(food: BFood) {
         getFields(food)
     }
@@ -90,7 +83,6 @@ class FoodNutrientFragment : FoodPropertyFragment() {
             addEditBox(FiberIEditText, food.foodFiber.toString())
             addEditBox(CarbohydrateIEditText, food.carbohydrate.toString())
             addEditBox(FatIEditText, food.fat.toString())
-            initHash()
         }
 
     }

@@ -50,13 +50,6 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         }
     }
 
-    override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.changeNumber()
-        if (changeNumber > 0) {
-            parent.addChangeBlock(EChangeBlock.Vitamin)
-        }
-    }
-
     override fun importFields(food: BFood) {
         getFields(food)
     }
@@ -108,7 +101,7 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     private fun getFields(food: BFood){
         with (foodEditTextHelper) {
             textBoxs.clear()
-            if (!isREMode && shareSet.currentFood!!.foodBased == 0) {
+            if (!isREMode && shareSet.editorFood.item!!.foodBased == 0) {
                 addEditBox(REIEditText, (food.vitamins[0].content*6).toString())
             } else {
                 addEditBox(REIEditText, food.vitamins[0].content.toString())
@@ -129,7 +122,6 @@ class FoodVitaminFragment : FoodPropertyFragment() {
             addEditBox(VitaminPIEditText, food.vitamins[14].content.toString())
             addEditBox(InositolIEditText, food.vitamins[15].content.toString())
             addEditBox(PABAIEditText, food.vitamins[16].content.toString())
-            initHash()
         }
     }
 

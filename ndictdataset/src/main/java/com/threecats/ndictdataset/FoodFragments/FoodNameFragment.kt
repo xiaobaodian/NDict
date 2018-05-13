@@ -65,13 +65,6 @@ class FoodNameFragment: FoodPropertyFragment() {
         }
     }
 
-    override fun blockChangeState(parent: FoodEditerActivity) {
-        val changeNumber = foodEditTextHelper.changeNumber()
-        if (changeNumber > 0) {
-            parent.addChangeBlock(EChangeBlock.Food)
-        }
-    }
-
     override fun importFields(food: BFood) {
         getFields(food)
     }
@@ -90,13 +83,12 @@ class FoodNameFragment: FoodPropertyFragment() {
 
     private fun getFields(food: BFood){
 
-        val logshow = AnkoLogger("NDIC")
+        //val logshow = AnkoLogger("NDIC")
 
         with (foodEditTextHelper) {
             textBoxs.clear()
             addEditBox(NameIEditText, food.name)
             addEditBox(AliasIEditText, food.alias)
-            initHash()
         }
 
     }

@@ -28,7 +28,6 @@ class FoodEditerActivity : AppCompatActivity() {
 
     private val nutrientFragmentTabs = TabViewLayoutShell()
     private var currentTabPosition = 0
-    private val changBlockList: MutableList<EChangeBlock> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,33 +122,15 @@ class FoodEditerActivity : AppCompatActivity() {
 //    override fun onBackPressed()
 
     private fun assembleAllFields(){
-        if (shareSet.editorFood.isAppend) {
-            shareSet.editorFood.item?.let {
-                val food = it
-                nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-            }
-        } else {
-            changBlockList.clear()
-            nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).blockChangeState(this) }
-            if (changBlockList.size > 0) {
-                shareSet.editorFood.item?.let {
-                    val food = it
-                    nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-                }
-            }
+        shareSet.editorFood.item?.let {
+            val food = it
+            nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true
     fun nextFragment(next: NextFragment){
         nutrientFragmentTabs.next()
-    }
-
-    fun addChangeBlock(changeBlock: EChangeBlock){
-        val position = changBlockList.indexOf(changeBlock)
-        if (position < 0) {
-            changBlockList.add(changeBlock)
-        }
     }
 
     private fun alertDeleteFood(food: BFood){
