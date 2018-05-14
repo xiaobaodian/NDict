@@ -35,11 +35,11 @@ class FoodNoteFragment: FoodPropertyFragment() {
         }
     }
 
-    override fun importFields(food: BFood) {
-        getFields(food)
+    override fun itemToViewFields(food: BFood) {
+
     }
 
-    override fun exportFields(food: BFood) {
+    override fun viewFieldsToItem(food: BFood) {
 
     }
 
@@ -47,11 +47,4 @@ class FoodNoteFragment: FoodPropertyFragment() {
 
     }
 
-    private fun getFields(food: BFood){
-
-    }
-
-    private fun setFields(food: BFood){
-
-    }
 }// Required empty public constructor

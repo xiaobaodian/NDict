@@ -44,7 +44,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFields) {
             initFields = false
-            shareSet.editorFood.item?.let { importFields(it) }
+            shareSet.editorFood.item?.let { itemToViewFields(it) }
         }
     }
 
@@ -54,24 +54,7 @@ class FoodNutrientFragment : FoodPropertyFragment() {
         //setFields(shareSet.CurrentFood!!)
     }
 
-    override fun importFields(food: BFood) {
-        getFields(food)
-    }
-
-    override fun exportFields(food: BFood) {
-        setFields(food)
-    }
-
-    override fun firstEditTextFocus(){
-        with (CaloriesIEditText){
-            isFocusable = true
-            isFocusableInTouchMode = true
-            requestFocus()
-        }
-    }
-
-    private fun getFields(food: BFood){
-
+    override fun itemToViewFields(food: BFood) {
         with (foodEditTextHelper) {
             textBoxs.clear()
             addEditBox(CaloriesIEditText, food.calories.toString())
@@ -82,10 +65,9 @@ class FoodNutrientFragment : FoodPropertyFragment() {
             addEditBox(CarbohydrateIEditText, food.carbohydrate.toString())
             addEditBox(FatIEditText, food.fat.toString())
         }
-
     }
 
-    private fun setFields(food: BFood){
+    override fun viewFieldsToItem(food: BFood) {
         foodEditTextHelper.checkNull("0.0")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
@@ -99,5 +81,14 @@ class FoodNutrientFragment : FoodPropertyFragment() {
             }
         }
     }
+
+    override fun firstEditTextFocus(){
+        with (CaloriesIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
+    }
+
 
 }// Required empty public constructor

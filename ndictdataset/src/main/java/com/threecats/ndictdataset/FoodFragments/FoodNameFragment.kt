@@ -58,28 +58,11 @@ class FoodNameFragment: FoodPropertyFragment() {
         super.onResume()
         if (initFields) {
             initFields = false
-            shareSet.editorFood.item?.let { importFields(it) }
+            shareSet.editorFood.item?.let { itemToViewFields(it) }
         }
     }
 
-    override fun importFields(food: BFood) {
-        getFields(food)
-    }
-
-    override fun exportFields(food: BFood) {
-        setFields(food)
-    }
-
-    override fun firstEditTextFocus(){
-        with (NameIEditText){
-            isFocusable = true
-            isFocusableInTouchMode = true
-            requestFocus()
-        }
-    }
-
-    private fun getFields(food: BFood){
-
+    override fun itemToViewFields(food: BFood) {
         //val logshow = AnkoLogger("NDIC")
 
         with (foodEditTextHelper) {
@@ -87,16 +70,23 @@ class FoodNameFragment: FoodPropertyFragment() {
             addEditBox(NameIEditText, food.name)
             addEditBox(AliasIEditText, food.alias)
         }
-
     }
 
-    private fun setFields(food: BFood){
+    override fun viewFieldsToItem(food: BFood) {
         foodEditTextHelper.checkNull("")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
                 NameIEditText -> food.name = it.editBox.text.toString()
                 AliasIEditText -> food.alias = it.editBox.text.toString()
             }
+        }
+    }
+
+    override fun firstEditTextFocus(){
+        with (NameIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
         }
     }
 

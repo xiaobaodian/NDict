@@ -44,16 +44,69 @@ class FoodVitaminFragment : FoodPropertyFragment() {
         //setREOrOther()
         if (initFields) {
             initFields = false
-            shareSet.editorFood.item?.let { importFields(it) }
+            shareSet.editorFood.item?.let { itemToViewFields(it) }
         }
     }
 
-    override fun importFields(food: BFood) {
-        getFields(food)
+    override fun itemToViewFields(food: BFood) {
+        with (foodEditTextHelper) {
+            textBoxs.clear()
+            if (!isREMode && shareSet.editorFood.item!!.foodBased == 0) {
+                addEditBox(REIEditText, (food.vitamins[0].content*6).toString())
+            } else {
+                addEditBox(REIEditText, food.vitamins[0].content.toString())
+            }
+            addEditBox(VitaminB1IEditText, food.vitamins[1].content.toString())
+            addEditBox(VitaminB2IEditText, food.vitamins[2].content.toString())
+            addEditBox(NiacinIEditText, food.vitamins[3].content.toString())
+            addEditBox(VitaminB6IEditText, food.vitamins[4].content.toString())
+            addEditBox(PantothenicAcidIEditText, food.vitamins[5].content.toString())
+            addEditBox(VitaminHIEditText, food.vitamins[6].content.toString())
+            addEditBox(FolicAcidIEditText, food.vitamins[7].content.toString())
+            addEditBox(VitaminB12IEditText, food.vitamins[8].content.toString())
+            addEditBox(CholineIEditText, food.vitamins[9].content.toString())
+            addEditBox(VitaminCIEditText, food.vitamins[10].content.toString())
+            addEditBox(VitaminDIEditText, food.vitamins[11].content.toString())
+            addEditBox(VitaminEIEditText, food.vitamins[12].content.toString())
+            addEditBox(VitaminKIEditText, food.vitamins[13].content.toString())
+            addEditBox(VitaminPIEditText, food.vitamins[14].content.toString())
+            addEditBox(InositolIEditText, food.vitamins[15].content.toString())
+            addEditBox(PABAIEditText, food.vitamins[16].content.toString())
+        }
     }
 
-    override fun exportFields(food: BFood) {
-        setFields(food)
+    override fun viewFieldsToItem(food: BFood) {
+        foodEditTextHelper.checkNull("0.0")
+        foodEditTextHelper.textBoxs.forEach {
+
+            when (it.editBox){
+
+                REIEditText ->{
+                    if (!isREMode && shareSet.currentFood!!.foodBased == 0) {
+                        food.vitamins[0].content = it.editBox.text.toString().toFloat()/6
+                    } else {
+                        food.vitamins[0].content = it.editBox.text.toString().toFloat()
+                    }
+                }
+                VitaminB1IEditText          -> food.vitamins[1].content = it.editBox.text.toString().toFloat()
+                VitaminB2IEditText          -> food.vitamins[2].content = it.editBox.text.toString().toFloat()
+                NiacinIEditText             -> food.vitamins[3].content = it.editBox.text.toString().toFloat()
+                VitaminB6IEditText          -> food.vitamins[4].content = it.editBox.text.toString().toFloat()
+                PantothenicAcidIEditText    -> food.vitamins[5].content = it.editBox.text.toString().toFloat()
+                VitaminHIEditText           -> food.vitamins[6].content = it.editBox.text.toString().toFloat()
+                FolicAcidIEditText          -> food.vitamins[7].content = it.editBox.text.toString().toFloat()
+                VitaminB12IEditText         -> food.vitamins[8].content = it.editBox.text.toString().toFloat()
+                CholineIEditText            -> food.vitamins[9].content = it.editBox.text.toString().toFloat()
+                VitaminCIEditText           -> food.vitamins[10].content = it.editBox.text.toString().toFloat()
+                VitaminDIEditText           -> food.vitamins[11].content = it.editBox.text.toString().toFloat()
+                VitaminEIEditText           -> food.vitamins[12].content = it.editBox.text.toString().toFloat()
+                VitaminKIEditText           -> food.vitamins[13].content = it.editBox.text.toString().toFloat()
+                VitaminPIEditText           -> food.vitamins[14].content = it.editBox.text.toString().toFloat()
+                InositolIEditText           -> food.vitamins[15].content = it.editBox.text.toString().toFloat()
+                PABAIEditText               -> food.vitamins[16].content = it.editBox.text.toString().toFloat()
+
+            }
+        }
     }
 
     override fun firstEditTextFocus(){
@@ -94,69 +147,6 @@ class FoodVitaminFragment : FoodPropertyFragment() {
                 REILayout.hint = "维生素A（毫克）"
             }
         }
-    }
-
-    private fun getFields(food: BFood){
-        with (foodEditTextHelper) {
-            textBoxs.clear()
-            if (!isREMode && shareSet.editorFood.item!!.foodBased == 0) {
-                addEditBox(REIEditText, (food.vitamins[0].content*6).toString())
-            } else {
-                addEditBox(REIEditText, food.vitamins[0].content.toString())
-            }
-            addEditBox(VitaminB1IEditText, food.vitamins[1].content.toString())
-            addEditBox(VitaminB2IEditText, food.vitamins[2].content.toString())
-            addEditBox(NiacinIEditText, food.vitamins[3].content.toString())
-            addEditBox(VitaminB6IEditText, food.vitamins[4].content.toString())
-            addEditBox(PantothenicAcidIEditText, food.vitamins[5].content.toString())
-            addEditBox(VitaminHIEditText, food.vitamins[6].content.toString())
-            addEditBox(FolicAcidIEditText, food.vitamins[7].content.toString())
-            addEditBox(VitaminB12IEditText, food.vitamins[8].content.toString())
-            addEditBox(CholineIEditText, food.vitamins[9].content.toString())
-            addEditBox(VitaminCIEditText, food.vitamins[10].content.toString())
-            addEditBox(VitaminDIEditText, food.vitamins[11].content.toString())
-            addEditBox(VitaminEIEditText, food.vitamins[12].content.toString())
-            addEditBox(VitaminKIEditText, food.vitamins[13].content.toString())
-            addEditBox(VitaminPIEditText, food.vitamins[14].content.toString())
-            addEditBox(InositolIEditText, food.vitamins[15].content.toString())
-            addEditBox(PABAIEditText, food.vitamins[16].content.toString())
-        }
-    }
-
-    private fun setFields(food: BFood){
-
-        foodEditTextHelper.checkNull("0.0")
-        foodEditTextHelper.textBoxs.forEach {
-
-            when (it.editBox){
-
-                REIEditText ->{
-                    if (!isREMode && shareSet.currentFood!!.foodBased == 0) {
-                        food.vitamins[0].content = it.editBox.text.toString().toFloat()/6
-                    } else {
-                        food.vitamins[0].content = it.editBox.text.toString().toFloat()
-                    }
-                }
-                VitaminB1IEditText -> food.vitamins[1].content = it.editBox.text.toString().toFloat()
-                VitaminB2IEditText -> food.vitamins[2].content = it.editBox.text.toString().toFloat()
-                NiacinIEditText -> food.vitamins[3].content = it.editBox.text.toString().toFloat()
-                VitaminB6IEditText -> food.vitamins[4].content = it.editBox.text.toString().toFloat()
-                PantothenicAcidIEditText -> food.vitamins[5].content = it.editBox.text.toString().toFloat()
-                VitaminHIEditText -> food.vitamins[6].content = it.editBox.text.toString().toFloat()
-                FolicAcidIEditText -> food.vitamins[7].content = it.editBox.text.toString().toFloat()
-                VitaminB12IEditText -> food.vitamins[8].content = it.editBox.text.toString().toFloat()
-                CholineIEditText -> food.vitamins[9].content = it.editBox.text.toString().toFloat()
-                VitaminCIEditText -> food.vitamins[10].content = it.editBox.text.toString().toFloat()
-                VitaminDIEditText -> food.vitamins[11].content = it.editBox.text.toString().toFloat()
-                VitaminEIEditText -> food.vitamins[12].content = it.editBox.text.toString().toFloat()
-                VitaminKIEditText -> food.vitamins[13].content = it.editBox.text.toString().toFloat()
-                VitaminPIEditText -> food.vitamins[14].content = it.editBox.text.toString().toFloat()
-                InositolIEditText -> food.vitamins[15].content = it.editBox.text.toString().toFloat()
-                PABAIEditText -> food.vitamins[16].content = it.editBox.text.toString().toFloat()
-
-            }
-        }
-
     }
 
 }// Required empty public constructor

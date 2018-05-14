@@ -82,7 +82,7 @@ class NutrientDosisFragment : Fragment() {
 
         dosisListShell?.let {
             it.recyclerView(GRecyclerView).progressBar(GProgressBar)
-                    .addViewType("group",ItemType.Group, R.layout.recyclergroup_dosis)
+                    .addViewType("node",ItemType.Group, R.layout.recyclergroup_dosis)
                     .addViewType("item", ItemType.Item, R.layout.recycleritem_dosage)
             it.setDisplayGroupListener(object : DisplayGroupListener<DosisGenderGroup, ProposedDosage>{
                 override fun onDisplayGroup(group: DosisGenderGroup, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.GroupViewHolder) {

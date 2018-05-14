@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.FoodFragments.*
 import com.threecats.ndictdataset.R
@@ -68,7 +67,7 @@ class FoodEditerActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        assembleAllFields()
+        shareSet.editorFood.item?.let { viewFieldsToItem(it) }
         shareSet.editorFood.commit()
         EventBus.getDefault().unregister(this@FoodEditerActivity)
         super.onDestroy()
@@ -98,14 +97,13 @@ class FoodEditerActivity : AppCompatActivity() {
                 shareSet.currentFood?.let { alertDeleteFood(it) }
             }
             R.id.SaveAddItem -> {
-                assembleAllFields()
-                shareSet.editorFood.commit()
-                shareSet.editorFood.append(BFood())
+                shareSet.editorFood.item?.let { viewFieldsToItem(it) }
+                shareSet.editorFood.commit().append(BFood())
+                //shareSet.editorFood.append(BFood())
                 shareSet.currentFood = shareSet.editorFood.item   // 考虑去掉
                 shareSet.editorFood.item?.let {
-                    val food = it
-                    nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).importFields(food) }
-                    nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
+                    itemToViewFields(it)
+                    firstEditTextFocus()
                 }
                 nutrientFragmentTabs.selectTab(0)
             }
@@ -121,11 +119,16 @@ class FoodEditerActivity : AppCompatActivity() {
 
 //    override fun onBackPressed()
 
-    private fun assembleAllFields(){
-        shareSet.editorFood.item?.let {
-            val food = it
-            nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).exportFields(food) }
-        }
+    private fun viewFieldsToItem(food: BFood){
+        nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).viewFieldsToItem(food) }
+    }
+
+    private fun itemToViewFields(food: BFood){
+        nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).itemToViewFields(food) }
+    }
+
+    private fun firstEditTextFocus(){
+        nutrientFragmentTabs.fragments.forEach { (it as FoodPropertyFragment).firstEditTextFocus() }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)  //, sticky = true

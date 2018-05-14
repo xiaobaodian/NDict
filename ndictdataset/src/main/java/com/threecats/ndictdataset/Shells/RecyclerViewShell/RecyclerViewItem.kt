@@ -8,7 +8,7 @@ import java.util.ArrayList
 
 class RecyclerViewItem<G,I>(item: I): RecyclerViewBaseItem() {
 
-    val parentGroups: MutableList<RecyclerViewGroup<G,I>> = ArrayList()
+    val parentNodes: MutableList<RecyclerViewNode<G,I>> = ArrayList()
 
     private var data: I
     val self: I

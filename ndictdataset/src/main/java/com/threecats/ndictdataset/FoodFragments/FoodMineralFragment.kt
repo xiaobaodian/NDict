@@ -43,29 +43,11 @@ class FoodMineralFragment : FoodPropertyFragment() {
         super.onResume()
         if (initFields) {
             initFields = false
-            shareSet.editorFood.item?.let { importFields(it) }
+            shareSet.editorFood.item?.let { itemToViewFields(it) }
         }
     }
 
-    override fun importFields(food: BFood) {
-        getFields(food)
-    }
-
-    override fun exportFields(food: BFood) {
-        setFields(food)
-    }
-
-    override fun firstEditTextFocus(){
-
-        with (KIEditText){
-            isFocusable = true
-            isFocusableInTouchMode = true
-            requestFocus()
-        }
-    }
-
-    private fun getFields(food: BFood){
-
+    override fun itemToViewFields(food: BFood) {
         with (foodEditTextHelper) {
             textBoxs.clear()
             addEditBox(KIEditText, food.minerals[0].content.toString())
@@ -90,11 +72,9 @@ class FoodMineralFragment : FoodPropertyFragment() {
             addEditBox(CiIEditText, food.minerals[19].content.toString())
             addEditBox(SIEditText, food.minerals[20].content.toString())
         }
-
     }
 
-    private fun setFields(food: BFood){
-
+    override fun viewFieldsToItem(food: BFood) {
         foodEditTextHelper.checkNull("0.0")
         foodEditTextHelper.textBoxs.forEach {
             when (it.editBox){
@@ -121,7 +101,15 @@ class FoodMineralFragment : FoodPropertyFragment() {
                 SIEditText    ->  food.minerals[20].content = it.editBox.text.toString().toFloat()
             }
         }
+    }
 
+    override fun firstEditTextFocus(){
+
+        with (KIEditText){
+            isFocusable = true
+            isFocusableInTouchMode = true
+            requestFocus()
+        }
     }
 
 }// Required empty public constructor

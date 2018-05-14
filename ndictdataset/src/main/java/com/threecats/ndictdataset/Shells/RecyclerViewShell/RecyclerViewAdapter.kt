@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import org.jetbrains.anko.toast
 
 /**
  * 由 zhang 于 2018/3/28 创建
@@ -66,9 +65,9 @@ class RecyclerViewAdapter<G, I>(
 
     inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
 
-        val group: RecyclerViewGroup<G, I>
+        val node: RecyclerViewNode<G, I>
             @Suppress("UNCHECKED_CAST")
-            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewGroup<G, I>
+            get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewNode<G, I>
 
         fun displayText(R: Int, text: String): GroupViewHolder {
             val textView = currentGroupView.findViewById<TextView>(R)
@@ -131,14 +130,14 @@ class RecyclerViewAdapter<G, I>(
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
                 val groupViewHolder = GroupViewHolder(view)
                 groupViewHolder.currentGroupView.setOnClickListener {
-                    val group = groupViewHolder.group as RecyclerViewGroup<G, I>
-                    dataSet.currentGroup = group
+                    val group = groupViewHolder.node as RecyclerViewNode<G, I>
+                    dataSet.currentNode = group
                     dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
                     shell.clickGroup(group.self, groupViewHolder)
                 }
                 groupViewHolder.currentGroupView.setOnLongClickListener {
-                    val group = groupViewHolder.group
-                    dataSet.currentGroup = group
+                    val group = groupViewHolder.node
+                    dataSet.currentNode = group
                     dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
                     shell.longClickGroup(group.self, groupViewHolder)
                     true
@@ -156,10 +155,10 @@ class RecyclerViewAdapter<G, I>(
      */
 
     private fun findCurrentGroup(position: Int){
-        dataSet.currentGroup = null
-        for (group in dataSet.recyclerViewGroups) {
+        dataSet.currentNode = null
+        for (group in dataSet.recyclerViewNodes) {
             if (position > group.groupPositionID && position <= (group.groupPositionID + group.groupItems.size)) {
-                dataSet.currentGroup = group
+                dataSet.currentNode = group
                 break
             }
         }
@@ -178,7 +177,7 @@ class RecyclerViewAdapter<G, I>(
 //                    itemViewHolder.checkBox!!.visibility = View.GONE/
 //                }
 //                itemViewHolder.checkBox!!.ID = item
-                //val groupType = item.getCurrentGroup(parentGroups).getGroupType()
+                //val groupType = item.getCurrentNode(parentNodes).getGroupType()
                 //OnBindItem(itemViewHolder, item, groupType)
                 @Suppress("UNCHECKED_CAST")
                 shell.displayItem((recyclerItem as RecyclerViewItem<G, I>).self, itemViewHolder)
@@ -187,8 +186,8 @@ class RecyclerViewAdapter<G, I>(
                 @Suppress("UNCHECKED_CAST")
                 val groupViewHolder = holder as RecyclerViewAdapter<G, I>.GroupViewHolder
                 @Suppress("UNCHECKED_CAST")
-                val group = recyclerItem as RecyclerViewGroup<G, I>
-                //OnBindGroup(groupViewHolder, group)
+                val group = recyclerItem as RecyclerViewNode<G, I>
+                //OnBindGroup(groupViewHolder, node)
                 shell.displayGroup(group.self, groupViewHolder)
             }
         }

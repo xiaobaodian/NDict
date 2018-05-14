@@ -47,18 +47,18 @@ class EditorShell<I> {
         editState = EEditState.Delete
     }
 
-    fun commit(){
+    fun commit(): EditorShell<I>{
 
         val newHashCode = getHashCode()
 
         item?.let {
             when (editState){
                 EEditState.Append -> {
-                    if (initHashCode == newHashCode) { return }
+                    if (initHashCode == newHashCode) { return this}
                     appendItemListener?.onAppendItem(it)
                 }
                 EEditState.Update -> {
-                    if (initHashCode == newHashCode) { return }
+                    if (initHashCode == newHashCode) { return this}
                     updateItemListener?.onUpdateItem(it)
                 }
                 EEditState.Delete -> {deleteItemListener?.onDeleteItem(it)}
@@ -66,7 +66,7 @@ class EditorShell<I> {
             }
         }
         initHashCode = newHashCode
-
+        return this
     }
 
     private fun getHashCode() = item.toString().hashCode()
