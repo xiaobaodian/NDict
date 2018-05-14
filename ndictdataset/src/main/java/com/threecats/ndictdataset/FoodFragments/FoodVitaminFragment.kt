@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_vitamin.*
 import org.greenrobot.eventbus.EventBus
 
@@ -44,8 +42,8 @@ class FoodVitaminFragment : FoodPropertyFragment() {
     override fun onResume() {
         super.onResume()
         //setREOrOther()
-        if (initFieldsFlag) {
-            initFieldsFlag = false
+        if (initFields) {
+            initFields = false
             shareSet.editorFood.item?.let { importFields(it) }
         }
     }

@@ -14,7 +14,7 @@ abstract class FoodPropertyFragment : Fragment() {
 
     val shareSet = BDM.ShareSet!!
     val foodEditTextHelper = EditTextHelper()
-    var initFieldsFlag = true
+    var initFields = true
 
     abstract fun importFields(food: BFood)
     abstract fun exportFields(food: BFood)

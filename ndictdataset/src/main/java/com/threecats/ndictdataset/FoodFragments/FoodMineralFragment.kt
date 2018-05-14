@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.threecats.ndictdataset.Bmob.BFood
-import com.threecats.ndictdataset.Enum.EChangeBlock
 import com.threecats.ndictdataset.Helper.EditTextHelper
 
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.View.FoodEditerActivity
 import kotlinx.android.synthetic.main.fragment_food_mineral.*
 
 /**
@@ -43,8 +41,8 @@ class FoodMineralFragment : FoodPropertyFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (initFieldsFlag) {
-            initFieldsFlag = false
+        if (initFields) {
+            initFields = false
             shareSet.editorFood.item?.let { importFields(it) }
         }
     }
