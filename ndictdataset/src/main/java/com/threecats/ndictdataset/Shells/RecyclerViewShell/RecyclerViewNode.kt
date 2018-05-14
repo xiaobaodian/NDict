@@ -21,7 +21,7 @@ class RecyclerViewNode<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
     var previousNode: RecyclerViewNode<G, I>? = null
     var nextNode: RecyclerViewNode<G, I>? = null
 
-    var groupPositionID: Int = -1
+    var nodePositionID: Int = -1
     var state: DisplayState = DisplayState.Hide
 
     val isEmpty: Boolean

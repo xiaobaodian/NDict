@@ -69,7 +69,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         var position = 0
         recyclerViewNodes.forEach {
             if (it.state == DisplayState.Show) {
-                it.groupPositionID = position
+                it.nodePositionID = position
                 position += it.items.size + 1
             }
         }
@@ -83,13 +83,13 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun hideGroup(node: RecyclerViewNode<G,I>) {
         if (noGroup) return
-        if (node.groupPositionID > recyclerViewItems.size - 1) {
-            shell.context.toast("Hide Group : node.groupPositionID > size()")
+        if (node.nodePositionID > recyclerViewItems.size - 1) {
+            shell.context.toast("Hide Group : node.nodePositionID > size()")
             return
         }
-        if (node === recyclerViewItems[node.groupPositionID]) {
-            recyclerViewItems.removeAt(node.groupPositionID)
-            adapter?.notifyItemRemoved(node.groupPositionID)
+        if (node === recyclerViewItems[node.nodePositionID]) {
+            recyclerViewItems.removeAt(node.nodePositionID)
+            adapter?.notifyItemRemoved(node.nodePositionID)
             node.state = DisplayState.Hide
             calculatorGroupPosition()
         } else {
@@ -101,15 +101,15 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         if (node.state === DisplayState.Show || node.state === DisplayState.Fold) return
         val nextGroupPosition = nextGroupPosition(node)
         if (nextGroupPosition >= 0) {
-            node.groupPositionID = nextGroupPosition
+            node.nodePositionID = nextGroupPosition
             recyclerViewItems.add(nextGroupPosition, node)
             adapter?.notifyItemInserted(nextGroupPosition)
             calculatorGroupPosition()
         } else {
             //如果没有下一组，就表明当前组就是最后一组，不用插入，只需要添加
             recyclerViewItems.add(node)
-            node.groupPositionID = recyclerViewItems.size - 1
-            adapter?.notifyItemInserted(node.groupPositionID)
+            node.nodePositionID = recyclerViewItems.size - 1
+            adapter?.notifyItemInserted(node.nodePositionID)
         }
         node.state = DisplayState.Show
     }
@@ -123,7 +123,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
                 continue
             }
             if (currentGroup.state == DisplayState.Show) {
-                nextGroupSite = currentGroup.groupPositionID
+                nextGroupSite = currentGroup.nodePositionID
                 break
             }
         }
@@ -288,7 +288,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun addItemToRecyclerViewItems(node: RecyclerViewNode<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置
-        val site = node.groupPositionID + groupSite + 1
+        val site = node.nodePositionID + groupSite + 1
         if (site >= recyclerViewItems.size) {
             recyclerViewItems.add(item)
         } else {
@@ -299,7 +299,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun removeItemFromRecyclerViewItems(node: RecyclerViewNode<G, I>, groupSite: Int, item: RecyclerViewItem<G, I>) {
-        val site = node.groupPositionID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
+        val site = node.nodePositionID + groupSite + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
         if (recyclerViewItems[site] === item) {
             recyclerViewItems.removeAt(site)
             adapter?.notifyItemRemoved(site)
@@ -315,7 +315,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun updateItemDisplay(recyclerItem: RecyclerViewItem<G, I>, recyclerNode: RecyclerViewNode<G, I>) {
-        val site = recyclerNode.groupItems.indexOf(recyclerItem) + recyclerNode.groupPositionID + 1
+        val site = recyclerNode.groupItems.indexOf(recyclerItem) + recyclerNode.nodePositionID + 1
         adapter?.notifyItemChanged(site)
     }
 

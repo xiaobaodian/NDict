@@ -157,7 +157,7 @@ class RecyclerViewAdapter<G, I>(
     private fun findCurrentGroup(position: Int){
         dataSet.currentNode = null
         for (group in dataSet.recyclerViewNodes) {
-            if (position > group.groupPositionID && position <= (group.groupPositionID + group.groupItems.size)) {
+            if (position > group.nodePositionID && position <= (group.nodePositionID + group.groupItems.size)) {
                 dataSet.currentNode = group
                 break
             }
