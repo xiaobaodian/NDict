@@ -18,8 +18,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     private val isNullItems: Boolean
         get() = dataSet.recyclerViewItems.size == 0
-    val currentItem: I
-        get() = dataSet.currentItem!!.self
+    val currentItem: I?
+        get() = dataSet.currentItem?.self
     private val currentRecyclerViewItem: RecyclerViewItem<G, I>
         get() = dataSet.currentItem!!
 //    val recyclerViewItems: MutableList<RecyclerViewItem<G, I>>?
@@ -31,11 +31,11 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     private var dataSet: RecyclerViewData<G, I> = RecyclerViewData(this)
 
-    private var clickGroupListener: ClickGroupListener<G,I>? = null
+    private var clickNodeListener: ClickNodeListener<G,I>? = null
     private var clickItemListener: ClickItemListener<G, I>? = null
-    private var longClickGroupListener: LongClickGroupListener<G,I>? = null
+    private var longClickNodeListener: LongClickNodeListener<G,I>? = null
     private var longClickItemListener: LongClickItemListener<G, I>? = null
-    private var displayGroupListener: DisplayGroupListener<G,I>? = null
+    private var displayNodeListener: DisplayNodeListener<G,I>? = null
     private var displayItemListener: DisplayItemListener<G, I>? = null
     private var queryDatasListener: QueryDatasListener<G, I>? = null
     private var completeQueryListener: CompleteQueryListener? = null
@@ -87,8 +87,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
         return viewTypes[index]
     }
 
-    fun addGroup(group: G){
-        dataSet.addGroup(group)
+    fun addNode(node: G){
+        dataSet.addNode(node)
     }
 
     fun addItem(item: I, group: G){
@@ -125,24 +125,24 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     //=================================================
 
-    fun setOnClickGroupListener(listener: ClickGroupListener<G, I>){
-        clickGroupListener = listener
+    fun setOnClickNodeListener(listener: ClickNodeListener<G, I>){
+        clickNodeListener = listener
     }
 
     fun setOnClickItemListener(listener: ClickItemListener<G, I>){
         clickItemListener = listener
     }
 
-    fun setOnLongClickGroupListener(listener: LongClickGroupListener<G, I>){
-        longClickGroupListener = listener
+    fun setOnLongClickNodeListener(listener: LongClickNodeListener<G, I>){
+        longClickNodeListener = listener
     }
 
     fun setOnLongClickItemListener(listener: LongClickItemListener<G, I>){
         longClickItemListener = listener
     }
 
-    fun setDisplayGroupListener(listener: DisplayGroupListener<G, I>){
-        displayGroupListener = listener
+    fun setDisplayNodeListener(listener: DisplayNodeListener<G, I>){
+        displayNodeListener = listener
     }
 
     fun setDisplayItemListener(listener: DisplayItemListener<G, I>){
@@ -161,24 +161,24 @@ class RecyclerViewShell<G,I>(val context: Context) {
         nullDataListener = listener
     }
 
-    internal fun displayGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder){
-        displayGroupListener?.onDisplayGroup(group, holder)
+    internal fun displayNode(node: G, holder: RecyclerViewAdapter<G, I>.NodeViewHolder){
+        displayNodeListener?.onDisplayNode(node, holder)
     }
 
     internal fun displayItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder){
         displayItemListener?.onDisplayItem(item, holder)
     }
 
-    internal fun clickGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder){
-        clickGroupListener?.onClickGroup(group, holder)
+    internal fun clickNode(node: G, holder: RecyclerViewAdapter<G, I>.NodeViewHolder){
+        clickNodeListener?.onClickNode(node, holder)
     }
 
     internal fun clickItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder){
         clickItemListener?.onClickItem(item, holder)
     }
 
-    internal fun longClickGroup(group: G, holder: RecyclerViewAdapter<G, I>.GroupViewHolder){
-        longClickGroupListener?.onLongClickGroup(group, holder)
+    internal fun longClickNode(node: G, holder: RecyclerViewAdapter<G, I>.NodeViewHolder){
+        longClickNodeListener?.onLongClickNode(node, holder)
     }
 
     internal fun longClickItem(item: I, holder: RecyclerViewAdapter<G, I>.ItemViewHolder){

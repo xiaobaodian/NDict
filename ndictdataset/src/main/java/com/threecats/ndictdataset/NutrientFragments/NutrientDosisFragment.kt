@@ -74,19 +74,19 @@ class NutrientDosisFragment : Fragment() {
         if (dosisListShell == null) {
             dosisListShell = RecyclerViewShell(context!!)
             dosisListShell?.let {
-                it.addGroup(humanGroup)
-                it.addGroup(maleGroup)
-                it.addGroup(femaleGroup)
+                it.addNode(humanGroup)
+                it.addNode(maleGroup)
+                it.addNode(femaleGroup)
             }
         }
 
         dosisListShell?.let {
             it.recyclerView(GRecyclerView).progressBar(GProgressBar)
-                    .addViewType("node",ItemType.Group, R.layout.recyclergroup_dosis)
+                    .addViewType("node",ItemType.Node, R.layout.recyclergroup_dosis)
                     .addViewType("item", ItemType.Item, R.layout.recycleritem_dosage)
-            it.setDisplayGroupListener(object : DisplayGroupListener<DosisGenderGroup, ProposedDosage>{
-                override fun onDisplayGroup(group: DosisGenderGroup, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.GroupViewHolder) {
-                    holder.displayText(R.id.groupTitle, group.title)
+            it.setDisplayNodeListener(object : DisplayNodeListener<DosisGenderGroup, ProposedDosage>{
+                override fun onDisplayNode(node: DosisGenderGroup, holder: RecyclerViewAdapter<DosisGenderGroup, ProposedDosage>.NodeViewHolder) {
+                    holder.displayText(R.id.groupTitle, node.title)
                 }
             })
             it.setDisplayItemListener(object : DisplayItemListener<DosisGenderGroup, ProposedDosage> {

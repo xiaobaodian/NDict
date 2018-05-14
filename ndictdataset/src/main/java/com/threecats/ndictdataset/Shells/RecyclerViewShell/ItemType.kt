@@ -5,5 +5,5 @@ package com.threecats.ndictdataset.Shells.RecyclerViewShell
  */
 
 enum class ItemType {
-    Item, Group
+    Item, Node
 }

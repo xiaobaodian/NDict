@@ -25,13 +25,12 @@ class RecyclerViewNode<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
     var state: DisplayState = DisplayState.Hide
 
     val isEmpty: Boolean
-        get() = groupItems.isEmpty()
+        get() = items.isEmpty()
 
-    val groupItems: MutableList<RecyclerViewItem<G,I>> = ArrayList()
-    var items: MutableList<I> = ArrayList()
+    val items: MutableList<RecyclerViewItem<G,I>> = ArrayList()
 
     init {
-        viewType = RecyclerViewType(ItemType.Group)
+        viewType = RecyclerViewType(ItemType.Node)
     }
 
     fun getObject(): G{
@@ -42,35 +41,34 @@ class RecyclerViewNode<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
     //以下是分组里面的条目管理
     //    public int addTask(Task item){
     //        item.addParentGroup(this);
-    //        groupItems.add(item);
+    //        items.add(item);
     //        if (state == DisplayState.Hide) state = DisplayState.Show;
-    //        return groupItems.size();      //返回加入的任务的位置序号，便于组列表处理（0位是组标题）
+    //        return items.size();      //返回加入的任务的位置序号，便于组列表处理（0位是组标题）
     //    }
     fun addItem(item: RecyclerViewItem<G, I>): Int {
         item.parentNodes.add(this)
-        groupItems.add(item)
-        items.add(item.self)
-        val position = groupItems.size - 1
+        items.add(item)
+        val position = items.size - 1
 
-//        if (groupItems.size == 0) {
-//            groupItems.add(item)
+//        if (items.size == 0) {
+//            items.add(item)
 //            site = 0
-//        } else if (item.compareTo(groupItems[groupItems.size - 1]) >= 0) {
-//            groupItems.add(item)
-//            site = groupItems.size - 1
+//        } else if (item.compareTo(items[items.size - 1]) >= 0) {
+//            items.add(item)
+//            site = items.size - 1
 //        } else {
-//            for (i in groupItems.indices) {
-//                if (item.compareTo(groupItems[i]) < 0) {
+//            for (i in items.indices) {
+//                if (item.compareTo(items[i]) < 0) {
 //                    site = i
 //                    break
 //                }
 //            }
-//            groupItems.add(site, item)
+//            items.add(site, item)
 //        }
 //        if (state === DisplayState.Hide) state = DisplayState.Show
         parentData?.let {
             if (state === DisplayState.Hide) {
-                it.activeGroup(this)
+                it.activeNode(this)
             }
             //it.addItemToRecyclerViewItems(this, position, item)
             //it.calculatorTitlePosition()
@@ -79,28 +77,19 @@ class RecyclerViewNode<G, I>(group: G): RecyclerViewBaseItem() {  //abstract
     }
 
     fun removeItem(item: RecyclerViewItem<G, I>): Int {
-        var position = items.indexOf(item.self)
-        if (position >= 0) {
-            items.removeAt(position)
-        }
-        position = groupItems.indexOf(item)
+        var position = items.indexOf(item)
         if (position >= 0){
-            groupItems.removeAt(position)
+            items.removeAt(position)
             item.parentNodes.remove(this)
-//            parentData?.let {
-//                if (groupItems.size == 0) {
-//                    it.hideGroup(this)
-//                }
-//            }
         }
         return position
     }
 
     fun needChangedPosition(item: RecyclerViewItem<G, I>): Boolean {
-        val pose = groupItems.indexOf(item)
+        val pose = items.indexOf(item)
         if (pose < 0) return false
-        val prevTask = if (pose == 0) null else groupItems[pose - 1]
-        val nextTask = if (pose == groupItems.size - 1) null else groupItems[pose + 1]
+        val prevTask = if (pose == 0) null else items[pose - 1]
+        val nextTask = if (pose == items.size - 1) null else items[pose + 1]
         var needChange = false
 //        if (prevTask == null && nextTask == null) {
 //            needChange = false

@@ -21,6 +21,7 @@ class RecyclerViewAdapter<G, I>(
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
         val item: RecyclerViewItem<G, I>
+            @Suppress("UNCHECKED_CAST")
             get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewItem<G, I>
 
 
@@ -63,22 +64,22 @@ class RecyclerViewAdapter<G, I>(
         }
     }
 
-    inner class GroupViewHolder(internal var currentGroupView: View) : RecyclerView.ViewHolder(currentGroupView) {
+    inner class NodeViewHolder(internal var currentNodeView: View) : RecyclerView.ViewHolder(currentNodeView) {
 
         val node: RecyclerViewNode<G, I>
             @Suppress("UNCHECKED_CAST")
             get() = dataSet.recyclerViewItems[adapterPosition] as RecyclerViewNode<G, I>
 
-        fun displayText(R: Int, text: String): GroupViewHolder {
-            val textView = currentGroupView.findViewById<TextView>(R)
+        fun displayText(R: Int, text: String): NodeViewHolder {
+            val textView = currentNodeView.findViewById<TextView>(R)
             textView.text = text
-            return this@GroupViewHolder
+            return this@NodeViewHolder
         }
 
-        fun displayImage(R: Int, imageResId: Int): GroupViewHolder {
-            val imageView = currentGroupView.findViewById<ImageView>(R)
+        fun displayImage(R: Int, imageResId: Int): NodeViewHolder {
+            val imageView = currentNodeView.findViewById<ImageView>(R)
             imageView.setImageResource(imageResId)
-            return this@GroupViewHolder
+            return this@NodeViewHolder
         }
     }
 
@@ -104,8 +105,8 @@ class RecyclerViewAdapter<G, I>(
 //                        val taskIntent = Intent(App.self().getMainActivity(), TaskDisplayActivity::class.java)
 //                        App.self().getMainActivity().startActivity(taskIntent)
 //                    }
-                    if (dataSet.hasGroup) {
-                        findCurrentGroup(itemViewHolder.adapterPosition)
+                    if (dataSet.hasNode) {
+                        findCurrentNode(itemViewHolder.adapterPosition)
                     }
                     shell.clickItem(item.self, itemViewHolder)
                 }
@@ -117,8 +118,8 @@ class RecyclerViewAdapter<G, I>(
                     //App.self().getDataManger().setCurrentTask(task)
                     //暂时关闭长安多选功能
                     //App.getDataManger().getCurrentGroupList().setItemChecked(true);
-                    if (dataSet.hasGroup) {
-                        findCurrentGroup(itemViewHolder.adapterPosition)
+                    if (dataSet.hasNode) {
+                        findCurrentNode(itemViewHolder.adapterPosition)
                     }
                     shell.longClickItem(item.self, itemViewHolder)
                     true
@@ -126,23 +127,23 @@ class RecyclerViewAdapter<G, I>(
                 return itemViewHolder
             }
 
-            ItemType.Group -> {
+            ItemType.Node -> {
                 view = LayoutInflater.from(parent.context).inflate(type.layoutID!!, parent, false)
-                val groupViewHolder = GroupViewHolder(view)
-                groupViewHolder.currentGroupView.setOnClickListener {
-                    val group = groupViewHolder.node as RecyclerViewNode<G, I>
+                val nodeViewHolder = NodeViewHolder(view)
+                nodeViewHolder.currentNodeView.setOnClickListener {
+                    val group = nodeViewHolder.node as RecyclerViewNode<G, I>
                     dataSet.currentNode = group
-                    dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
-                    shell.clickGroup(group.self, groupViewHolder)
+                    dataSet.currentRecyclerNodePosition = nodeViewHolder.adapterPosition
+                    shell.clickNode(group.self, nodeViewHolder)
                 }
-                groupViewHolder.currentGroupView.setOnLongClickListener {
-                    val group = groupViewHolder.node
+                nodeViewHolder.currentNodeView.setOnLongClickListener {
+                    val group = nodeViewHolder.node
                     dataSet.currentNode = group
-                    dataSet.currentRecyclerGroupPosition = groupViewHolder.adapterPosition
-                    shell.longClickGroup(group.self, groupViewHolder)
+                    dataSet.currentRecyclerNodePosition = nodeViewHolder.adapterPosition
+                    shell.longClickNode(group.self, nodeViewHolder)
                     true
                 }
-                return groupViewHolder
+                return nodeViewHolder
             }
         }
         //return null
@@ -154,10 +155,10 @@ class RecyclerViewAdapter<G, I>(
      * 间来确定当前group是那一个（只判断当前dataSet，自然排除了其他dataSet中的group）。
      */
 
-    private fun findCurrentGroup(position: Int){
+    private fun findCurrentNode(position: Int){
         dataSet.currentNode = null
         for (group in dataSet.recyclerViewNodes) {
-            if (position > group.nodePositionID && position <= (group.nodePositionID + group.groupItems.size)) {
+            if (position > group.nodePositionID && position <= (group.nodePositionID + group.items.size)) {
                 dataSet.currentNode = group
                 break
             }
@@ -182,13 +183,13 @@ class RecyclerViewAdapter<G, I>(
                 @Suppress("UNCHECKED_CAST")
                 shell.displayItem((recyclerItem as RecyclerViewItem<G, I>).self, itemViewHolder)
             }
-            ItemType.Group -> {
+            ItemType.Node -> {
                 @Suppress("UNCHECKED_CAST")
-                val groupViewHolder = holder as RecyclerViewAdapter<G, I>.GroupViewHolder
+                val groupViewHolder = holder as RecyclerViewAdapter<G, I>.NodeViewHolder
                 @Suppress("UNCHECKED_CAST")
                 val group = recyclerItem as RecyclerViewNode<G, I>
                 //OnBindGroup(groupViewHolder, node)
-                shell.displayGroup(group.self, groupViewHolder)
+                shell.displayNode(group.self, groupViewHolder)
             }
         }
     }
@@ -200,7 +201,7 @@ class RecyclerViewAdapter<G, I>(
             if (item.viewType.itemType == ItemType.Item) {
                 index = shell.viewTypes.indexOfFirst { it.itemType == ItemType.Item }
             } else {
-                index = shell.viewTypes.indexOfFirst { it.itemType == ItemType.Group }
+                index = shell.viewTypes.indexOfFirst { it.itemType == ItemType.Node }
             }
         }
         return index
