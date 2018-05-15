@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.activity_dosis_editer.*
 import kotlinx.android.synthetic.main.content_dosis_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.alert
+import android.view.WindowManager
+
 
 class DosisEditerActivity : AppCompatActivity() {
 
@@ -72,23 +74,32 @@ class DosisEditerActivity : AppCompatActivity() {
         }
 
         if (shareSet.editorProposedDosage.isUpdate) {
-            setFields()
+            itemToViewFields()
         } else {
             btnGenderShowTitle(genderID)
         }
 
+    }
 
+    override fun onStart() {
+        super.onStart()
         with (etAgeRange){
             isFocusable = true
             isFocusableInTouchMode = true
             requestFocus()
         }
-
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.dosisediter_menu, menu!!)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu!!.findItem(R.id.SaveAddDosis).isVisible = shareSet.editorProposedDosage.isAppend
+        val menuItem = menu.findItem((R.id.REChange))
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -103,9 +114,14 @@ class DosisEditerActivity : AppCompatActivity() {
                 }.show()
             }
             R.id.SaveAddDosis -> {
-                shareSet.editorProposedDosage.commit()
-                shareSet.editorProposedDosage.append(ProposedDosage())
-                setFields()
+                viewFieldsToItem()
+                shareSet.editorProposedDosage.commit().append(ProposedDosage())
+                itemToViewFields()
+                with (etAgeRange){
+                    isFocusable = true
+                    isFocusableInTouchMode = true
+                    requestFocus()
+                }
             }
             R.id.CancelDosis -> {
                 shareSet.editorProposedDosage.cancel()
@@ -116,7 +132,7 @@ class DosisEditerActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        getFields()
+        viewFieldsToItem()
         shareSet.editorProposedDosage.commit()
         shareSet.currentNutrient?.let { EventBus.getDefault().post(UpdateNutrient(it)) }
         super.onDestroy()
@@ -143,7 +159,9 @@ class DosisEditerActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFields(){
+    private fun itemToViewFields(){
+        etAgeRange.text.clear()
+        etDosisRange.text.clear()
         val proposedDosage = shareSet.editorProposedDosage.item
         proposedDosage?.let {
             genderID = it.gender.ordinal
@@ -155,7 +173,7 @@ class DosisEditerActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFields(){
+    private fun viewFieldsToItem(){
         shareSet.editorProposedDosage.item?.let {
             it.gender = EGender.values()[genderID]
             it.pregnancy = EPregnancy.values()[pregnancyStage]

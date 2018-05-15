@@ -225,7 +225,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         val recyclerItem = findRecyclerItem(item)
         recyclerItem?.let {
             if (noNode) {
-                updateCurrentItemDisplay(item)
+                updateCurrentItemDisplay()
             } else {
                 updateItem(recyclerItem)
             }
@@ -292,7 +292,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         }
     }
 
-    private fun updateCurrentItemDisplay(item: I){
+    private fun updateCurrentItemDisplay(){
         currentRecyclerItemPosition?.let {
             adapter?.notifyItemChanged(it)
         }

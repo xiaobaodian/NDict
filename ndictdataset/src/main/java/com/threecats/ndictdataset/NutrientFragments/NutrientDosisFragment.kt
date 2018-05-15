@@ -29,7 +29,7 @@ class NutrientDosisFragment : Fragment() {
     private val shareSet = BDM.ShareSet!!
     private var measure = EMeasure.Mg
 
-    private val humanGroup = DosisGenderGroup("男女适用", EGender.None)
+    private val humanGroup = DosisGenderGroup("不限性别", EGender.None)
     private val maleGroup = DosisGenderGroup("男性", EGender.Male)
     private val femaleGroup = DosisGenderGroup("女性", EGender.Female)
 
