@@ -29,6 +29,7 @@ class DosisEditerActivity : AppCompatActivity() {
     private val pregnancyTitle: List<String> = listOf("正常","孕全期","孕早期","孕中期","孕后期")
     private var genderID: Int = 2
     private var pregnancyStage: Int = 0
+    private var measure: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,9 @@ class DosisEditerActivity : AppCompatActivity() {
 //                toolbar.title = shareSet.currentNutrient?.name
 //            }
 //        }
+
+        measure = shareSet.currentNutrient?.measure?.chinaName ?: "无"
+        layoutDosisRange.hint = "推荐使用量($measure/天)"
 
         btnGender.setOnClickListener{
             genderID = genderTitle.previous(genderID)
@@ -133,9 +137,9 @@ class DosisEditerActivity : AppCompatActivity() {
         if (index !in 0 until pregnancyTitle.size) { return }
         btnPregnancy.text = pregnancyTitle[index]
         if (index == EPregnancy.None.ordinal) {
-            ageRangeLayout.visibility = View.VISIBLE  //ageRangeLayout
+            layoutAgeRange.visibility = View.VISIBLE  //ageRangeLayout
         } else {
-            ageRangeLayout.visibility = View.GONE
+            layoutAgeRange.visibility = View.GONE
         }
     }
 

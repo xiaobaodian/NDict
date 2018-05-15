@@ -42,14 +42,14 @@
         tools:layout_editor_absoluteY="408dp">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/ageRangeLayout"
+            android:id="@+id/layoutAgeRange"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:hint="年龄范围"
-            app:layout_constraintEnd_toStartOf="@+id/textInputLayout3"
+            app:layout_constraintEnd_toStartOf="@+id/layoutDosisRange"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -59,15 +59,15 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout3"
+            android:id="@+id/layoutDosisRange"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:hint="推荐用量"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ageRangeLayout"
-            app:layout_constraintTop_toTopOf="@+id/ageRangeLayout">
+            app:layout_constraintStart_toEndOf="@+id/layoutAgeRange"
+            app:layout_constraintTop_toTopOf="@+id/layoutAgeRange">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
