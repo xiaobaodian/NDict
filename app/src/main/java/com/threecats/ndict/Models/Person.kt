@@ -50,7 +50,7 @@ class Person() {
             EGender.female -> field = value
             else -> field = false
         }
-        get() = if (gender == EGender.female) nursing else false
+        get() = if (gender == EGender.female) field else false
 
 
     constructor(
