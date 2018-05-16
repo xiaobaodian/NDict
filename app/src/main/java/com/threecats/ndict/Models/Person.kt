@@ -15,22 +15,20 @@ import java.util.*
  */
 
 @Entity
-class Person() {
+class Person(
+        @Id var id: Long = 0,
+        var name: String = "",
 
-    @Id
-    var id: Long = 0
+        @Convert(converter = DateConverter::class, dbType = Date::class)
+        var birthday: DateTime = DateTime(),
 
-    var picture: Int = 0
-    var name: String = ""
+        @Convert(converter = GenderConverter::class, dbType = Int::class)
+        var gender: EGender = EGender.male,
 
-    @Convert(converter = DateConverter::class, dbType = Date::class)
-    var birthday: DateTime = DateTime()
+        var height: Float = 0.0f,
+        var weight: Float = 0.0f
 
-    @Convert(converter = GenderConverter::class, dbType = Int::class)
-    var gender: EGender = EGender.male
-
-    var height: Float = 0.0f
-    var weight: Float = 0.0f
+) {
 
     @Convert(converter = WorkTypeConverter::class, dbType = Int::class)
     var workType: EWorkType = EWorkType.normal
@@ -51,21 +49,6 @@ class Person() {
             else -> field = false
         }
         get() = if (gender == EGender.female) field else false
-
-
-    constructor(
-            name: String,
-            gender: EGender,
-            birthday: DateTime,
-            height: Float,
-            weight: Float
-    ) : this() {
-        this.name = name
-        this.gender = gender
-        this.birthday = birthday
-        this.height = height
-        this.weight = weight
-    }
 
     class GenderConverter : PropertyConverter<EGender, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EGender {
