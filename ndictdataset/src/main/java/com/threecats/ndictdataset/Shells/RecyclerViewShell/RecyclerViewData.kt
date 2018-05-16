@@ -13,6 +13,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     var currentItem: RecyclerViewItem<G, I>? = null
     var currentRecyclerNodePosition: Int? = null
     var currentRecyclerItemPosition: Int? = null
+    var isMultiSelectionMode = false
 
     val recyclerViewNodes: MutableList<RecyclerViewNode<G, I>> = ArrayList()
     val recyclerViewItems: MutableList<RecyclerViewBaseItem> = ArrayList()
@@ -232,10 +233,12 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         }
     }
 
-    private fun updateItem(recyclerItem: RecyclerViewItem<G,I>){
+    // 返回的是重新加入的节点数量，如果没有重新加入任何节点，就返回0（返回0意味着丢失了这条记录）
+    private fun updateItem(recyclerItem: RecyclerViewItem<G,I>): Int{
         val moveToNodes: MutableList<RecyclerViewNode<G, I>> = ArrayList()
         val holdToNodes: MutableList<RecyclerViewNode<G, I>> = ArrayList()
         val parentNodes: MutableList<RecyclerViewNode<G, I>> = ArrayList()
+        var updateCount = 0
         moveToNodes.addAll(recyclerViewNodes)
         parentNodes.addAll(recyclerItem.parentNodes)
 
@@ -245,6 +248,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
                 if (node.isMembers(recyclerItem.self as Any)) {
                     moveToNodes.remove(it)
                     holdToNodes.add(it)
+                    updateCount += 1
                 } else {
                     removeItem(recyclerItem, it)
                     recyclerItem.parentNodes.remove(it)
@@ -257,13 +261,14 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
             if (node is NodeMembership) {
                 if (node.isMembers(recyclerItem.self as Any)) {
                     addItem(recyclerItem, it)
+                    updateCount += 1
                 }
             }
         }
+        return updateCount
     }
 
     private fun findRecyclerItem(item: I): RecyclerViewItem<G, I>? = if (currentItem?.self == item) currentItem else mapRecyclerItem.get(item)
-
     private fun findRecyclerNode(group: G): RecyclerViewNode<G, I>? = if (currentNode?.self == group) currentNode else mapRecyclerNode.get(group)
 
 //    var recyclerGroup: RecyclerViewNode<G, I>? = null
@@ -272,21 +277,21 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun addItemToRecyclerViewItems(node: RecyclerViewNode<G, I>, nodePosition: Int, item: RecyclerViewItem<G, I>) {
         //根据任务在分组中的位置计算出任务在RecyclerView列表中的位置
-        val site = node.nodePositionID + nodePosition + 1
-        if (site >= recyclerViewItems.size) {
+        val position = node.nodePositionID + nodePosition + 1
+        if (position >= recyclerViewItems.size) {
             recyclerViewItems.add(item)
         } else {
-            recyclerViewItems.add(site, item)
+            recyclerViewItems.add(position, item)
         }
-        adapter?.notifyItemInserted(site)
+        adapter?.notifyItemInserted(position)
         //shell.recyclerAdapter?.notifyDataSetChanged()
     }
 
     private fun removeItemFromRecyclerViewItems(node: RecyclerViewNode<G, I>, nodePosition: Int, item: RecyclerViewItem<G, I>) {
-        val site = node.nodePositionID + nodePosition + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
-        if (recyclerViewItems[site] === item) {
-            recyclerViewItems.removeAt(site)
-            adapter?.notifyItemRemoved(site)
+        val position = node.nodePositionID + nodePosition + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
+        if (recyclerViewItems[position] === item) {
+            recyclerViewItems.removeAt(position)
+            adapter?.notifyItemRemoved(position)
         } else {
             shell.context.toast("注意：要删除的Item与列表中指定位置的记录不相符 ！")
         }
@@ -299,8 +304,8 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun updateItemDisplay(recyclerItem: RecyclerViewItem<G, I>, recyclerNode: RecyclerViewNode<G, I>) {
-        val site = recyclerNode.items.indexOf(recyclerItem) + recyclerNode.nodePositionID + 1
-        adapter?.notifyItemChanged(site)
+        val position = recyclerNode.items.indexOf(recyclerItem) + recyclerNode.nodePositionID + 1
+        adapter?.notifyItemChanged(position)
     }
 
 }
