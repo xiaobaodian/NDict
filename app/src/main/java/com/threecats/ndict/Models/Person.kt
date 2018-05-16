@@ -23,7 +23,7 @@ class Person(
         var birthday: DateTime = DateTime(),
 
         @Convert(converter = GenderConverter::class, dbType = Int::class)
-        var gender: EGender = EGender.male,
+        var gender: EGender = EGender.Male,
 
         var height: Float = 0.0f,
         var weight: Float = 0.0f
@@ -31,24 +31,27 @@ class Person(
 ) {
 
     @Convert(converter = WorkTypeConverter::class, dbType = Int::class)
-    var workType: EWorkType = EWorkType.normal
+    var workType: EWorkType = EWorkType.Normal
 
     @Convert(converter = PhysiqueConverter::class, dbType = Int::class)
-    var physique: EPhysique = EPhysique.normal
+    var physique: EPhysique = EPhysique.Normal
 
     var RHR: Int = 60
     var pregnant: Boolean = false
         set(value) = when (gender) {
-            EGender.female -> field = value
+            EGender.Female -> field = value
             else -> field = false
         }
-        get() = if (gender == EGender.female) field else false
+        get() = if (gender == EGender.Female) field else false
     var nursing: Boolean = false
         set(value) = when (gender) {
-            EGender.female -> field = value
+            EGender.Female -> field = value
             else -> field = false
         }
-        get() = if (gender == EGender.female) field else false
+        get() = if (gender == EGender.Female) field else false
+
+    var bmobId: String = ""
+    var bmobUpdateAt: String = ""
 
     class GenderConverter : PropertyConverter<EGender, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EGender {

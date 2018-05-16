@@ -2,7 +2,6 @@ package com.threecats.ndict.ViewModels
 
 import com.threecats.ndict.Enum.EGender
 import com.threecats.ndict.Enum.EWorkType
-import com.threecats.ndict.ViewModels.PersonPlus
 
 /**
  * 由 zhang 于 2018/1/10 创建
@@ -26,10 +25,10 @@ class PersonBMR(val person: PersonPlus) {
         get() = if (person.gender == EGender.male) (base*2.1).toInt() else (base*1.82).toInt()
     val auto: Int
         get() = when (person.workType){
-            EWorkType.live -> live
-            EWorkType.normal -> normal
-            EWorkType.mild -> mild
-            EWorkType.medium -> medium
-            EWorkType.sevete -> sevete
+            EWorkType.Live -> live
+            EWorkType.Normal -> normal
+            EWorkType.Mild -> mild
+            EWorkType.Medium -> medium
+            EWorkType.Sevete -> sevete
         }
 }

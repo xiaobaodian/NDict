@@ -1,6 +1,7 @@
 package com.threecats.ndict.Models
 
 import com.threecats.ndict.Enum.EMeasure
+import com.threecats.ndictdataset.Bmob._Article
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -12,48 +13,30 @@ import java.util.*
  */
 
 @Entity
-class TraceElement() {
+data class TraceElement(
+        @Id var id: Long = 0,
 
-    @Id
-    var id: Long = 0
+        var elementID: Long = 0,
 
-    var elementID: Long = 0
+        var name: String = "TraceElement",
+        var alias: String = "",
+        var Symbol: String = "",
 
-    var timestamp: Date = Date()
-    var name: String = "TraceElement"
-    var Symbol: String = ""
+        @Convert(converter = MeasureConverter::class, dbType = Int::class)
+        var measure: EMeasure = EMeasure.Gram,
 
-    @Convert(converter = MeasureConverter::class, dbType = Int::class)
-    var measure: EMeasure = EMeasure.Gram
+        var demand: String = "",
 
-    var demand: String = ""
+        var content: String = "",
 
-    var content: String = ""
-    var function: String = ""
-    var source: String = ""
-    var notice: String = ""
+        var nutrientID: Int = 0,
 
-    constructor(
-            elementID: Long,
-            name: String,
-            elementSymbol: String,
-            measure: EMeasure,
-            demand: String,
-            content: String,
-            function: String,
-            source: String,
-            notice: String
-    ) : this() {
-        this.elementID = elementID
-        this.name = name
-        this.Symbol = elementSymbol
-        this.measure = measure
-        this.demand = demand
-        this.content = content
-        this.function = function
-        this.source = source
-        this.notice = notice
-    }
+        var proposedDosages: MutableList<ProposedDosage> = ArrayList()
+
+) {
+
+    var bmobId: String = ""
+    var bmobUpdateAt: String = ""
 
     class MeasureConverter : PropertyConverter<EMeasure, Int> {
         override fun convertToEntityProperty(databaseValue: Int): EMeasure {
