@@ -14,6 +14,7 @@ import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Bmob.BTraceElement
 import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
+import com.threecats.ndictdataset.Enum.ERecordType
 import com.threecats.ndictdataset.EventClass.UpdateNutrient
 import com.threecats.ndictdataset.Models.NumberRange
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
@@ -49,6 +50,7 @@ class NutrientEditerActivity : AppCompatActivity() {
             shareSet.editorNutrient.setOnUpdateItemListener(object : UpdateItemListener<BNutrient>{
                 override fun onUpdateItem(item: BNutrient) {
                     item.update()
+                    shareSet.lastUpdateState.changeDate(ERecordType.Nutrient)
                 }
             })
             when (shareSet.currentNutrient?.nutrientID){
@@ -79,6 +81,7 @@ class NutrientEditerActivity : AppCompatActivity() {
                 it.setOnUpdateItemListener(object : UpdateItemListener<BTraceElement>{
                     override fun onUpdateItem(item: BTraceElement) {
                         item.update()
+                        shareSet.lastUpdateState.changeDate(ERecordType.TraceElement)
                     }
                 })
                 it.edit(shareSet.currentTraceElement!!)
@@ -141,6 +144,7 @@ class NutrientEditerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        shareSet.lastUpdateState.commit()
         shareSet.currentTraceElement = null
         EventBus.getDefault().unregister(this)
     }

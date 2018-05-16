@@ -8,7 +8,7 @@ import java.util.*
 /**
  * 由 zhang 于 2018/5/12 创建
  */
-class BUpdateState(
+data class BUpdateState(
         var recordType: ERecordType = ERecordType.Category,
         var lastDate: BmobDate = BmobDate(Date())
 ): BmobObject()

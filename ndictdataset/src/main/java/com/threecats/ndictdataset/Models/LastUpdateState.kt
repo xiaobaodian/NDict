@@ -13,12 +13,15 @@ import com.threecats.ndictdataset.Bmob.BUpdateState
 import com.threecats.ndictdataset.Enum.ERecordType
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import org.jetbrains.anko.toast
+import java.util.*
 
 /**
  * 由 zhang 于 2018/5/12 创建
  */
 class LastUpdateState(val context: Context) {
-    var states: MutableList<BUpdateState> = ArrayList()
+    private var states: MutableList<BUpdateState> = ArrayList()
+    private val checkHash = arrayOfNulls<Int>(4)
+
 
     init{
         val query: BmobQuery<BUpdateState> = BmobQuery()
@@ -30,9 +33,12 @@ class LastUpdateState(val context: Context) {
                 if (e == null) {
                     state?.let { states = it }
                     check()
+                    checkHash[0] = states[0].toString().hashCode()
+                    checkHash[1] = states[1].toString().hashCode()
+                    checkHash[2] = states[2].toString().hashCode()
+                    checkHash[3] = states[3].toString().hashCode()
                 } else {
-                    //toast("${e.message}")
-                    ErrorMessage(context, e)
+                    ErrorMessage(context, e).errorTips()
                 }
             }
         })
@@ -65,25 +71,23 @@ class LastUpdateState(val context: Context) {
         return result
     }
 
-    fun changeDate(type: ERecordType, item: BmobObject){
+    fun changeDate(type: ERecordType){
         val state = find(type)
-        state?.lastDate = BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", item.updatedAt)
-    }
-
-    fun appendDate(type: ERecordType, item: BmobObject){
-        val state = find(type)
-        state?.lastDate = BmobDate.createBmobDate("yyyy-MM-dd HH:mm:ss", item.createdAt)
+        state?.lastDate = BmobDate(Date())
     }
 
     fun commit(){
         val batchStates: MutableList<BmobObject> = ArrayList()
-        states.forEach { batchStates.add(it) }
+        for(i in states.indices){
+            if (states[i].toString().hashCode() != checkHash[i]) batchStates.add(states[i])
+        }
+        if (batchStates.isEmpty()) return
         BmobBatch().updateBatch(batchStates).doBatch(object: QueryListListener<BatchResult>(){
             override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                 if (e == null) {
-                    context.toast("更新了数据变更时间列表")
+                    //context.toast("更新了数据变更时间列表")
                 } else {
-                    ErrorMessage(context, e)
+                    ErrorMessage(context, e).errorTips()
                 }
             }
         })

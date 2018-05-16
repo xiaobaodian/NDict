@@ -10,6 +10,7 @@ import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Enum.EGender
 import com.threecats.ndictdataset.Enum.EMeasure
 import com.threecats.ndictdataset.Enum.EPregnancy
+import com.threecats.ndictdataset.Enum.ERecordType
 import com.threecats.ndictdataset.Models.DosisGenderGroup
 import com.threecats.ndictdataset.Models.ProposedDosage
 
@@ -44,8 +45,10 @@ class NutrientDosisFragment : Fragment() {
                     dosisListShell?.addItem(item)
                     if (shareSet.currentTraceElement == null) {
                         shareSet.currentNutrient?.proposedDosages?.add(item)
+                        //shareSet.lastUpdateState.changeDate(ERecordType.Nutrient)  在Nutrient的updateLister里面更改
                     } else {
                         shareSet.currentTraceElement?.proposedDosages?.add(item)
+                        shareSet.lastUpdateState.changeDate(ERecordType.TraceElement)
                     }
                 }
             })

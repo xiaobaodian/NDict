@@ -18,6 +18,7 @@ import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.*
 import com.threecats.ndictdataset.Enum.EEditerState
+import com.threecats.ndictdataset.Enum.ERecordType
 import com.threecats.ndictdataset.EventClass.*
 import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
@@ -152,6 +153,7 @@ class FoodListActivity : AppCompatActivity() {
                             if (e == null) {
                                 foodListShell?.addItem(item)
                                 updateCategoryFoodSize(foodListShell?.itemsSize()!!)
+                                shareSet.lastUpdateState.changeDate(ERecordType.Food)
                                 if (BDM.ShowTips) toast("添加了食材[${item.name}]，objectID：$objectID")
                             } else {
                                 longToast("添加食材${item.name}出现错误。回滚数据 !")
@@ -169,6 +171,7 @@ class FoodListActivity : AppCompatActivity() {
                         override fun done(e: BmobException?) {
                             if (e == null) {
                                 foodListShell?.updateItem(item)
+                                shareSet.lastUpdateState.changeDate(ERecordType.Food)
                                 if (BDM.ShowTips) toast("更新了食材数据")
                             } else {
                                 longToast("更新食材${item.name}出现错误。数据未保存 !")
@@ -222,6 +225,7 @@ class FoodListActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        shareSet.lastUpdateState.commit()
         EventBus.getDefault().unregister(this@FoodListActivity)
     }
 
