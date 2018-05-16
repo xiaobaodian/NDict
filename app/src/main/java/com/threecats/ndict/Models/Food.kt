@@ -1,5 +1,7 @@
 package com.threecats.ndict.Models
 
+import com.threecats.ndictdataset.Bmob.BFoodCategory
+import com.threecats.ndictdataset.Bmob._Article
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToOne
@@ -10,28 +12,23 @@ import java.util.*
  */
 
 @Entity
-class Food() {
-
-    @Id
-    var id: Long = 0
-
-    var timestamp: Date = Date()
-    var name: String = "food nameView"
-    var alias: String = ""
-    var anotherName: String = ""
-    var note: String = ""
-    var picture: Int = 0
-
-    var calories: Float = 0f
-    var water: Float = 0f
-    var protein:Float = 0f
-    var fat: Float = 0f
-    var carbohydrate:Float = 0f
-    var foodFiber: Float = 0f
-
-    lateinit var category: ToOne<FoodCategory>
-
-    constructor(name: String): this(){
-        this.name = name
-    }
+data class Food(
+        @Id var id: Long = 0,
+        var name: String = "",                           // 食材名称
+        var alias: String = "",                          // 食材别名
+        var foodBased: Int = 0,                          // 食物属性（植物性，动物性）
+        var protein: Float = 0f,                         // 蛋白质含量
+        var foodFiber: Float = 0f,                       // 食物纤维含量
+        var fat: Float = 0f,                             // 脂肪含量
+        var carbohydrate: Float = 0f,                    // 碳水化合物含量
+        var calories: Float = 0f,                        // 卡路里含量
+        var water: Float = 0f,                           // 食材水分
+        var cholesterol: Float = 0f,                     // 胆固醇含量
+        var vitamins: MutableList<ElementContent> = ArrayList(),
+        var minerals: MutableList<ElementContent> = ArrayList(),
+        var article: _Article? = null
+) {
+    lateinit var category: ToOne<Category>
+    var bmobId: String = ""
+    var bmobUpdateAt: String = ""
 }

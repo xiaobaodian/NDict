@@ -1,6 +1,5 @@
 package com.threecats.ndict.View
 
-import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
@@ -24,6 +23,6 @@ class CategoryFoodFragmentAdapter : FragmentPagerAdapter {
 
     override fun getPageTitle(position: Int): CharSequence {
         val fragment = fragmentList[position]
-        return fragment.foodCategory.shortTitle
+        return fragment.category.shortTitle
     }
 }

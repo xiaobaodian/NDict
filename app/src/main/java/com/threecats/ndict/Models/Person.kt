@@ -39,16 +39,16 @@ class Person() {
     var physique: EPhysique = EPhysique.normal
 
     var RHR: Int = 60
-    var pregnant: Boolean
+    var pregnant: Boolean = false
         set(value) = when (gender) {
-            EGender.female -> pregnant = value
-            else -> pregnant = false
+            EGender.female -> field = value
+            else -> field = false
         }
-        get() = if (gender == EGender.female) pregnant else false
-    var nursing: Boolean
+        get() = if (gender == EGender.female) field else false
+    var nursing: Boolean = false
         set(value) = when (gender) {
-            EGender.female -> nursing = value
-            else -> nursing = false
+            EGender.female -> field = value
+            else -> field = false
         }
         get() = if (gender == EGender.female) nursing else false
 

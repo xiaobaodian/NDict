@@ -1,17 +1,17 @@
 package com.threecats.ndict.OriginalData
 
 import com.threecats.ndict.Models.Food
-import com.threecats.ndict.Models.FoodCategory
+import com.threecats.ndict.Models.Category
 
 /**
  * 由 zhang 于 2018/1/31 创建
  */
 object InitFoods {
 
-    fun createFoods(foodCategorys: List<FoodCategory>){
+    fun createFoods(categories: List<Category>){
 
         //谷类及其制品
-        var category: FoodCategory? = foodCategorys.find { it.categoryID == 1 }
+        var category: Category? = categories.find { it.categoryID == 1 }
         category?.foods?.add(Food("稻米"))
         category?.foods?.add(Food("粳米"))
         category?.foods?.add(Food("籼米"))
@@ -38,7 +38,7 @@ object InitFoods {
         category?.foods?.add(Food("薏米"))
 
         //干豆类及其制品
-        category = foodCategorys.find { it.categoryID == 2 }
+        category = categories.find { it.categoryID == 2 }
         category?.foods?.add(Food("黄豆"))
         category?.foods?.add(Food("黄豆粉"))
         category?.foods?.add(Food("绿豆"))
@@ -57,7 +57,7 @@ object InitFoods {
 
 
         //鲜豆类及其制品
-        category = foodCategorys.find { it.categoryID == 3 }
+        category = categories.find { it.categoryID == 3 }
         category?.foods?.add(Food("毛豆（鲜）"))
         category?.foods?.add(Food("饭豇豆"))
         category?.foods?.add(Food("长豇豆"))
@@ -73,7 +73,7 @@ object InitFoods {
         category?.foods?.add(Food("芸豆"))
 
         //根茎类
-        category = foodCategorys.find { it.categoryID == 4 }
+        category = categories.find { it.categoryID == 4 }
         category?.foods?.add(Food("地瓜（白薯）"))
         category?.foods?.add(Food("红薯（甘薯）"))
         category?.foods?.add(Food("马铃薯（土豆）"))
@@ -91,7 +91,7 @@ object InitFoods {
         category?.foods?.add(Food("芦笋"))
 
         //蔬菜类
-        category = foodCategorys.find { it.categoryID == 5 }
+        category = categories.find { it.categoryID == 5 }
         category?.foods?.add(Food("油菜"))
         category?.foods?.add(Food("白菜（黄芽白）"))
         category?.foods?.add(Food("大白菜（青白口）"))
@@ -129,7 +129,7 @@ object InitFoods {
         category?.foods?.add(Food("榨菜"))
 
         //瓜茄类
-        category = foodCategorys.find { it.categoryID == 6 }
+        category = categories.find { it.categoryID == 6 }
         category?.foods?.add(Food("冬瓜"))
         category?.foods?.add(Food("黄瓜"))
         category?.foods?.add(Food("丝瓜"))
@@ -148,7 +148,7 @@ object InitFoods {
         category?.foods?.add(Food("红薯（白皮）"))
 
         //水果类
-        category = foodCategorys.find { it.categoryID == 7 }
+        category = categories.find { it.categoryID == 7 }
         category?.foods?.add(Food("苹果"))
         category?.foods?.add(Food("富士苹果"))
         category?.foods?.add(Food("鸭梨"))
@@ -196,7 +196,7 @@ object InitFoods {
         category?.foods?.add(Food("榴莲"))
 
         //坚果类
-        category = foodCategorys.find { it.categoryID == 8 }
+        category = categories.find { it.categoryID == 8 }
         category?.foods?.add(Food("花生"))
         category?.foods?.add(Food("花生仁（生）"))
         category?.foods?.add(Food("板栗（熟）"))
@@ -213,7 +213,7 @@ object InitFoods {
         category?.foods?.add(Food("栀子"))
 
         //畜牧产品
-        category = foodCategorys.find { it.categoryID == 9 }
+        category = categories.find { it.categoryID == 9 }
         category?.foods?.add(Food("猪肉（瘦）"))
         category?.foods?.add(Food("猪肉"))
         category?.foods?.add(Food("猪大排"))
@@ -241,7 +241,7 @@ object InitFoods {
         category?.foods?.add(Food("驴肉（瘦）"))
 
         //禽蛋类
-        category = foodCategorys.find { it.categoryID == 10 }
+        category = categories.find { it.categoryID == 10 }
         category?.foods?.add(Food("鸡"))
         category?.foods?.add(Food("乌鸡肉"))
         category?.foods?.add(Food("鸡肝"))
@@ -261,7 +261,7 @@ object InitFoods {
         category?.foods?.add(Food("鸽蛋"))
 
         //乳类及其制品
-        category = foodCategorys.find { it.categoryID == 11 }
+        category = categories.find { it.categoryID == 11 }
         category?.foods?.add(Food("牛乳"))
         category?.foods?.add(Food("羊乳"))
         category?.foods?.add(Food("人乳"))
@@ -272,27 +272,27 @@ object InitFoods {
         category?.foods?.add(Food("稀奶油"))
 
         //水产及其制品
-        category = foodCategorys.find { it.categoryID == 12 }
+        category = categories.find { it.categoryID == 12 }
         category?.foods?.add(Food("水产及其制品"))
         category?.foods?.add(Food("水产及其制品"))
 
         //菌类及其制品
-        category = foodCategorys.find { it.categoryID == 13 }
+        category = categories.find { it.categoryID == 13 }
         category?.foods?.add(Food("菌类及其制品"))
         category?.foods?.add(Food("菌类及其制品"))
 
         //调味制品
-        category = foodCategorys.find { it.categoryID == 14 }
+        category = categories.find { it.categoryID == 14 }
         category?.foods?.add(Food("调味制品"))
         category?.foods?.add(Food("调味制品"))
 
         //酿制产品
-        category = foodCategorys.find { it.categoryID == 15 }
+        category = categories.find { it.categoryID == 15 }
         category?.foods?.add(Food("酿制产品"))
         category?.foods?.add(Food("酿制产品"))
 
         //糖果辅食
-        category = foodCategorys.find { it.categoryID == 16 }
+        category = categories.find { it.categoryID == 16 }
         category?.foods?.add(Food("糖果辅食"))
         category?.foods?.add(Food("糖果辅食"))
     }

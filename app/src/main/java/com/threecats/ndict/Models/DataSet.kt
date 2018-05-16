@@ -16,14 +16,14 @@ object DataSet {
 
     var app: App? = null
 
-    lateinit var foodCategorys: List<FoodCategory>
+    lateinit var categories: List<Category>
     lateinit var traceElements: List<TraceElement>
 
     lateinit var personBox: Box<Person>
     lateinit var personQuery: Query<Person>
 
-    lateinit var foodCategoryBox: Box<FoodCategory>
-    lateinit var foodCategoryQuery: Query<FoodCategory>
+    lateinit var categoryBox: Box<Category>
+    lateinit var categoryQuery: Query<Category>
 
     lateinit var foodBox: Box<Food>
     lateinit var foodQuery: Query<Food>
@@ -36,8 +36,8 @@ object DataSet {
         this.personBox = this.app!!.boxStore.boxFor<Person>()
         this.personQuery = personBox.query().build()
 
-        this.foodCategoryBox = this.app!!.boxStore.boxFor<FoodCategory>()
-        this.foodCategoryQuery = foodCategoryBox.query().build()
+        this.categoryBox = this.app!!.boxStore.boxFor<Category>()
+        this.categoryQuery = categoryBox.query().build()
 
         this.foodBox = this.app!!.boxStore.boxFor<Food>()
         this.foodQuery = foodBox.query().build()
@@ -67,12 +67,12 @@ object DataSet {
         }
 
     fun initFoodCategory(){
-        if (foodCategoryBox.count() == 0L) {
+        if (categoryBox.count() == 0L) {
             val categorys = InitFoodCategory.createFoodCategory()
-            foodCategoryBox.put(categorys)
-            val c = foodCategoryQuery.find()
+            categoryBox.put(categorys)
+            val c = categoryQuery.find()
             InitFoods.createFoods(c)
-            foodCategoryBox.put(c)
+            categoryBox.put(c)
         }
 
     }
