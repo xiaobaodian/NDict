@@ -289,7 +289,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
 
     private fun removeItemFromRecyclerViewItems(node: RecyclerViewNode<G, I>, nodePosition: Int, item: RecyclerViewItem<G, I>) {
         val position = node.nodePositionID + nodePosition + 1  //从分组中返回的位置是不包括组头的，就是说分组中列表是从0算起的所以+1
-        if (recyclerViewItems[position] === item) {
+        if (recyclerViewItems[position] == item) {
             recyclerViewItems.removeAt(position)
             adapter?.notifyItemRemoved(position)
         } else {
