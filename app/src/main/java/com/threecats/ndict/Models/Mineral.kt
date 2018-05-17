@@ -11,7 +11,6 @@ import io.objectbox.annotation.Index
 @Entity
 data class Mineral(
 
-        @Id var id: Long = 0,
         @Index var foodID: Long = 0,
 
         var K:  Float = 0f,
@@ -36,5 +35,5 @@ data class Mineral(
         var Ci: Float = 0f,
         var S:  Float = 0f
 ) {
-
+    @Id var id: Long = 0
 }

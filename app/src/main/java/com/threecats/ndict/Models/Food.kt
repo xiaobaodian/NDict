@@ -13,7 +13,6 @@ import java.util.*
 
 @Entity
 data class Food(
-        @Id var id: Long = 0,
         var name: String = "",                           // 食材名称
         var alias: String = "",                          // 食材别名
         var foodBased: Int = 0,                          // 食物属性（植物性，动物性）
@@ -23,9 +22,13 @@ data class Food(
         var carbohydrate: Float = 0f,                    // 碳水化合物含量
         var calories: Float = 0f,                        // 卡路里含量
         var water: Float = 0f,                           // 食材水分
-        var cholesterol: Float = 0f                      // 胆固醇含量
+        var cholesterol: Float = 0f,                     // 胆固醇含量
+        var bmobId: String = "",
+        var bmobUpdateAt: String = ""
 
 ) {
+    @Id var id: Long = 0
+
     lateinit var category: ToOne<Category>
 
     @Transient
@@ -36,7 +39,4 @@ data class Food(
 
     @Transient
     var article: _Article? = null
-
-    var bmobId: String = ""
-    var bmobUpdateAt: String = ""
 }

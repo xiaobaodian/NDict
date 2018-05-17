@@ -125,7 +125,7 @@ class FoodListActivity : AppCompatActivity() {
 
                             } else {
                                 //toast("${e.message}")
-                                ErrorMessage(this@FoodListActivity, e)
+                                ErrorMessage(this@FoodListActivity, e).errorTips()
                             }
                         }
                     })
@@ -158,7 +158,7 @@ class FoodListActivity : AppCompatActivity() {
                             } else {
                                 longToast("添加食材${item.name}出现错误。回滚数据 !")
                                 foodListShell?.removeItem(item)
-                                //ErrorMessage(applicationContext, e)
+                                ErrorMessage(applicationContext, e).errorTips()
                             }
                         }
                     })
@@ -175,7 +175,7 @@ class FoodListActivity : AppCompatActivity() {
                                 if (BDM.ShowTips) toast("更新了食材数据")
                             } else {
                                 longToast("更新食材${item.name}出现错误。数据未保存 !")
-                                //ErrorMessage(applicationContext, e)
+                                ErrorMessage(applicationContext, e).errorTips()
                             }
                         }
                     })
@@ -190,7 +190,7 @@ class FoodListActivity : AppCompatActivity() {
                                 updateCategoryFoodSize(foodListShell?.itemsSize()!!)
                                 toast("删除食材 ${item.name} 成功")
                             } else {
-                                ErrorMessage(applicationContext, e)
+                                ErrorMessage(applicationContext, e).errorTips()
                             }
                         }
                     })
@@ -262,7 +262,7 @@ class FoodListActivity : AppCompatActivity() {
                     toast("更新了 ${results?.size} 个对 ${updateItems.Title} 记录的引用")
                 } else {
                     //toast("${e.message}")
-                    ErrorMessage(this@FoodListActivity, e)
+                    ErrorMessage(this@FoodListActivity, e).errorTips()
                 }
             }
         })
@@ -280,7 +280,7 @@ class FoodListActivity : AppCompatActivity() {
                     }
                 } else {
                     //toast("${e.message}")
-                    ErrorMessage(this@FoodListActivity, e)
+                    ErrorMessage(this@FoodListActivity, e).errorTips()
                 }
             }
         })

@@ -12,29 +12,8 @@ import java.util.*
 data class BFoodCategory(
         var categoryID: Int? = null,
         var longTitle: String? = null,
-        var shortTitle: String? = null,
-        var foodTotal: Int = 0,
-        var foodBased: Int = 0,  // 食物属性（植物性，动物性）
-        var foodupdateAt: BmobDate = BmobDate(Date())
+        var shortTitle: String? = null
 ) : BmobObject() {
-    constructor(categoryId: Int, longTitle: String, shortTitle: String): this(){
-        categoryID = categoryId
-        this.longTitle = longTitle
-        this.shortTitle = shortTitle
-    }
+    var foodTotal: Int = 0
+    var foodBased: Int = 0  // 食物属性（植物性，动物性）
 }
-
-//class BFoodCategory() : BmobObject() {
-//    var categoryID: Int? = null
-//    var longTitle: String? = null
-//    var shortTitle: String? = null
-//    var foodTotal: Int = 0
-//    var foodBased: Int = 0  // 食物属性（植物性，动物性）
-//    var foodupdateAt: BmobDate = BmobDate(Date())
-//
-//    constructor(categoryId: Int, longTitle: String, shortTitle: String): this(){
-//        categoryID = categoryId
-//        this.longTitle = longTitle
-//        this.shortTitle = shortTitle
-//    }
-//}
