@@ -70,25 +70,32 @@ object DataSet {
         get() = personQuery.find()
 
     fun initObjectBox(){
-        stepCategory()
+        if (categoryBox.count() == 0L) {
+            stepCategory()
+        } else {
+            val categorys = categoryQuery.find()
+            app.applicationContext.toast("有${categorys.size}条分类")
+            categorys.forEach {
+                app.applicationContext.toast("分类(${it.longTitle})有${it.foods.size}条食材记录")
+            }
+        }
+
     }
 
     private fun stepCategory(){
-        if (categoryBox.count() == 0L) {
-            val query = BmobQuery<BFoodCategory>()
-            query.findObjects(object : FindListener<BFoodCategory>() {
-                override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
-                    if (e == null) {
-                        categorys?.let {
-                            stepFood(categorys)
-                            app.applicationContext.toast("获得了${categorys.size}条分类记录")
-                        }
-                    } else {
-                        ErrorMessage(app.applicationContext, e).errorTips()
+        val query = BmobQuery<BFoodCategory>()
+        query.findObjects(object : FindListener<BFoodCategory>() {
+            override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
+                if (e == null) {
+                    categorys?.let {
+                        stepFood(categorys)
+                        app.applicationContext.toast("获得了${categorys.size}条分类记录")
                     }
+                } else {
+                    ErrorMessage(app.applicationContext, e).errorTips()
                 }
-            })
-        }
+            }
+        })
     }
 
     private fun stepFood(categories: MutableList<BFoodCategory>){
@@ -102,6 +109,7 @@ object DataSet {
                 override fun done(foods: MutableList<BFood>?, e: BmobException?) {
                     if (e == null) {
                         foods?.let {
+                            app.applicationContext.toast("${category.longTitle}共有${it.size}条食材记录")
                             it.forEach {
                                 val food = Food(
                                         it.name,
