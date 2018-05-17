@@ -2,7 +2,7 @@ package com.threecats.ndictdataset.Bmob
 
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.datatype.BmobDate
-import com.threecats.ndictdataset.Enum.EFoodBase
+import com.threecats.ndict.Enum.EFoodBase
 import java.util.*
 
 /**

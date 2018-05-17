@@ -10,18 +10,10 @@ import io.objectbox.relation.ToMany
 
 @Entity
 data class Category(
-        @Id var id: Long = 0,
         var categoryID: Int = 0,
         var longTitle: String  = "",
         var shortTitle: String = ""
 ) {
-
+    @Id var id: Long = 0
     lateinit var foods: ToMany<Food>
-
-    constructor(categoryID: Int, longTitle: String, shortTitle: String): this() {
-        this.categoryID = categoryID
-        this.longTitle = longTitle
-        this.shortTitle = shortTitle
-    }
-
 }

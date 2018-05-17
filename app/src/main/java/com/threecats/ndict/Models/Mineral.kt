@@ -2,15 +2,17 @@ package com.threecats.ndict.Models
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.annotation.Index
 
 /**
  * 由 zhang 于 2018/2/2 创建
  */
 
 @Entity
-data class FoodMineral(
+data class Mineral(
 
         @Id var id: Long = 0,
+        @Index var foodID: Long = 0,
 
         var K:  Float = 0f,
         var N:  Float = 0f,

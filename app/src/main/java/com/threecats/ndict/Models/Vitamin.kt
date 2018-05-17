@@ -2,6 +2,7 @@ package com.threecats.ndict.Models
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.annotation.Index
 
 /**
  * 由 zhang 创建于 2018/5/16.
@@ -9,7 +10,10 @@ import io.objectbox.annotation.Id
 
 @Entity
 data class Vitamin(
+
         @Id var id: Long = 0,
+        @Index var foodID: Long = 0,
+
         var RE:                 Float = 0f,
         var VitaminB1:          Float = 0f,
         var VitaminB2:          Float = 0f,
@@ -27,5 +31,5 @@ data class Vitamin(
         var VitaminP:           Float = 0f,
         var Inositol:           Float = 0f,
         var PABA:               Float = 0f
-) {
-}
+
+)

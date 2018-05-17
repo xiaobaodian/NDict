@@ -11,8 +11,6 @@ import com.threecats.ndict.Models.Person
  */
 class PersonPlus(val person: Person) {
 
-    val picture:Int
-        get() = person.picture
     val name: String
         get() = person.name
     val birthday: DateTime

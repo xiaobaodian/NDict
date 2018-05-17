@@ -23,12 +23,20 @@ data class Food(
         var carbohydrate: Float = 0f,                    // 碳水化合物含量
         var calories: Float = 0f,                        // 卡路里含量
         var water: Float = 0f,                           // 食材水分
-        var cholesterol: Float = 0f,                     // 胆固醇含量
-        var vitamins: MutableList<ElementContent> = ArrayList(),
-        var minerals: MutableList<ElementContent> = ArrayList(),
-        var article: _Article? = null
+        var cholesterol: Float = 0f                      // 胆固醇含量
+
 ) {
     lateinit var category: ToOne<Category>
+
+    @Transient
+    var vitamins: MutableList<ElementContent> = ArrayList()
+
+    @Transient
+    var minerals: MutableList<ElementContent> = ArrayList()
+
+    @Transient
+    var article: _Article? = null
+
     var bmobId: String = ""
     var bmobUpdateAt: String = ""
 }

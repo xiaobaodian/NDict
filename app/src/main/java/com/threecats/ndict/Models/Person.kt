@@ -16,19 +16,19 @@ import java.util.*
 
 @Entity
 class Person(
-        @Id var id: Long = 0,
         var name: String = "",
-
-        @Convert(converter = DateConverter::class, dbType = Date::class)
-        var birthday: DateTime = DateTime(),
 
         @Convert(converter = GenderConverter::class, dbType = Int::class)
         var gender: EGender = EGender.Male,
+
+        @Convert(converter = DateConverter::class, dbType = Date::class)
+        var birthday: DateTime = DateTime(),
 
         var height: Float = 0.0f,
         var weight: Float = 0.0f
 
 ) {
+    @Id var id: Long = 0
 
     @Convert(converter = WorkTypeConverter::class, dbType = Int::class)
     var workType: EWorkType = EWorkType.Normal

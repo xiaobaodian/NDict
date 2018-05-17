@@ -1,8 +1,9 @@
 package com.threecats.ndict
 
 import android.app.Application
+import com.threecats.MyObjectBox
 import com.threecats.ndict.Models.DataSet
-import com.threecats.ndict.Models.MyObjectBox
+//import com.threecats.ndict.Models.MyObjectBox
 import io.objectbox.BoxStore
 
 /**
