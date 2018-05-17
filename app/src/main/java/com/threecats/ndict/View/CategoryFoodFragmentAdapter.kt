@@ -23,6 +23,6 @@ class CategoryFoodFragmentAdapter : FragmentPagerAdapter {
 
     override fun getPageTitle(position: Int): CharSequence {
         val fragment = fragmentList[position]
-        return fragment.category.shortTitle
+        return fragment.category.shortTitle!!
     }
 }

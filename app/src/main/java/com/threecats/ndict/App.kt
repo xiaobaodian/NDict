@@ -1,6 +1,7 @@
 package com.threecats.ndict
 
 import android.app.Application
+import cn.bmob.v3.Bmob
 import com.threecats.MyObjectBox
 import com.threecats.ndict.Models.DataSet
 //import com.threecats.ndict.Models.MyObjectBox
@@ -12,6 +13,7 @@ import io.objectbox.BoxStore
 class App: Application() {
 
     companion object Constants {
+        var APPID = "92c3bbfbecf25dd1991485ee41597f1a"
         const val TAG = "NDict"
         const val EXTERNAL_DIR = false
     }
@@ -31,6 +33,7 @@ class App: Application() {
         // This is the minimal setup required on Android
 
         boxStore = MyObjectBox.builder().androidContext(this).build()
+        Bmob.initialize(this, APPID)
 
         //        }    }
     }

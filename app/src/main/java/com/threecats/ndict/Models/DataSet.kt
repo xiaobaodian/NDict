@@ -5,12 +5,14 @@ import cn.bmob.v3.datatype.BmobPointer
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import com.threecats.ndict.App
+import com.threecats.ndict.Helper.ErrorMessage
 import com.threecats.ndict.OriginalData.InitPerson
 import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
 import io.objectbox.query.Query
+import org.jetbrains.anko.toast
 
 /**
  * 由 zhang 于 2018/1/6 创建
@@ -67,6 +69,10 @@ object DataSet {
     val persons: MutableList<Person>?
         get() = personQuery.find()
 
+    fun initObjectBox(){
+        stepCategory()
+    }
+
     private fun stepCategory(){
         if (categoryBox.count() == 0L) {
             val query = BmobQuery<BFoodCategory>()
@@ -75,9 +81,10 @@ object DataSet {
                     if (e == null) {
                         categorys?.let {
                             stepFood(categorys)
+                            app.applicationContext.toast("获得了${categorys.size}条分类记录")
                         }
                     } else {
-                        //ErrorMessage(context!!, e)
+                        ErrorMessage(app.applicationContext, e).errorTips()
                     }
                 }
             })
@@ -158,6 +165,7 @@ object DataSet {
                                         food.vitamins[16].content
                                 )
                                 vitaminBox.put(vitamin)
+                                app.applicationContext.toast("${it.name} 添加完成")
                             }
                         }
                     } else {
@@ -166,6 +174,7 @@ object DataSet {
                     }
                 }
             })
+            app.applicationContext.toast("${it.longTitle} 执行了添加内容的过程")
         }
 
     }
