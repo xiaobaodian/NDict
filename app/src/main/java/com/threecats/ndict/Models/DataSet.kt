@@ -46,14 +46,20 @@ object DataSet {
     fun init(app: App){
         this.app = app
 
-        this.personBox = this.app.boxStore.boxFor<Person>()
-        this.personQuery = personBox.query().build()
+        personBox = app.boxStore.boxFor<Person>()
+        personQuery = personBox.query().build()
 
-        this.categoryBox = this.app.boxStore.boxFor<Category>()
-        this.categoryQuery = categoryBox.query().build()
+        categoryBox = app.boxStore.boxFor<Category>()
+        categoryQuery = categoryBox.query().build()
 
-        this.foodBox = this.app.boxStore.boxFor<Food>()
-        this.foodQuery = foodBox.query().build()
+        foodBox = app.boxStore.boxFor<Food>()
+        foodQuery = foodBox.query().build()
+
+        mineralBox = app.boxStore.boxFor<Mineral>()
+        mineralQuery = mineralBox.query().build()
+
+        vitaminBox = app.boxStore.boxFor<Vitamin>()
+        vitaminQuery = vitaminBox.query().build()
     }
 
     fun initPerson(): Boolean {
@@ -74,10 +80,6 @@ object DataSet {
             stepCategory()
         } else {
             val categorys = categoryQuery.find()
-            app.applicationContext.toast("有${categorys.size}条分类")
-            categorys.forEach {
-                app.applicationContext.toast("分类(${it.longTitle})有${it.foods.size}条食材记录")
-            }
         }
 
     }
@@ -88,8 +90,7 @@ object DataSet {
             override fun done(categorys: MutableList<BFoodCategory>?, e: BmobException?) {
                 if (e == null) {
                     categorys?.let {
-                        stepFood(categorys)
-                        app.applicationContext.toast("获得了${categorys.size}条分类记录")
+                        stepFood(categorys,0)
                     }
                 } else {
                     ErrorMessage(app.applicationContext, e).errorTips()
@@ -98,93 +99,90 @@ object DataSet {
         })
     }
 
-    private fun stepFood(categories: MutableList<BFoodCategory>){
-        categories.forEach {
-            val category = Category(it.categoryID, it.longTitle, it.shortTitle, it.objectId, it.updatedAt)
-            val foods: MutableList<Food> = ArrayList()
-            val query: BmobQuery<BFood> = BmobQuery()
-            query.addWhereEqualTo("category", BmobPointer(it))
-            query.setLimit(300)
-            query.findObjects(object: FindListener<BFood>(){
-                override fun done(foods: MutableList<BFood>?, e: BmobException?) {
-                    if (e == null) {
-                        foods?.let {
-                            app.applicationContext.toast("${category.longTitle}共有${it.size}条食材记录")
-                            it.forEach {
-                                val food = Food(
-                                        it.name,
-                                        it.alias,
-                                        it.foodBased,
-                                        it.protein,
-                                        it.foodFiber,
-                                        it.fat,
-                                        it.carbohydrate,
-                                        it.calories,
-                                        it.water,
-                                        it.cholesterol,
-                                        it.objectId,
-                                        it.updatedAt
-                                 )
-                                food.category.target = category
-                                val foodID: Long = foodBox.put(food)
-                                val mineral = Mineral(
-                                        foodID,
-                                        food.minerals[0].content,
-                                        food.minerals[1].content,
-                                        food.minerals[2].content,
-                                        food.minerals[3].content,
-                                        food.minerals[4].content,
-                                        food.minerals[5].content,
-                                        food.minerals[6].content,
-                                        food.minerals[7].content,
-                                        food.minerals[8].content,
-                                        food.minerals[9].content,
-                                        food.minerals[10].content,
-                                        food.minerals[11].content,
-                                        food.minerals[12].content,
-                                        food.minerals[13].content,
-                                        food.minerals[14].content,
-                                        food.minerals[15].content,
-                                        food.minerals[16].content,
-                                        food.minerals[17].content,
-                                        food.minerals[18].content,
-                                        food.minerals[19].content,
-                                        food.minerals[20].content
-                                )
-                                mineralBox.put(mineral)
-                                val vitamin = Vitamin(
-                                        foodID,
-                                        food.vitamins[0].content,
-                                        food.vitamins[1].content,
-                                        food.vitamins[2].content,
-                                        food.vitamins[3].content,
-                                        food.vitamins[4].content,
-                                        food.vitamins[5].content,
-                                        food.vitamins[6].content,
-                                        food.vitamins[7].content,
-                                        food.vitamins[8].content,
-                                        food.vitamins[9].content,
-                                        food.vitamins[10].content,
-                                        food.vitamins[11].content,
-                                        food.vitamins[12].content,
-                                        food.vitamins[13].content,
-                                        food.vitamins[14].content,
-                                        food.vitamins[15].content,
-                                        food.vitamins[16].content
-                                )
-                                vitaminBox.put(vitamin)
-                                app.applicationContext.toast("${it.name} 添加完成")
-                            }
-                        }
-                    } else {
-                        //toast("${e.message}")
-                        //ErrorMessage(this@FoodListActivity, e)
-                    }
-                }
-            })
-            app.applicationContext.toast("${it.longTitle} 执行了添加内容的过程")
+    private fun stepFood(categories: MutableList<BFoodCategory>, position: Int){
+        if (position >= categories.size) {
+            app.applicationContext.toast("分类及食材资料已经导入")
+            return
         }
-
+        val currentCategory = categories[position]
+        val category = Category(currentCategory.categoryID, currentCategory.longTitle, currentCategory.shortTitle, currentCategory.objectId, currentCategory.updatedAt)
+        //val foods: MutableList<Food> = ArrayList()
+        val query: BmobQuery<BFood> = BmobQuery()
+        query.addWhereEqualTo("category", BmobPointer(currentCategory))
+        query.setLimit(300)
+        query.findObjects(object: FindListener<BFood>(){
+            override fun done(foods: MutableList<BFood>?, e: BmobException?) {
+                if (e == null) {
+                    foods?.let {
+                        it.forEach {
+                            val food = Food(
+                                    it.name,
+                                    it.alias,
+                                    it.foodBased,
+                                    it.protein,
+                                    it.foodFiber,
+                                    it.fat,
+                                    it.carbohydrate,
+                                    it.calories,
+                                    it.water,
+                                    it.cholesterol,
+                                    it.objectId,
+                                    it.updatedAt
+                            )
+                            food.category.target = category
+                            val foodId: Long = foodBox.put(food)
+                            val mineral = Mineral(foodID = foodId)
+                            mineralBox.put(mineral)
+                            val vitamin = Vitamin(foodID = foodId)
+                            vitaminBox.put(vitamin)
+                        }
+                    }
+                    stepFood(categories, position+1)
+                } else {
+                    ErrorMessage(app.applicationContext, e).errorTips()
+                }
+            }
+        })
     }
+
+//    it.minerals[0].content,
+//    it.minerals[1].content,
+//    it.minerals[2].content,
+//    it.minerals[3].content,
+//    it.minerals[4].content,
+//    it.minerals[5].content,
+//    it.minerals[6].content,
+//    it.minerals[7].content,
+//    it.minerals[8].content,
+//    it.minerals[9].content,
+//    it.minerals[10].content,
+//    it.minerals[11].content,
+//    it.minerals[12].content,
+//    it.minerals[13].content,
+//    it.minerals[14].content,
+//    it.minerals[15].content,
+//    it.minerals[16].content,
+//    it.minerals[17].content,
+//    it.minerals[18].content,
+//    it.minerals[19].content,
+//    it.minerals[20].content
+
+//    it.vitamins[0].content,
+//    it.vitamins[1].content,
+//    it.vitamins[2].content,
+//    it.vitamins[3].content,
+//    it.vitamins[4].content,
+//    it.vitamins[5].content,
+//    it.vitamins[6].content,
+//    it.vitamins[7].content,
+//    it.vitamins[8].content,
+//    it.vitamins[9].content,
+//    it.vitamins[10].content,
+//    it.vitamins[11].content,
+//    it.vitamins[12].content,
+//    it.vitamins[13].content,
+//    it.vitamins[14].content,
+//    it.vitamins[15].content,
+//    it.vitamins[16].content
 
 }
