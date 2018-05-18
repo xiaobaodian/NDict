@@ -1,4 +1,4 @@
-package com.threecats.ndictdataset.Shells.TabViewShell
+package com.threecats.ndict.Shells.TabViewShell
 
 //import android.app.Fragment
 //import android.app.FragmentManager
@@ -13,7 +13,8 @@ import android.view.View
 /**
  * 由 zhang 于 2018/3/22 创建
  */
-class TabViewLayoutShell {
+
+class TabViewShell {
 
     var currentFragment: Fragment? = null
     var currentTabPosition = 0
@@ -37,49 +38,49 @@ class TabViewLayoutShell {
         tabReselectedListener = reselectedListener
     }
 
-    fun parent(activity: AppCompatActivity): TabViewLayoutShell {
+    fun parent(activity: AppCompatActivity): TabViewShell {
         fragmentManager = activity.supportFragmentManager
         return this
     }
 
-    fun parent(fragment: Fragment): TabViewLayoutShell {
+    fun parent(fragment: Fragment): TabViewShell {
         fragmentManager = fragment.childFragmentManager
         return this
     }
 
-    fun viewPage(viewPager: ViewPager): TabViewLayoutShell {
+    fun viewPage(viewPager: ViewPager): TabViewShell {
         this.viewPager = viewPager
         return this
     }
 
-    fun tab(tab: TabLayout): TabViewLayoutShell {
+    fun tab(tab: TabLayout): TabViewShell {
         this.tabLayout = tab
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
                     currentFragment = fragments[it.position]
                     val fragment = fragments[it.position]
-                    tabReselectedListener?.let { it.onTabReselected(tab, fragment) }
+                    tabReselectedListener?.onTabReselected(tab, fragment)
                 }
             }
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     val fragment = fragments[it.position]
                     currentTabPosition = it.position
-                    tabSelectedListener?.let { it.onTabSelected(tab, fragment) }
+                    tabSelectedListener?.onTabSelected(tab, fragment)
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.let {
                     val fragment = fragments[it.position]
-                    tabUnselectedListener?.let { it.onTabUnselected(tab, fragment) }
+                    tabUnselectedListener?.onTabUnselected(tab, fragment)
                 }
             }
         })
         return this
     }
 
-    fun addFragment(fragment: Fragment, name: String): TabViewLayoutShell {
+    fun addFragment(fragment: Fragment, name: String): TabViewShell {
         val bundle = Bundle()
         bundle.putString("name", name)
         fragment.setArguments(bundle)

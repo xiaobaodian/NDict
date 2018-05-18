@@ -11,7 +11,7 @@ import com.threecats.ndictdataset.Bmob.BFood
 import com.threecats.ndictdataset.EventClass.NextFragment
 import com.threecats.ndictdataset.FoodFragments.*
 import com.threecats.ndictdataset.R
-import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
+import com.threecats.ndictdataset.Shells.TabViewShell.TabViewShell
 import com.threecats.ndictdataset.Shells.TabViewShell.onShellTabSelectedListener
 import kotlinx.android.synthetic.main.activity_food_editer.*
 import org.greenrobot.eventbus.EventBus
@@ -25,7 +25,7 @@ class FoodEditerActivity : AppCompatActivity() {
 
     //private val foodPropertyFragments = mutableListOf<FoodPropertyFragment>()
 
-    private val nutrientFragmentTabs = TabViewLayoutShell()
+    private val nutrientFragmentTabs = TabViewShell()
     private var currentTabPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,13 +2,10 @@ package com.threecats.ndictdataset.View
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.UpdateListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BNutrient
 import com.threecats.ndictdataset.Bmob.BTraceElement
@@ -16,24 +13,22 @@ import com.threecats.ndictdataset.Models.ProposedDosage
 import com.threecats.ndictdataset.Enum.ENutrientType
 import com.threecats.ndictdataset.Enum.ERecordType
 import com.threecats.ndictdataset.EventClass.UpdateNutrient
-import com.threecats.ndictdataset.Models.NumberRange
 import com.threecats.ndictdataset.NutrientFragments.NutrientDosisFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientContextFragment
 import com.threecats.ndictdataset.NutrientFragments.NutrientSublistFragment
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.EditorShell.UpdateItemListener
-import com.threecats.ndictdataset.Shells.TabViewShell.TabViewLayoutShell
+import com.threecats.ndictdataset.Shells.TabViewShell.TabViewShell
 import kotlinx.android.synthetic.main.activity_nutrient_editer.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.toast
 
 class NutrientEditerActivity : AppCompatActivity() {
 
     private val shareSet = BDM.ShareSet!!
 
-    private val viewPagerShell = TabViewLayoutShell()
+    private val viewPagerShell = TabViewShell()
     private lateinit var workFragment: Fragment
     private lateinit var workTitle: String
     private var nutrientType: ENutrientType = ENutrientType.Vitamin

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.threecats.ndict.Models.DataSet
 import com.threecats.ndict.Models.Category
 import com.threecats.ndict.R
+import com.threecats.ndict.Shells.TabViewShell.TabViewShell
 import kotlinx.android.synthetic.main.fragment_foods.*
 
 
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_foods.*
 class FoodsFragment : Fragment() {
 
     lateinit var categories: List<Category>
-    var categoryFoodFragments = mutableListOf<CategoryFoodsFragment>()
+    var foodFragments = TabViewShell()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +33,9 @@ class FoodsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoryFoodFragments.clear()
-        categories.forEach { categoryFoodFragments.add(CategoryFoodsFragment(it)) }
-        viewPager.adapter = CategoryFoodFragmentAdapter(childFragmentManager, categoryFoodFragments)
-        tabs.setupWithViewPager(viewPager)
+        foodFragments.tab(tabs).viewPage(viewPager).parent(this)
+        categories.forEach { foodFragments.addFragment(CategoryFoodsFragment(it), requireNotNull(it.shortTitle)) }
+        foodFragments.link()
+
     }
 }
