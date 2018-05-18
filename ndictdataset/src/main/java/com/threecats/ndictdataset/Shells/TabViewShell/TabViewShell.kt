@@ -17,6 +17,7 @@ class TabViewShell {
 
     var currentFragment: Fragment? = null
     var currentTabPosition = 0
+    var viewPageOffscreenPageLimit: Int = 1          // 如果预加载数设置为-1（所有负数）就设置为加载fragments.size
 
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
@@ -82,14 +83,14 @@ class TabViewShell {
     fun addFragment(fragment: Fragment, name: String): TabViewShell {
         val bundle = Bundle()
         bundle.putString("name", name)
-        fragment.setArguments(bundle)
+        fragment.arguments = bundle
         fragments.add(fragment)
         return this
     }
 
     fun link(){
         val count = fragments.size
-        viewPager?.offscreenPageLimit = count
+        viewPager?.offscreenPageLimit = if (viewPageOffscreenPageLimit < 0) count else viewPageOffscreenPageLimit
         if (count == 0) return
         if (count == 1) {
             tabLayout?.visibility = View.GONE

@@ -46,6 +46,7 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
+        nutrientFragmentTabs.viewPageOffscreenPageLimit = -1
         nutrientFragmentTabs.parent(this)
                 .tab(FoodPropertyTabs)
                 .viewPage(FoodEditerViewPage)
