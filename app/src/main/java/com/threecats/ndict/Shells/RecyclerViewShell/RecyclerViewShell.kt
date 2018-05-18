@@ -10,7 +10,12 @@ import org.jetbrains.anko.toast
 /**
  * 由 zhang 于 2018/3/28 创建
  */
+
 class RecyclerViewShell<G,I>(val context: Context) {
+
+    enum class QuestState{
+        Init, Questing, Complete
+    }
 
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
@@ -28,6 +33,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
 //        get() = if (dataSet.recyclerViewNodes.size > 0) null else dataSet.items
 
     internal val viewTypes: MutableList<RecyclerViewType> = ArrayList()
+    internal var questState = QuestState.Init
 
     private var dataSet: RecyclerViewData<G, I> = RecyclerViewData(this)
 
@@ -120,7 +126,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     }
 
     fun itemsSize(): Int {
-        return dataSet.recyclerViewItems.size
+        return dataSet.getItemsCount()
     }
 
     //=================================================
@@ -187,12 +193,14 @@ class RecyclerViewShell<G,I>(val context: Context) {
 
     private fun queryData(shell: RecyclerViewShell<G, I>){
         queryDatasListener?.let {
+            questState = QuestState.Questing
             progressBar?.visibility = View.VISIBLE
             it.onQueryDatas(shell)
         }
     }
 
     internal fun completeQuery(){
+        questState = QuestState.Complete
         progressBar?.visibility = View.GONE
         completeQueryListener?.onCompleteQuery()
     }

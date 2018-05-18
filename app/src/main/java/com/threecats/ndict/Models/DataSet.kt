@@ -131,9 +131,51 @@ object DataSet {
                             )
                             food.category.target = category
                             val foodId: Long = foodBox.put(food)
-                            val mineral = Mineral(foodID = foodId)
+                            val mineral = Mineral(
+                                    foodId,
+                                    it.minerals[0].content,
+                                    it.minerals[1].content,
+                                    it.minerals[2].content,
+                                    it.minerals[3].content,
+                                    it.minerals[4].content,
+                                    it.minerals[5].content,
+                                    it.minerals[6].content,
+                                    it.minerals[7].content,
+                                    it.minerals[8].content,
+                                    it.minerals[9].content,
+                                    it.minerals[10].content,
+                                    it.minerals[11].content,
+                                    it.minerals[12].content,
+                                    it.minerals[13].content,
+                                    it.minerals[14].content,
+                                    it.minerals[15].content,
+                                    it.minerals[16].content,
+                                    it.minerals[17].content,
+                                    it.minerals[18].content,
+                                    it.minerals[19].content,
+                                    it.minerals[20].content
+                            )
                             mineralBox.put(mineral)
-                            val vitamin = Vitamin(foodID = foodId)
+                            val vitamin = Vitamin(
+                                    foodId,
+                                    it.vitamins[0].content,
+                                    it.vitamins[1].content,
+                                    it.vitamins[2].content,
+                                    it.vitamins[3].content,
+                                    it.vitamins[4].content,
+                                    it.vitamins[5].content,
+                                    it.vitamins[6].content,
+                                    it.vitamins[7].content,
+                                    it.vitamins[8].content,
+                                    it.vitamins[9].content,
+                                    it.vitamins[10].content,
+                                    it.vitamins[11].content,
+                                    it.vitamins[12].content,
+                                    it.vitamins[13].content,
+                                    it.vitamins[14].content,
+                                    it.vitamins[15].content,
+                                    it.vitamins[16].content
+                            )
                             vitaminBox.put(vitamin)
                         }
                     }
@@ -145,44 +187,5 @@ object DataSet {
         })
     }
 
-//    it.minerals[0].content,
-//    it.minerals[1].content,
-//    it.minerals[2].content,
-//    it.minerals[3].content,
-//    it.minerals[4].content,
-//    it.minerals[5].content,
-//    it.minerals[6].content,
-//    it.minerals[7].content,
-//    it.minerals[8].content,
-//    it.minerals[9].content,
-//    it.minerals[10].content,
-//    it.minerals[11].content,
-//    it.minerals[12].content,
-//    it.minerals[13].content,
-//    it.minerals[14].content,
-//    it.minerals[15].content,
-//    it.minerals[16].content,
-//    it.minerals[17].content,
-//    it.minerals[18].content,
-//    it.minerals[19].content,
-//    it.minerals[20].content
-
-//    it.vitamins[0].content,
-//    it.vitamins[1].content,
-//    it.vitamins[2].content,
-//    it.vitamins[3].content,
-//    it.vitamins[4].content,
-//    it.vitamins[5].content,
-//    it.vitamins[6].content,
-//    it.vitamins[7].content,
-//    it.vitamins[8].content,
-//    it.vitamins[9].content,
-//    it.vitamins[10].content,
-//    it.vitamins[11].content,
-//    it.vitamins[12].content,
-//    it.vitamins[13].content,
-//    it.vitamins[14].content,
-//    it.vitamins[15].content,
-//    it.vitamins[16].content
 
 }

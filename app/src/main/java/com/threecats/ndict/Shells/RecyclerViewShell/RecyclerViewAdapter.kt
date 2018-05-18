@@ -212,11 +212,11 @@ class RecyclerViewAdapter<G, I>(
         val nullData = size == 0
         if (isNullData == null) {
             isNullData = nullData
-            shell.whenNullData(nullData)
+            if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenNullData(nullData)
         } else {
             if (isNullData != nullData) {
                 isNullData = nullData
-                shell.whenNullData(nullData)
+                if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenNullData(nullData)
             } //只有当数据为空状态发生了改变时才回调，所以不能将whenNullData放到if外面
         }
         return size
