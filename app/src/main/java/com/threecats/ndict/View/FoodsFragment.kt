@@ -36,6 +36,5 @@ class FoodsFragment : Fragment() {
         foodFragments.tab(tabs).viewPage(viewPager).parent(this)
         categories.forEach { foodFragments.addFragment(CategoryFoodsFragment(it), requireNotNull(it.shortTitle)) }
         foodFragments.link()
-
     }
 }

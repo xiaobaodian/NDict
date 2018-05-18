@@ -45,7 +45,7 @@ class NutrientSublistFragment : Fragment() {
         nutrientID = shareSet.currentNutrient!!.nutrientID
 
         if (elementListShell == null) {
-            elementListShell = RecyclerViewShell(context!!)
+            elementListShell = RecyclerViewShell(requireNotNull(context))
         }
 
         elementListShell?.let {
