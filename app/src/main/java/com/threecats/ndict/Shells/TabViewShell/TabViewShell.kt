@@ -16,12 +16,16 @@ import android.view.View
 
 class TabViewShell {
 
+    enum class EPageLimit{
+        All, Page1, Page2, Page3, Page4, Page5, Page6
+    }
+
     var currentFragment: Fragment? = null
     var currentTabPosition = 0
-    var viewPageOffscreenPageLimit: Int = 1          // 如果预加载数设置为-1（所有负数）就设置为加载fragments.size
 
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
+    private var pageLimit = 1
     private var tabSelectedListener: onShellTabSelectedListener? = null
     private var tabUnselectedListener: onShellTabUnselectedListener? = null
     private var tabReselectedListener: onShellTabReselectedListener? = null
@@ -81,6 +85,11 @@ class TabViewShell {
         return this
     }
 
+    fun pageLimit(page: EPageLimit): TabViewShell{
+        pageLimit = page.ordinal
+        return this
+    }
+
     fun addFragment(fragment: Fragment, name: String): TabViewShell {
         val bundle = Bundle()
         bundle.putString("name", name)
@@ -91,7 +100,7 @@ class TabViewShell {
 
     fun link(){
         val count = fragments.size
-        viewPager?.offscreenPageLimit = if (viewPageOffscreenPageLimit < 0) count else viewPageOffscreenPageLimit
+        viewPager?.offscreenPageLimit = if (pageLimit == 0) count else pageLimit
         if (count == 0) return
         if (count == 1) {
             tabLayout?.visibility = View.GONE

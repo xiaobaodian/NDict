@@ -46,10 +46,10 @@ class FoodEditerActivity : AppCompatActivity() {
                 }
             }
         })
-        nutrientFragmentTabs.viewPageOffscreenPageLimit = -1
         nutrientFragmentTabs.parent(this)
                 .tab(FoodPropertyTabs)
                 .viewPage(FoodEditerViewPage)
+                .pageLimit(TabViewShell.EPageLimit.All)
                 .addFragment(FoodNameFragment(),"名称")
                 .addFragment(FoodNutrientFragment(),"营养素")
                 .addFragment(FoodVitaminFragment(),"维生素")
