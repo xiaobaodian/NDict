@@ -8,6 +8,10 @@ import com.threecats.ndict.App
 import com.threecats.ndict.Models.DataSet
 import com.threecats.ndict.R
 import kotlinx.android.synthetic.main.activity_main.*
+import android.view.WindowManager
+import android.os.Build
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +43,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val window = window
+            // Translucent status bar
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
 
         DataSet.init(application as App)
         DataSet.initPerson()

@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.fragment_foods.*
  */
 class FoodsFragment : Fragment() {
 
-    lateinit var categories: List<Category>
-    var foodFragments = TabViewShell()
+    private lateinit var categories: List<Category>
+    private var foodFragments = TabViewShell()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
