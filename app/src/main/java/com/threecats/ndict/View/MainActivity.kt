@@ -42,15 +42,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val window = window
-            // Translucent status bar
+            // Translucent status bar  FLAG_TRANSLUCENT_NAVIGATION  FLAG_TRANSLUCENT_STATUS
             window.setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
+        setContentView(R.layout.activity_main)
 
         DataSet.init(application as App)
         DataSet.initPerson()
