@@ -131,9 +131,9 @@ class FoodListActivity : AppCompatActivity() {
                     })
                 }
             })
-            it.setOnNullDataListener((object : NullDataListener {
-                override fun onNullData(isNull: Boolean) {
-                    if (isNull) {
+            it.setOnDataSetEmptyListener((object : DataSetEmptyListener {
+                override fun onDataSetEmpty(isEmpty: Boolean) {
+                    if (isEmpty) {
                         //toast("当前没有数据")
                     } else{
                         //toast("已经添加数据")

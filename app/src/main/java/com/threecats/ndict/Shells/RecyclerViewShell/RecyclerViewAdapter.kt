@@ -16,7 +16,7 @@ class RecyclerViewAdapter<G, I>(
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isChecked = false
-    private var isNullData: Boolean? = null
+    private var isDataSetEmpty: Boolean? = null
 
     inner class ItemViewHolder(internal var currentItemView: View) : RecyclerView.ViewHolder(currentItemView) {
         //internal var checkBox: CheckBox? = null
@@ -209,14 +209,14 @@ class RecyclerViewAdapter<G, I>(
 
     override fun getItemCount(): Int {
         val size = dataSet.recyclerViewItems.size
-        val nullData = size == 0
-        if (isNullData == null) {
-            isNullData = nullData
-            if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenNullData(nullData)
+        val isDataEmpty = size == 0
+        if (isDataSetEmpty == null) {
+            isDataSetEmpty = isDataEmpty
+            if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenDataSetIsEmpty(isDataEmpty)
         } else {
-            if (isNullData != nullData) {
-                isNullData = nullData
-                if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenNullData(nullData)
+            if (isDataSetEmpty != isDataEmpty) {
+                isDataSetEmpty = isDataEmpty
+                if (shell.questState == RecyclerViewShell.QuestState.Complete) shell.whenDataSetIsEmpty(isDataEmpty)
             } //只有当数据为空状态发生了改变时才回调，所以不能将whenNullData放到if外面
         }
         return size

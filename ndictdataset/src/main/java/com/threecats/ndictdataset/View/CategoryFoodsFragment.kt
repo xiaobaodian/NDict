@@ -4,15 +4,12 @@ package com.threecats.ndictdataset.View
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
-import cn.bmob.v3.listener.QueryListener
-import cn.bmob.v3.listener.SaveListener
 import com.threecats.ndictdataset.BDM
 import com.threecats.ndictdataset.Bmob.BFoodCategory
 import com.threecats.ndictdataset.Enum.EEditerState
@@ -22,7 +19,6 @@ import com.threecats.ndictdataset.Helper.ErrorMessage
 import com.threecats.ndictdataset.R
 import com.threecats.ndictdataset.Shells.RecyclerViewShell.*
 import kotlinx.android.synthetic.main.content_recycler_view.*
-import kotlinx.android.synthetic.main.fragment_main_category.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -90,9 +86,9 @@ class CategoryFoodsFragment : Fragment() {
                     })
                 }
             })
-            it.setOnNullDataListener((object : NullDataListener {
-                override fun onNullData(isNull: Boolean) {
-                    if (isNull) {
+            it.setOnDataSetEmptyListener((object : DataSetEmptyListener {
+                override fun onDataSetEmpty(isEmpty: Boolean) {
+                    if (isEmpty) {
                         //context.toast("当前没有数据")
                     } else{
                         //context.toast("已经添加数据")

@@ -8,6 +8,14 @@ interface NodeMembership{
     fun isMembers(item: Any): Boolean
 }
 
+interface ItemViewType{
+    fun viewType(): Int
+}
+
+interface GroupViewType{
+    fun viewType(): Int
+}
+
 interface DisplayNodeListener<G, I>{
     fun onDisplayNode(node: G, holder: RecyclerViewAdapter<G, I>.NodeViewHolder)
 }
@@ -40,6 +48,6 @@ interface CompleteQueryListener{
     fun onCompleteQuery()
 }
 
-interface NullDataListener{
-    fun onNullData(isNull: Boolean)
+interface DataSetEmptyListener{
+    fun onDataSetEmpty(isEmpty: Boolean)
 }

@@ -21,7 +21,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     private var recyclerView: RecyclerView? = null
     private var recyclerAdapter: RecyclerViewAdapter<G,I>? = null
 
-    private val isNullItems: Boolean
+    private val isDataSetEmpty: Boolean  //isDataSetEmpty
         get() = dataSet.recyclerViewItems.size == 0
     val currentItem: I?
         get() = dataSet.currentItem?.self
@@ -45,7 +45,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
     private var displayItemListener: DisplayItemListener<G, I>? = null
     private var queryDatasListener: QueryDatasListener<G, I>? = null
     private var completeQueryListener: CompleteQueryListener? = null
-    private var nullDataListener: NullDataListener? = null
+    private var dataSetEmptyListener: DataSetEmptyListener? = null
 
     init {
         recyclerAdapter = RecyclerViewAdapter(dataSet, this)
@@ -73,7 +73,7 @@ class RecyclerViewShell<G,I>(val context: Context) {
             it.layoutManager = layoutManager
             it.adapter = recyclerAdapter
         }
-        if (isNullItems) {
+        if (isDataSetEmpty) {
             queryData(this) // 在查询数据的监听器里面处理数据查询与导入，并调用completeQuery
         } else {
             completeQuery()
@@ -163,8 +163,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
         completeQueryListener = listener
     }
 
-    fun setOnNullDataListener(listener: NullDataListener){
-        nullDataListener = listener
+    fun setOnDataSetEmptyListener(listener: DataSetEmptyListener){
+        dataSetEmptyListener = listener
     }
 
     internal fun displayNode(node: G, holder: RecyclerViewAdapter<G, I>.NodeViewHolder){
@@ -205,8 +205,8 @@ class RecyclerViewShell<G,I>(val context: Context) {
         completeQueryListener?.onCompleteQuery()
     }
 
-    internal fun whenNullData(isNullData: Boolean){
-        nullDataListener?.onNullData(isNullData)
+    internal fun whenDataSetIsEmpty(isEmpty: Boolean){
+        dataSetEmptyListener?.onDataSetEmpty(isEmpty)
     }
 
 }

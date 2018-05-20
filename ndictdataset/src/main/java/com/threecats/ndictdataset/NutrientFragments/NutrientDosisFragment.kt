@@ -141,9 +141,9 @@ class NutrientDosisFragment : Fragment() {
                     shell.completeQuery()
                 }
             })
-            it.setOnNullDataListener((object : NullDataListener{
-                override fun onNullData(isNull: Boolean) {
-                    if (isNull) {
+            it.setOnDataSetEmptyListener((object : DataSetEmptyListener{
+                override fun onDataSetEmpty(isEmpty: Boolean) {
+                    if (isEmpty) {
                         //context?.toast("当前没有数据")
                     } else{
                         //context?.toast("已经添加数据")
