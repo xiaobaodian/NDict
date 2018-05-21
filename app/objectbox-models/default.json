@@ -464,9 +464,29 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "13:1563995731619073831",
+      "lastPropertyId": "3:3139705698685245626",
+      "name": "LastUpdateDate",
+      "properties": [
+        {
+          "id": "1:748139228070464200",
+          "name": "id"
+        },
+        {
+          "id": "2:5154279563133072535",
+          "name": "recordType"
+        },
+        {
+          "id": "3:3139705698685245626",
+          "name": "lastDate"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "12:2216637305357942813",
+  "lastEntityId": "13:1563995731619073831",
   "lastIndexId": "6:8148908648981313912",
   "lastRelationId": "6:2895658636677806246",
   "lastSequenceId": "0:0",
