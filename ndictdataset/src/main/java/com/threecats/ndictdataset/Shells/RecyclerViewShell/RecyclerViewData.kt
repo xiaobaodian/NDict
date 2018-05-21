@@ -205,6 +205,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     fun removeItem(item: I){
+
         val recyclerItem = findRecyclerItem(item)
         recyclerItem?.let{
             removeItem(it)
