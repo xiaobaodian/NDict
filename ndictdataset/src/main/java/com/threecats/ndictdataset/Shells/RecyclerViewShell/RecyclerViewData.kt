@@ -59,20 +59,19 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     inline fun <G> nodeForEach(action: (G) -> Unit): Unit {
-        //for (element in this) action(element)
         recyclerViewNodes.forEach {
             it as RecyclerViewNode<G, I>
             action(it.self)
         }
     }
 
-    inline fun <G> nodeItemForEach(action: (G) -> Unit): Unit {
-        //for (element in this) action(element)
-        recyclerViewNodes.forEach {
-            it as RecyclerViewNode<G, I>
-            action(it.self)
-        }
-    }
+//    fun <G, I> nodeItemForEach(node: G, action: (I) -> Unit): Unit {
+//        val currentNode: RecyclerViewNode<G, I> = findRecyclerNode(node)
+//        currentNode..forEach {
+//            it as RecyclerViewNode<G, I>
+//            action(it.self)
+//        }
+//    }
 
 
     fun getItemsCount(): Int {
@@ -294,7 +293,7 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
     }
 
     private fun findRecyclerItem(item: I): RecyclerViewItem<G, I>? = if (currentItem?.self == item) currentItem else mapRecyclerItem.get(item)
-    private fun findRecyclerNode(group: G): RecyclerViewNode<G, I>? = if (currentNode?.self == group) currentNode else mapRecyclerNode.get(group)
+    private fun findRecyclerNode(node: G): RecyclerViewNode<G, I>? = if (currentNode?.self == node) currentNode else mapRecyclerNode.get(node)
 
 //    var recyclerGroup: RecyclerViewNode<G, I>? = null
 //    recyclerGroup = if (currentNode?.self == node) currentNode else mapRecyclerNode.get(node)
