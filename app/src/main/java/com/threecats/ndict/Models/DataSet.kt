@@ -22,9 +22,13 @@ object DataSet {
 
     lateinit var app: App
 
+    lateinit var lastUpdateDate: MutableList<LastUpdateDate>
     lateinit var categories: MutableList<Category>
     lateinit var foods: MutableList<Food>
     lateinit var traceElements: MutableList<TraceElement>
+
+    lateinit var lastUpdateDateBox: Box<LastUpdateDate>
+    lateinit var lastUpdateDateQuery: Query<LastUpdateDate>
 
     lateinit var personBox: Box<Person>
     lateinit var personQuery: Query<Person>
@@ -45,6 +49,9 @@ object DataSet {
 
     fun init(app: App){
         this.app = app
+
+        lastUpdateDateBox = app.boxStore.boxFor<LastUpdateDate>()
+        lastUpdateDateQuery = lastUpdateDateBox.query().build()
 
         personBox = app.boxStore.boxFor<Person>()
         personQuery = personBox.query().build()
@@ -79,7 +86,7 @@ object DataSet {
         if (categoryBox.count() == 0L) {
             stepCategory()
         } else {
-            val categorys = categoryQuery.find()
+            categories = categoryQuery.find()
         }
 
     }

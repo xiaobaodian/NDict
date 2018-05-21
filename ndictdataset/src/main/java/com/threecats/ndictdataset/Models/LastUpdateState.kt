@@ -19,7 +19,7 @@ import java.util.*
  * 由 zhang 于 2018/5/12 创建
  */
 class LastUpdateState(val context: Context) {
-    private var states: MutableList<BUpdateState> = ArrayList()
+    private var updateStates: MutableList<BUpdateState> = ArrayList()
     private val checkHash = arrayOfNulls<Int>(4)
 
 
@@ -31,12 +31,12 @@ class LastUpdateState(val context: Context) {
         query.findObjects(object: FindListener<BUpdateState>(){
             override fun done(state: MutableList<BUpdateState>?, e: BmobException?) {
                 if (e == null) {
-                    state?.let { states = it }
+                    state?.let { updateStates = it }
                     check()
-                    checkHash[0] = states[0].toString().hashCode()
-                    checkHash[1] = states[1].toString().hashCode()
-                    checkHash[2] = states[2].toString().hashCode()
-                    checkHash[3] = states[3].toString().hashCode()
+                    checkHash[0] = updateStates[0].toString().hashCode()
+                    checkHash[1] = updateStates[1].toString().hashCode()
+                    checkHash[2] = updateStates[2].toString().hashCode()
+                    checkHash[3] = updateStates[3].toString().hashCode()
                 } else {
                     ErrorMessage(context, e).errorTips()
                 }
@@ -45,14 +45,14 @@ class LastUpdateState(val context: Context) {
     }
 
     private fun check(){
-        if (states.isEmpty()) {
-            states.add(BUpdateState(ERecordType.Category))
-            states.add(BUpdateState(ERecordType.Food))
-            states.add(BUpdateState(ERecordType.Nutrient))
-            states.add(BUpdateState(ERecordType.TraceElement))
+        if (updateStates.isEmpty()) {
+            updateStates.add(BUpdateState(ERecordType.Category))
+            updateStates.add(BUpdateState(ERecordType.Food))
+            updateStates.add(BUpdateState(ERecordType.Nutrient))
+            updateStates.add(BUpdateState(ERecordType.TraceElement))
 
             val batchStates: MutableList<BmobObject> = ArrayList()
-            states.forEach { batchStates.add(it) }
+            updateStates.forEach { batchStates.add(it) }
             BmobBatch().insertBatch(batchStates).doBatch(object: QueryListListener<BatchResult>(){
                 override fun done(results: MutableList<BatchResult>?, e: BmobException?) {
                     if (e == null) {
@@ -67,7 +67,7 @@ class LastUpdateState(val context: Context) {
 
     private fun find(type: ERecordType): BUpdateState? {
         var result: BUpdateState? = null
-        states.forEach { if (it.recordType == type) result = it}
+        updateStates.forEach { if (it.recordType == type) result = it}
         return result
     }
 
@@ -78,8 +78,8 @@ class LastUpdateState(val context: Context) {
 
     fun commit(){
         val batchStates: MutableList<BmobObject> = ArrayList()
-        for(i in states.indices){
-            if (states[i].toString().hashCode() != checkHash[i]) batchStates.add(states[i])
+        for(i in updateStates.indices){
+            if (updateStates[i].toString().hashCode() != checkHash[i]) batchStates.add(updateStates[i])
         }
         if (batchStates.isEmpty()) return
         BmobBatch().updateBatch(batchStates).doBatch(object: QueryListListener<BatchResult>(){
