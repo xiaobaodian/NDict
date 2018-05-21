@@ -90,7 +90,6 @@ class FoodListActivity : AppCompatActivity() {
             })
             it.setOnClickItemListener(object : ClickItemListener<Any, BFood> {
                 override fun onClickItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    //shareSet.editFood(item)
                     shareSet.editorFood.edit(item)
                     shareSet.currentFood = item
                     val intent = Intent(it.context, FoodEditerActivity::class.java)
@@ -99,11 +98,11 @@ class FoodListActivity : AppCompatActivity() {
             })
             it.setOnLongClickItemListener(object : LongClickItemListener<Any, BFood> {
                 override fun onLongClickItem(item: BFood, holder: RecyclerViewAdapter<Any, BFood>.ItemViewHolder) {
-                    //shareSet.editFood(item)
-                    shareSet.editorFood.edit(item)
-                    shareSet.currentFood = item
-                    val intent = Intent(it.context, FoodEditerActivity::class.java)
-                    startActivity(intent)
+//                    shareSet.editorFood.edit(item)
+//                    shareSet.currentFood = item
+//                    val intent = Intent(it.context, FoodEditerActivity::class.java)
+//                    startActivity(intent)
+                    foodListShell?.itemForEach<BFood> { toast("食材：${it.name}") }
                 }
             })
             it.setQueryDataListener(object : QueryDatasListener<Any, BFood> {
@@ -134,9 +133,9 @@ class FoodListActivity : AppCompatActivity() {
             it.setOnDataSetEmptyListener((object : DataSetEmptyListener {
                 override fun onDataSetEmpty(isEmpty: Boolean) {
                     if (isEmpty) {
-                        //toast("当前没有数据")
+                        toast("当前没有数据")
                     } else{
-                        //toast("已经添加数据")
+                        toast("已经添加数据")
                     }
                 }
             }))

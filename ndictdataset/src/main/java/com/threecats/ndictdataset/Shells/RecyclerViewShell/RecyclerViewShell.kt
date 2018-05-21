@@ -125,6 +125,14 @@ class RecyclerViewShell<G,I>(val context: Context) {
         }
     }
 
+    fun <I> itemForEach(action: (I) -> Unit): Unit {
+        //for (element in this) action(element)
+            dataSet.recyclerViewItems.forEach {
+            it as RecyclerViewItem<G, I>
+            action(it.self)
+        }
+    }
+
     fun itemsSize(): Int {
         return dataSet.getItemsCount()
     }

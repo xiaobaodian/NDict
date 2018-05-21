@@ -50,6 +50,31 @@ class RecyclerViewData<G, I>(private val shell: RecyclerViewShell<G, I>) {
         calculatorNodePosition()
     }
 
+    inline fun <I> itemForEach(action: (I) -> Unit): Unit {
+        //for (element in this) action(element)
+        recyclerViewItems.forEach {
+            it as RecyclerViewItem<G, I>
+            action(it.self)
+        }
+    }
+
+    inline fun <G> nodeForEach(action: (G) -> Unit): Unit {
+        //for (element in this) action(element)
+        recyclerViewNodes.forEach {
+            it as RecyclerViewNode<G, I>
+            action(it.self)
+        }
+    }
+
+    inline fun <G> nodeItemForEach(action: (G) -> Unit): Unit {
+        //for (element in this) action(element)
+        recyclerViewNodes.forEach {
+            it as RecyclerViewNode<G, I>
+            action(it.self)
+        }
+    }
+
+
     fun getItemsCount(): Int {
         var count = 0
         if (hasNode) {
